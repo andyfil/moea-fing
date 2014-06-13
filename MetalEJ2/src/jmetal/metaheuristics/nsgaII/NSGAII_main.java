@@ -28,6 +28,7 @@ import jmetal.core.SolutionSet;
 import jmetal.operators.crossover.CrossoverFactory;
 import jmetal.operators.mutation.MutationFactory;
 import jmetal.operators.selection.SelectionFactory;
+import jmetal.problems.HCTScheduling;
 import jmetal.problems.ProblemFactory;
 import jmetal.problems.ZDT.ZDT3;
 import jmetal.qualityIndicator.QualityIndicator;
@@ -98,7 +99,7 @@ public class NSGAII_main {
       //problem = new Kursawe("Real", 3);
       //problem = new Kursawe("BinaryReal", 3);
       //problem = new Water("Real");
-      problem = new ZDT3("ArrayReal", 30);//*************************************CAMBIA
+      problem = new HCTScheduling(4, 2,4);//*************************************CAMBIA
       //problem = new ConstrEx("Real");
       //problem = new DTLZ1("Real");
       //problem = new OKA2("Real") ;
