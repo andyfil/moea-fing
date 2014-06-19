@@ -21,7 +21,11 @@
 
 package jmetal.metaheuristics.nsgaII;
 
+
 import jmetal.core.*;
+import jmetal.encodings.variable.ArrayInt;
+import jmetal.encodings.variable.ArrayReal;
+import jmetal.encodings.variable.Real;
 import jmetal.qualityIndicator.QualityIndicator;
 import jmetal.util.Distance;
 import jmetal.util.JMException;
@@ -66,9 +70,12 @@ public class NSGAII extends Algorithm {
     SolutionSet offspringPopulation;
     SolutionSet union;
 
-    Operator mutationOperator;
-    Operator crossoverOperator;
-    Operator selectionOperator;
+    Operator mutationPerm;
+	Operator mutationArray;
+    Operator crossoverPerm;
+	Operator crossoverArray;
+    // Operator crossover;
+	Operator selectionOperator;
 
     Distance distance = new Distance();
 
@@ -84,8 +91,11 @@ public class NSGAII extends Algorithm {
     requiredEvaluations = 0;
 
     //Read the operators
-    mutationOperator = operators_.get("mutation");
-    crossoverOperator = operators_.get("crossover");
+    mutationPerm= operators_.get("mutationPerm");
+	mutationArray = operators_.get("mutationArray");
+    // crossover = operators_.get("crossover");
+	crossoverPerm = operators_.get("crossoverPerm");
+	crossoverArray = operators_.get("crossoverArray");
     selectionOperator = operators_.get("selection");
 
     // Create the initial solutionSet
@@ -108,16 +118,22 @@ public class NSGAII extends Algorithm {
         if (evaluations < maxEvaluations) {
           //obtain parents
           parents[0] = (Solution) selectionOperator.execute(population);
-          parents[1] = (Solution) selectionOperator.execute(population);
-          Solution[] offSpring = (Solution[]) crossoverOperator.execute(parents);
-          mutationOperator.execute(offSpring[0]);
-          mutationOperator.execute(offSpring[1]);
-          problem_.evaluate(offSpring[0]);
-          problem_.evaluateConstraints(offSpring[0]);
-          problem_.evaluate(offSpring[1]);
-          problem_.evaluateConstraints(offSpring[1]);
-          offspringPopulation.add(offSpring[0]);
-          offspringPopulation.add(offSpring[1]);
+		  parents[1] = (Solution) selectionOperator.execute(population);
+		  
+		  Solution[] offSpringPerm = (Solution[]) crossoverPerm.execute(parents);
+		  Solution[] offSpringArray = (Solution[]) crossoverArray.execute(parents); 
+		  
+		  mutationPerm.execute(offSpringPerm[0]);
+		  mutationPerm.execute(offSpringPerm[1]);
+          mutationArray.execute(offSpringArray[0]);
+		  mutationArray.execute(offSpringArray[1]);
+          
+		  Solution sol1 = problem_.armarSolucion(offSpringPerm[0], offSpringArray[0]);
+		  Solution sol2 = problem_.armarSolucion(offSpringPerm[1], offSpringArray[1]);
+		  problem_.evaluate(sol1);
+          problem_.evaluate(sol2);
+          offspringPopulation.add(sol1);
+          offspringPopulation.add(sol2);
           evaluations += 2;
         } // if                            
       } // for
