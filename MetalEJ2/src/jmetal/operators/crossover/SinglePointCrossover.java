@@ -22,9 +22,12 @@
 package jmetal.operators.crossover;
 
 import jmetal.core.Solution;
+import jmetal.core.Variable;
 import jmetal.encodings.solutionType.BinaryRealSolutionType;
 import jmetal.encodings.solutionType.BinarySolutionType;
 import jmetal.encodings.solutionType.IntSolutionType;
+import jmetal.encodings.solutionType.ArrayIntSolutionType;
+import jmetal.encodings.variable.ArrayInt;
 import jmetal.encodings.variable.Binary;
 import jmetal.util.Configuration;
 import jmetal.util.JMException;
@@ -44,7 +47,7 @@ public class SinglePointCrossover extends Crossover {
    */
   private static final List VALID_TYPES = Arrays.asList(BinarySolutionType.class,
   		                                            BinaryRealSolutionType.class,
-  		                                            IntSolutionType.class) ;
+  		                                            IntSolutionType.class,ArrayIntSolutionType.class) ;
 
   private Double crossoverProbability_ = null;
 
@@ -145,7 +148,7 @@ public class SinglePointCrossover extends Crossover {
             ((Binary) offSpring[1].getDecisionVariables()[i]).decode();
           }
         } // Binary or BinaryReal
-        else { // Integer representation
+        else if(parent1.getType().getClass()==IntSolutionType.class){ // Integer representation
           int crossoverPoint = PseudoRandom.randInt(0, parent1.numberOfVariables() - 1);
           int valueX1;
           int valueX2;
@@ -155,7 +158,19 @@ public class SinglePointCrossover extends Crossover {
             offSpring[0].getDecisionVariables()[i].setValue(valueX2);
             offSpring[1].getDecisionVariables()[i].setValue(valueX1);
           } // for
-        } // Int representation
+        }else{ // IntArrayRepresentation
+        	int crossoverPoint = PseudoRandom.randInt(0, parent1.numberOfVariables() - 1);
+        	ArrayInt var1 = (ArrayInt) parent1.getDecisionVariables()[0];
+        	ArrayInt var2 = (ArrayInt) parent2.getDecisionVariables()[0];
+        	int valueX1;
+            int valueX2;
+            for (int i = crossoverPoint; i < var1.getLength(); i++) {
+              valueX1 = var1.getValue(i);
+              valueX2 = var2.getValue(i);
+              ((ArrayInt)offSpring[0].getDecisionVariables()[0]).setValue(i, valueX2);
+              ((ArrayInt)offSpring[1].getDecisionVariables()[0]).setValue(i,valueX1);
+            } // for
+        }
       }
     } catch (ClassCastException e1) {
       Configuration.logger_.severe("SinglePointCrossover.doCrossover: Cannot perfom " +

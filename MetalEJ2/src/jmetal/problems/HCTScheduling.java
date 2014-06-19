@@ -44,7 +44,7 @@ public class HCTScheduling extends Problem {
 														// máquina
 		// variable 1 es el estado en el que se ejecuta cada una de las tareas
 		lowerLimit_[1] = 0;
-		upperLimit_[1] = cant_estados;
+		upperLimit_[1] = cant_estados -1;
 		length_[1] = cant_tareas;// un estado definido por cada tarea
 		cantidadTareas = cant_tareas;
 		cantidadMaquinas = cant_maquinas;
