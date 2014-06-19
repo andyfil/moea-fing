@@ -212,6 +212,18 @@ public class SinglePointCrossover extends Crossover {
       throw new JMException("Exception in " + name + ".execute()");
     } 
     
+    // Obtain my duplex Solutions Permutation-ArrayInt
+ 	Variable [] var1 = parents[0].getDecisionVariables() ; 
+ 	Variable [] var2 = parents[1].getDecisionVariables() ;
+ 	
+ 	Variable [] varArray1 = new Variable[1];
+ 	Variable [] varArray2 = new Variable[1];
+ 	varArray1[0] = var1[1];
+ 	varArray2[0] = var2[1];
+ 	Solution [] solArrayAux = new Solution[2];
+ 	solArrayAux[0] = new Solution(problem_,varArray1);
+ 	solArrayAux[1] = new Solution(problem_,varArray2);
+    
     Solution[] offSpring;
     offSpring = doCrossover(crossoverProbability_,
             parents[0],
