@@ -21,7 +21,9 @@
 
 package jmetal.operators.crossover;
 
+import jmetal.core.Problem;
 import jmetal.core.Solution;
+import jmetal.core.Variable;
 import jmetal.encodings.solutionType.PermutationSolutionType;
 import jmetal.encodings.variable.Permutation;
 import jmetal.util.Configuration;
@@ -74,6 +76,7 @@ public class PMXCrossover extends Crossover {
 
     offspring[0] = new Solution(parent1);
     offspring[1] = new Solution(parent2);
+    
 
     int permutationLength;
 
@@ -172,10 +175,25 @@ public class PMXCrossover extends Crossover {
       throw new JMException("Exception in " + name + ".execute()");
     }
 
-    Solution[] offspring = doCrossover(crossoverProbability.doubleValue(),
-            parents[0],
-            parents[1]);
+    // Obtain my duplex Solutions Permutation-ArrayInt
+	Variable [] var1 = parents[0].getDecisionVariables() ; 
+	Variable [] var2 = parents[1].getDecisionVariables() ;
+	
+	Variable [] varPerm1 = new Variable[1];
+	Variable [] varPerm2 = new Variable[1];
+	varPerm1[0] = var1[0]; // Permutation 1
+	varPerm2[0] = var2[0]; // Permutation 2
+	Solution [] solPermAux = new Solution[2];
+	
+	solPermAux[0] = new Solution(problem,varPerm1);  
+	solPermAux[1] = new Solution(problem,varPerm2);  
+    
+	Solution[] offspring = doCrossover(crossoverProbability.doubleValue(),
+            solPermAux[0],
+            solPermAux[1]);
 
     return offspring;
   } // execute
+  
+  
 } // PMXCrossover
