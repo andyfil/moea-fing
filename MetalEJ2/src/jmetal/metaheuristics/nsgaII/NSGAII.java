@@ -26,6 +26,9 @@ import jmetal.core.*;
 import jmetal.encodings.variable.ArrayInt;
 import jmetal.encodings.variable.ArrayReal;
 import jmetal.encodings.variable.Real;
+import jmetal.operators.crossover.GralCrossover;
+import jmetal.operators.crossover.PMXCrossover;
+import jmetal.operators.crossover.SinglePointCrossover;
 import jmetal.qualityIndicator.QualityIndicator;
 import jmetal.util.Distance;
 import jmetal.util.JMException;
@@ -120,8 +123,11 @@ public class NSGAII extends Algorithm {
           parents[0] = (Solution) selectionOperator.execute(population);
 		  parents[1] = (Solution) selectionOperator.execute(population);
 		  
-		  Solution[] offSpringPerm = (Solution[]) crossoverPerm.execute(parents);
-		  Solution[] offSpringArray = (Solution[]) crossoverArray.execute(parents); 
+		  // Solution[] offSpringPerm = (Solution[]) crossoverPerm.execute(parents);
+		  // Solution[] offSpringArray = (Solution[]) crossoverArray.execute(parents); 
+		  GralCrossover op = new GralCrossover();
+		  Solution[] offSpringPerm = (Solution[]) op.crucePermutation((PMXCrossover) crossoverPerm, problem_, parents);
+		  Solution[] offSpringArray = (Solution[]) op.cruceArrayInt((SinglePointCrossover) crossoverArray, problem_, parents);
 		  
 		  mutationPerm.execute(offSpringPerm[0]);
 		  mutationPerm.execute(offSpringPerm[1]);
