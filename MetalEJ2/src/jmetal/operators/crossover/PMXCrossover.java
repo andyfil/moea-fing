@@ -185,8 +185,8 @@ public class PMXCrossover extends Crossover {
 	varPerm2[0] = var2[0]; // Permutation 2
 	Solution [] solPermAux = new Solution[2];
 	
-	solPermAux[0] = new Solution(problem,varPerm1);  
-	solPermAux[1] = new Solution(problem,varPerm2);  
+	// solPermAux[0] = new Solution(problem,varPerm1);  
+	// solPermAux[1] = new Solution(problem,varPerm2);  
     
 	Solution[] offspring = doCrossover(crossoverProbability.doubleValue(),
             solPermAux[0],
