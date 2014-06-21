@@ -237,4 +237,17 @@ public abstract class Problem implements Serializable {
     }
     return result;
   } // getNumberOfBits();
+
+public Solution armarSolucion(Solution sol1, Solution sol2) {
+	  // Unify Solutions for evaluate
+	  Variable [] perm = sol1.getDecisionVariables();
+	  Variable [] array = sol2.getDecisionVariables();
+	  Variable [] aux = new Variable[2];
+	  aux[0] = perm[0];
+	  aux[1] = array[0];
+	  
+	  // Create solutions for evaluate
+	  Solution offSpring = new Solution(this, aux);
+	  return offSpring;
+}
 } // Problem
