@@ -221,8 +221,8 @@ public class SinglePointCrossover extends Crossover {
  	varArray1[0] = var1[1];
  	varArray2[0] = var2[1];
  	Solution [] solArrayAux = new Solution[2];
- 	solArrayAux[0] = new Solution(problem_,varArray1);
- 	solArrayAux[1] = new Solution(problem_,varArray2);
+ 	// solArrayAux[0] = new Solution(problem_,varArray1);
+ 	// solArrayAux[1] = new Solution(problem_,varArray2);
     
     Solution[] offSpring;
     offSpring = doCrossover(crossoverProbability_,
