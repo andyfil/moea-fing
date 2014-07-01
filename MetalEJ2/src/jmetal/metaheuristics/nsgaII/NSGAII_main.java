@@ -75,7 +75,7 @@ public class NSGAII_main {
     // Operator crossover;
     Operator  crossoverPerm; // Crossover operator for Permutation
     Operator crossoverArray; // Crossover operator for ArrayInt
-    Operator mutation;
+    //Operator mutation;
     Operator  mutationPerm  ; // Mutation operator for Permutation
     Operator  mutationArray ; // Mutation operator for ArrayReal
     Operator  selection ; // Selection operator
@@ -145,8 +145,8 @@ public class NSGAII_main {
     // algorithm.addOperator("crossover",crossover);
     algorithm.addOperator("crossoverPerm",crossoverPerm);
     algorithm.addOperator("crossoverArray",crossoverArray);
-    algorithm.addOperator("mutationPMX",mutationPerm);
-	algorithm.addOperator("mutationSBX",mutationArray);
+    algorithm.addOperator("mutationPerm",mutationPerm);
+	algorithm.addOperator("mutationArray",mutationArray);
     algorithm.addOperator("selection",selection);
 
     // Add the indicator object to the algorithm
