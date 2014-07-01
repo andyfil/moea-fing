@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 import jmetal.core.Problem;
 import jmetal.core.Solution;
-import jmetal.encodings.solutionType.PermutationAndArrayIntSolutionType;
+import jmetal.encodings.solutionType.ArrayIntAndPermutationSolutionType;
 import jmetal.encodings.variable.ArrayInt;
 import jmetal.encodings.variable.Permutation;
 import jmetal.util.JMException;
@@ -23,6 +23,9 @@ public class HCTScheduling extends Problem {
 	private double[][] matriz_energia;// maquina_energia = energia/segundo 
 	private double[] matriz_energia_idle;// consumo de cada maquina en estado idle
 
+	public HCTScheduling (){
+	
+	}
 	public HCTScheduling(int cant_tareas,
 			int cant_maquinas, int cant_estados) {
 
@@ -53,7 +56,7 @@ public class HCTScheduling extends Problem {
 		matriz_energia = new double[cantidadMaquinas][cantidadEstados];
 		matriz_energia_idle = new double[cantidadMaquinas];
 		populateMatriz();
-		solutionType_ = new PermutationAndArrayIntSolutionType(this);
+		solutionType_ = new ArrayIntAndPermutationSolutionType(this);
 	}
 
 	@Override

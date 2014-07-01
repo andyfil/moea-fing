@@ -22,10 +22,11 @@
 package jmetal.metaheuristics.nsgaII;
 
 
-import jmetal.core.*;
-import jmetal.encodings.variable.ArrayInt;
-import jmetal.encodings.variable.ArrayReal;
-import jmetal.encodings.variable.Real;
+import jmetal.core.Algorithm;
+import jmetal.core.Operator;
+import jmetal.core.Problem;
+import jmetal.core.Solution;
+import jmetal.core.SolutionSet;
 import jmetal.operators.crossover.GralCrossover;
 import jmetal.operators.crossover.PMXCrossover;
 import jmetal.operators.crossover.SinglePointCrossover;

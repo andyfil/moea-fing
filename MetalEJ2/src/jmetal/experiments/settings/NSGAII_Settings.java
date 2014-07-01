@@ -30,6 +30,7 @@ import jmetal.operators.mutation.Mutation;
 import jmetal.operators.mutation.MutationFactory;
 import jmetal.operators.selection.Selection;
 import jmetal.operators.selection.SelectionFactory;
+import jmetal.problems.HCTScheduling;
 import jmetal.problems.ProblemFactory;
 import jmetal.util.JMException;
 
@@ -53,13 +54,7 @@ public class NSGAII_Settings extends Settings {
   public NSGAII_Settings(String problem) {
     super(problem) ;
 
-    Object [] problemParams = {"Real"};
-    try {
-	    problem_ = (new ProblemFactory()).getProblem(problemName_, problemParams);
-    } catch (JMException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-    }
+    problem_ = new HCTScheduling(100,20,4);
     // Default experiments.settings
     populationSize_              = 100   ;
     maxEvaluations_              = 25000 ;
