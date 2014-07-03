@@ -33,8 +33,11 @@ import jmetal.util.PseudoRandom;
 import jmetal.util.wrapper.XInt;
 
 public class SinglePointTwoPointCrossover extends Crossover {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Double intCrossoverProbability_ = null;
-	private Double permutationCrossoverProbability_ = null;
 	
 
 	/**
@@ -49,10 +52,8 @@ public class SinglePointTwoPointCrossover extends Crossover {
 	public SinglePointTwoPointCrossover(HashMap<String, Object> parameters) {
 		super (parameters) ;
 
-		if (parameters.get("intCrossoverProbability_") != null)
-			intCrossoverProbability_ = (Double) parameters.get("intCrossoverProbability") ;  		
-		if (parameters.get("permutationCrossoverProbability_") != null)
-			permutationCrossoverProbability_ = (Double) parameters.get("permutationCrossoverProbability") ;  		
+		if (parameters.get("intCrossoverProbability") != null)
+			intCrossoverProbability_ = (Double) parameters.get("intCrossoverProbability") ;  				
 	} // Constructor
 
 
@@ -64,7 +65,6 @@ public class SinglePointTwoPointCrossover extends Crossover {
 	 * @return An array containing the two offsprings
 	 */
 	public Solution[] doCrossover(Double intProbability,
-		Double permutationProbability,
 		Solution parent1, 
 		Solution parent2) throws JMException {
 
@@ -164,21 +164,20 @@ public class SinglePointTwoPointCrossover extends Crossover {
 	public Object execute(Object object) throws JMException {
 		Solution [] parents = (Solution [])object;
 		if (parents.length != 2) {
-			Configuration.logger_.severe("SBXSinglePointCrossover.execute: operator " +
+			Configuration.logger_.severe("SinglePointTwoPointCrossover.execute: operator " +
 			"needs two parents");
 			throw new JMException("Exception in " + this.toString()+ ".execute()") ;      
 		} // if
 
 		if (!(VALID_TYPES.contains(parents[0].getType().getClass())  &&
 				VALID_TYPES.contains(parents[1].getType().getClass())) ) {
-			Configuration.logger_.severe("SBXSinglePointCrossover.execute: the solutions " +
+			Configuration.logger_.severe("SinglePointTwoPointCrossover.execute: the solutions " +
 					"type " + parents[0].getType() + " is not allowed with this operator");
 
 			throw new JMException("Exception in " + this.toString()+ ".execute()") ;
 		} // if 
 		Solution [] offSpring;
-		offSpring = doCrossover(intCrossoverProbability_, 
-				permutationCrossoverProbability_, parents[0], parents[1]);
+		offSpring = doCrossover(intCrossoverProbability_,parents[0], parents[1]);
 
 		return offSpring ;
 	} // execute
