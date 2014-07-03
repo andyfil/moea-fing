@@ -72,12 +72,12 @@ public class NSGAII_main {
                                   ClassNotFoundException {
     Problem   problem   ; // The problem to solve
     Algorithm algorithm ; // The algorithm to use
-    // Operator crossover;
-    Operator  crossoverPerm; // Crossover operator for Permutation
-    Operator crossoverArray; // Crossover operator for ArrayInt
-    //Operator mutation;
-    Operator  mutationPerm  ; // Mutation operator for Permutation
-    Operator  mutationArray ; // Mutation operator for ArrayReal
+    Operator crossover;
+    //Operator  crossoverPerm; // Crossover operator for Permutation
+    //Operator crossoverArray; // Crossover operator for ArrayInt
+    Operator mutation;
+    //Operator  mutationPerm  ; // Mutation operator for Permutation
+    //Operator  mutationArray ; // Mutation operator for ArrayReal
     Operator  selection ; // Selection operator
     
     HashMap  parameters ; // Operator parameters
@@ -116,37 +116,39 @@ public class NSGAII_main {
     algorithm.setInputParameter("populationSize",100);
     algorithm.setInputParameter("maxEvaluations",25000);
 
-    // Mutation and Crossover for Real codification 
+    // Crossover 
     parameters = new HashMap() ;
-    parameters.put("probability", 0.9) ;
-    parameters.put("distributionIndex", 20.0) ;
-    // crossover = CrossoverFactory.getCrossoverOperator("GralCrossover", parameters);  
-    crossoverArray = CrossoverFactory.getCrossoverOperator("SinglePointCrossover", parameters);  
-    parameters = new HashMap() ;
-    parameters.put("probability", 0.9) ;
-    crossoverPerm = CrossoverFactory.getCrossoverOperator("PMXCrossover", parameters);
+    parameters.put("intCrossoverProbability", 0.9);
+    crossover = CrossoverFactory.getCrossoverOperator("SinglePointTwoPointCrossover", parameters);  
+    //crossoverArray = CrossoverFactory.getCrossoverOperator("SinglePointCrossover", parameters);  
+    //parameters = new HashMap() ;
+    //parameters.put("probability", 0.9) ;
+    //crossoverPerm = CrossoverFactory.getCrossoverOperator("PMXCrossover", parameters);
                   
-	// Mutation operator for Permutation
+	// Mutation 
     parameters = new HashMap() ;
-    parameters.put("probability", 1.0/problem.getNumberOfVariables()) ;
-    mutationPerm = MutationFactory.getMutationOperator("SwapMutation", parameters);   
+    parameters.put("realMutationProbability", 1.0/problem.getNumberOfVariables());
+    parameters.put("distributionIndex", 20.0);
+    parameters.put("binaryMutationProbability", 1.0/problem.getNumberOfVariables());
+    mutation= MutationFactory.getMutationOperator("PolynomialBitFlipMutation", parameters);   
 
 	// Mutation operator for ArrayInt
-	parameters = new HashMap() ;
-    parameters.put("probability", 1.0/problem.getNumberOfVariables()) ;
-	parameters.put("distributionIndex", 20.0) ;
-    mutationArray = MutationFactory.getMutationOperator("PolynomialMutation", parameters);
+	//parameters = new HashMap() ;
+    //parameters.put("probability", 1.0/problem.getNumberOfVariables()) ;
+	//parameters.put("distributionIndex", 20.0) ;
+    //mutationArray = MutationFactory.getMutationOperator("PolynomialMutation", parameters);
 
     // Selection Operator 
     parameters = null ;
     selection = SelectionFactory.getSelectionOperator("BinaryTournament2", parameters) ;                           
 
     // Add the operators to the algorithm
-    // algorithm.addOperator("crossover",crossover);
-    algorithm.addOperator("crossoverPerm",crossoverPerm);
-    algorithm.addOperator("crossoverArray",crossoverArray);
-    algorithm.addOperator("mutationPerm",mutationPerm);
-	algorithm.addOperator("mutationArray",mutationArray);
+    algorithm.addOperator("crossover",crossover);
+    algorithm.addOperator("mutation",mutation);
+    //algorithm.addOperator("crossoverPerm",crossoverPerm);
+    //algorithm.addOperator("crossoverArray",crossoverArray);
+    //algorithm.addOperator("mutationPerm",mutationPerm);
+	//algorithm.addOperator("mutationArray",mutationArray);
     algorithm.addOperator("selection",selection);
 
     // Add the indicator object to the algorithm
