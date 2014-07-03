@@ -9,7 +9,7 @@ import jmetal.util.JMException;
 public class GralCrossover {
 	private Problem _problem;
 	
-	public Object crucePermutation(PMXCrossover crossoverPerm, Problem problem_, Solution [] parents){
+	public Object crucePermutation(SinglePointTwoPointCrossover crossoverPerm, Problem problem_, Solution [] parents){
 		
 		Variable [] var1 = parents[0].getDecisionVariables() ; 
 		Variable [] var2 = parents[1].getDecisionVariables() ;
@@ -24,9 +24,9 @@ public class GralCrossover {
 		solPermAux[1] = new Solution(problem_,varPerm2);  
 		
 		double prob = (double) crossoverPerm.getParameter("probability");
-		Solution[] offspring = crossoverPerm.doCrossover(prob, solPermAux[0], solPermAux[1]);
-		return offspring;
-		
+		//Solution[] offspring  = crossoverPerm.doCrossover(prob, solPermAux[0], solPermAux[1]);
+		//return offspring;
+		return null;
 	}
 	public Object cruceArrayInt(SinglePointCrossover crossoverArray, Problem problem_, Solution [] parents) throws JMException{
 		
