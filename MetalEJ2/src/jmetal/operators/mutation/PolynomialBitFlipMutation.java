@@ -33,6 +33,10 @@ import jmetal.util.PseudoRandom;
 import jmetal.util.wrapper.XReal;
 
 public class PolynomialBitFlipMutation extends Mutation {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final double ETA_M_DEFAULT_ = 20.0;
 	private final double eta_m_=ETA_M_DEFAULT_;
 	
