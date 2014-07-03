@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import jmetal.core.Problem;
 import jmetal.core.Solution;
 import jmetal.encodings.solutionType.ArrayIntAndPermutationSolutionType;
+import jmetal.encodings.solutionType.PermutationAndArrayIntSolutionType;
 import jmetal.encodings.variable.ArrayInt;
 import jmetal.encodings.variable.Permutation;
 import jmetal.util.JMException;
@@ -69,8 +70,9 @@ public class HCTScheduling extends Problem {
 		double [] tiempoNoIdle = new double [cantidadMaquinas];
 		ArrayList<LinkedList<TareaEstado>> maquina_tarea_estado = new ArrayList<LinkedList<TareaEstado>>(cantidadMaquinas);
 		for(int i = 0;i<cantidadMaquinas;i++) maquina_tarea_estado.add(new LinkedList<TareaEstado>());//inicializo el array list
-		tareas= (Permutation) solution.getDecisionVariables()[0];
-		estados= (ArrayInt) solution.getDecisionVariables()[1];
+		estados= (ArrayInt) solution.getDecisionVariables()[0];
+		tareas= (Permutation) solution.getDecisionVariables()[1];
+		
 
 		// First function calculo de energía
 		int maqActual = 0;
