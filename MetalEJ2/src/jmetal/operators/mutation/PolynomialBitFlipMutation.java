@@ -20,23 +20,19 @@
 
 package jmetal.operators.mutation;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
 import jmetal.core.Solution;
-import jmetal.encodings.solutionType.ArrayIntAndPermutationSolutionType;
+import jmetal.encodings.solutionType.ArrayRealAndBinarySolutionType;
 import jmetal.encodings.variable.Binary;
 import jmetal.util.Configuration;
 import jmetal.util.JMException;
 import jmetal.util.PseudoRandom;
 import jmetal.util.wrapper.XReal;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
 public class PolynomialBitFlipMutation extends Mutation {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private static final double ETA_M_DEFAULT_ = 20.0;
 	private final double eta_m_=ETA_M_DEFAULT_;
 	
@@ -47,8 +43,7 @@ public class PolynomialBitFlipMutation extends Mutation {
   /**
    * Valid solution types to apply this operator 
    */
-	@SuppressWarnings("rawtypes")
-	private static final List VALID_TYPES = Arrays.asList(ArrayIntAndPermutationSolutionType.class) ;
+	private static final List VALID_TYPES = Arrays.asList(ArrayRealAndBinarySolutionType.class) ;
 
   /**
    * Constructor

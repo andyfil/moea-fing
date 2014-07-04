@@ -37,7 +37,7 @@ public class SinglePointTwoPointCrossover extends Crossover {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Double intCrossoverProbability_ = null;
+	private Double crossoverProbability_ = null;
 	
 
 	/**
@@ -52,8 +52,8 @@ public class SinglePointTwoPointCrossover extends Crossover {
 	public SinglePointTwoPointCrossover(HashMap<String, Object> parameters) {
 		super (parameters) ;
 
-		if (parameters.get("intCrossoverProbability") != null)
-			intCrossoverProbability_ = (Double) parameters.get("intCrossoverProbability") ;  				
+		if (parameters.get("crossoverProbability") != null)
+			crossoverProbability_ = (Double) parameters.get("crossoverProbability") ;  				
 	} // Constructor
 
 
@@ -177,7 +177,7 @@ public class SinglePointTwoPointCrossover extends Crossover {
 			throw new JMException("Exception in " + this.toString()+ ".execute()") ;
 		} // if 
 		Solution [] offSpring;
-		offSpring = doCrossover(intCrossoverProbability_,parents[0], parents[1]);
+		offSpring = doCrossover(crossoverProbability_,parents[0], parents[1]);
 
 		return offSpring ;
 	} // execute

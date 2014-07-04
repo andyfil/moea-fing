@@ -37,7 +37,8 @@ public class MutationFactory {
    * @return the operator
    * @throws JMException 
    */
-  public static Mutation getMutationOperator(String name, HashMap parameters) throws JMException{
+  @SuppressWarnings("unchecked")
+public static Mutation getMutationOperator(String name, HashMap parameters) throws JMException{
  
     if (name.equalsIgnoreCase("PolynomialMutation"))
       return new PolynomialMutation(parameters);
@@ -49,6 +50,8 @@ public class MutationFactory {
       return new SwapMutation(parameters);
     else if (name.equalsIgnoreCase("PolynomialBitFlipMutation"))
         return new PolynomialBitFlipMutation(parameters);
+    else if (name.equalsIgnoreCase("BitFlipSwapMutation"))
+    	return new BitFlipSwapMutation(parameters);
     else
     {
       Configuration.logger_.severe("Operator '" + name + "' not found ");

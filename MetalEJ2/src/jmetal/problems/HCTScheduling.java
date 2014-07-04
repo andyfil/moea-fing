@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import jmetal.core.Problem;
 import jmetal.core.Solution;
 import jmetal.encodings.solutionType.ArrayIntAndPermutationSolutionType;
-import jmetal.encodings.solutionType.PermutationAndArrayIntSolutionType;
 import jmetal.encodings.variable.ArrayInt;
 import jmetal.encodings.variable.Permutation;
 import jmetal.util.JMException;

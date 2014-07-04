@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import jmetal.core.Solution;
+import jmetal.encodings.solutionType.ArrayIntAndPermutationSolutionType;
 import jmetal.encodings.solutionType.ArrayRealAndBinarySolutionType;
 import jmetal.encodings.variable.Permutation;
 import jmetal.util.Configuration;
@@ -41,17 +42,17 @@ public class BitFlipSwapMutation extends Mutation {
 	 */
 	@SuppressWarnings("rawtypes")
 	private static final List VALID_TYPES = Arrays
-			.asList(ArrayRealAndBinarySolutionType.class);
+			.asList(ArrayIntAndPermutationSolutionType.class);
 
 	/**
 	 * Constructor
 	 */
 	public BitFlipSwapMutation(HashMap<String, Object> parameters) {
 		super(parameters);
-		if (parameters.get("realMutationProbability") != null)
+		if (parameters.get("intMutationProbability") != null)
 			intMutationProbability_ = (Double) parameters
 					.get("intMutationProbability");
-		if (parameters.get("binaryMutationProbability") != null)
+		if (parameters.get("permutationMutationProbability") != null)
 			permutationMutationProbability_ = (Double) parameters
 					.get("permutationMutationProbability");
 	}

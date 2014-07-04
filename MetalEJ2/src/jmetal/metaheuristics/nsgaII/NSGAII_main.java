@@ -21,6 +21,11 @@
 
 package jmetal.metaheuristics.nsgaII;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+
 import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
@@ -30,15 +35,9 @@ import jmetal.operators.mutation.MutationFactory;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.problems.HCTScheduling;
 import jmetal.problems.ProblemFactory;
-import jmetal.problems.ZDT.ZDT3;
 import jmetal.qualityIndicator.QualityIndicator;
 import jmetal.util.Configuration;
 import jmetal.util.JMException;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
 
 /** 
  * Class to configure and execute the NSGA-II algorithm.  
@@ -80,7 +79,7 @@ public class NSGAII_main {
     //Operator  mutationArray ; // Mutation operator for ArrayReal
     Operator  selection ; // Selection operator
     
-    HashMap  parameters ; // Operator parameters
+    HashMap<String, Double>  parameters ; // Operator parameters
     
     QualityIndicator indicators ; // Object to get quality indicators
 
@@ -103,7 +102,7 @@ public class NSGAII_main {
       //problem = new Kursawe("Real", 3);
       //problem = new Kursawe("BinaryReal", 3);
       //problem = new Water("Real");
-      problem = new HCTScheduling(4, 2,4);//*************************************CAMBIA
+      problem = new HCTScheduling(10, 3,4);//*************************************CAMBIA
       //problem = new ConstrEx("Real");
       //problem = new DTLZ1("Real");
       //problem = new OKA2("Real") ;
@@ -117,26 +116,15 @@ public class NSGAII_main {
     algorithm.setInputParameter("maxEvaluations",25000);
 
     // Crossover 
-    parameters = new HashMap() ;
-    parameters.put("intCrossoverProbability", 0.9);
+    parameters = new HashMap<String, Double>() ;
+    parameters.put("crossoverProbability", 0.9);
     crossover = CrossoverFactory.getCrossoverOperator("SinglePointTwoPointCrossover", parameters);  
-    //crossoverArray = CrossoverFactory.getCrossoverOperator("SinglePointCrossover", parameters);  
-    //parameters = new HashMap() ;
-    //parameters.put("probability", 0.9) ;
-    //crossoverPerm = CrossoverFactory.getCrossoverOperator("PMXCrossover", parameters);
                   
 	// Mutation 
-    parameters = new HashMap() ;
-    parameters.put("realMutationProbability", 1.0/problem.getNumberOfVariables());
-    parameters.put("distributionIndex", 20.0);
-    parameters.put("binaryMutationProbability", 1.0/problem.getNumberOfVariables());
-    mutation= MutationFactory.getMutationOperator("PolynomialBitFlipMutation", parameters);   
-
-	// Mutation operator for ArrayInt
-	//parameters = new HashMap() ;
-    //parameters.put("probability", 1.0/problem.getNumberOfVariables()) ;
-	//parameters.put("distributionIndex", 20.0) ;
-    //mutationArray = MutationFactory.getMutationOperator("PolynomialMutation", parameters);
+    HashMap<String,Double> parameters2 = new HashMap<String, Double>() ;
+    parameters2.put("intMutationProbability", 0.1);
+    parameters2.put("permutationMutationProbability", 0.1);
+    mutation= MutationFactory.getMutationOperator("BitFlipSwapMutation", parameters2);   
 
     // Selection Operator 
     parameters = null ;
@@ -145,10 +133,6 @@ public class NSGAII_main {
     // Add the operators to the algorithm
     algorithm.addOperator("crossover",crossover);
     algorithm.addOperator("mutation",mutation);
-    //algorithm.addOperator("crossoverPerm",crossoverPerm);
-    //algorithm.addOperator("crossoverArray",crossoverArray);
-    //algorithm.addOperator("mutationPerm",mutationPerm);
-	//algorithm.addOperator("mutationArray",mutationArray);
     algorithm.addOperator("selection",selection);
 
     // Add the indicator object to the algorithm

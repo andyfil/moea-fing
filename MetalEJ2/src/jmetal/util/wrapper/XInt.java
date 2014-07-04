@@ -23,6 +23,7 @@ package jmetal.util.wrapper;
 
 import jmetal.core.Solution;
 import jmetal.core.SolutionType;
+import jmetal.encodings.solutionType.ArrayIntAndPermutationSolutionType;
 import jmetal.encodings.solutionType.ArrayIntSolutionType;
 import jmetal.encodings.solutionType.IntSolutionType;
 import jmetal.encodings.variable.ArrayInt;
@@ -65,6 +66,9 @@ public class XInt {
 		else if (type_.getClass() == ArrayIntSolutionType.class) {
 			return ((ArrayInt)(solution_.getDecisionVariables()[0])).array_[index] ;
 		}
+		else if (type_.getClass() == ArrayIntAndPermutationSolutionType.class) {
+			return ((ArrayInt)(solution_.getDecisionVariables()[0])).array_[index] ;
+		}
 		else {
 			Configuration.logger_.severe("jmetal.util.wrapper.XInt.getValue, solution type " +
 					type_ + "+ invalid") ;		
@@ -83,6 +87,8 @@ public class XInt {
 			solution_.getDecisionVariables()[index].setValue(value) ;
 		else if (type_.getClass() == ArrayIntSolutionType.class)
 			((ArrayInt)(solution_.getDecisionVariables()[0])).array_[index]=value ;
+		else if (type_.getClass() == ArrayIntAndPermutationSolutionType.class)
+			((ArrayInt)(solution_.getDecisionVariables()[0])).array_[index]=value ;
 		else
 			Configuration.logger_.severe("jmetal.util.wrapper.XInt.setValue, solution type " +
 					type_ + "+ invalid") ;		
@@ -98,6 +104,8 @@ public class XInt {
 		if (type_.getClass() == IntSolutionType.class)
 			return (int)solution_.getDecisionVariables()[index].getLowerBound() ;
 		else if (type_.getClass() == ArrayIntSolutionType.class) 
+			return (int)((ArrayInt)(solution_.getDecisionVariables()[0])).getLowerBound(index) ;
+		else if (type_.getClass() == ArrayIntAndPermutationSolutionType.class) 
 			return (int)((ArrayInt)(solution_.getDecisionVariables()[0])).getLowerBound(index) ;
 		else {
 			Configuration.logger_.severe("jmetal.util.wrapper.XInt.getLowerBound, solution type " +
@@ -117,6 +125,8 @@ public class XInt {
 			return (int)solution_.getDecisionVariables()[index].getUpperBound() ;
 		else if (type_.getClass() == ArrayIntSolutionType.class) 
 			return (int)((ArrayInt)(solution_.getDecisionVariables()[0])).getUpperBound(index) ;
+		else if (type_.getClass() == ArrayIntAndPermutationSolutionType.class) 
+			return (int)((ArrayInt)(solution_.getDecisionVariables()[0])).getUpperBound(index) ;
 		else
 			Configuration.logger_.severe("jmetal.util.wrapper.XInt.getUpperBound, solution type " +
 					type_ + "+ invalid") ;		
@@ -132,6 +142,8 @@ public class XInt {
 		if (type_.getClass() == IntSolutionType.class)		
 			return solution_.getDecisionVariables().length ;
 		else if (type_.getClass() == ArrayIntSolutionType.class) 
+			return ((ArrayInt)(solution_.getDecisionVariables()[0])).getLength() ;
+		else if (type_.getClass() == ArrayIntAndPermutationSolutionType.class) 
 			return ((ArrayInt)(solution_.getDecisionVariables()[0])).getLength() ;
 		else
 			Configuration.logger_.severe("jmetal.util.wrapper.XInt.size, solution type " +
