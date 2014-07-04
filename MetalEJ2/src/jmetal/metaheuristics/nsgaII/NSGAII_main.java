@@ -38,6 +38,8 @@ import jmetal.problems.ProblemFactory;
 import jmetal.qualityIndicator.QualityIndicator;
 import jmetal.util.Configuration;
 import jmetal.util.JMException;
+import jmetal.util.parallel.IParallelEvaluator;
+import jmetal.util.parallel.MultithreadedEvaluator;
 
 /** 
  * Class to configure and execute the NSGA-II algorithm.  
@@ -102,13 +104,13 @@ public class NSGAII_main {
       //problem = new Kursawe("Real", 3);
       //problem = new Kursawe("BinaryReal", 3);
       //problem = new Water("Real");
-      problem = new HCTScheduling(10, 3,4);//*************************************CAMBIA
+      problem = new HCTScheduling(1000, 24,4);//*************************************CAMBIA
       //problem = new ConstrEx("Real");
       //problem = new DTLZ1("Real");
       //problem = new OKA2("Real") ;
     } // else
-    
-    algorithm = new NSGAII(problem);
+    IParallelEvaluator paralelEvaluator_ = new MultithreadedEvaluator(4);
+    algorithm = new pNSGAII(problem,paralelEvaluator_);
     //algorithm = new ssNSGAII(problem);
 
     // Algorithm parameters
