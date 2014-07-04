@@ -1,6 +1,10 @@
 package jmetal.problems;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -56,6 +60,31 @@ public class HCTScheduling extends Problem {
 		matriz_energia = new double[cantidadMaquinas][cantidadEstados];
 		matriz_energia_idle = new double[cantidadMaquinas];
 		populateMatriz();
+		/*
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream("matriz tiempo");
+		
+	      OutputStreamWriter osw = new OutputStreamWriter(fos)    ;
+	      BufferedWriter bw      = new BufferedWriter(osw)        ;            
+	      for(int i=0;i<matriz_tiempo.length;i++)
+	    	  for (int j=0;j<matriz_tiempo[i].length;j++)
+	    		  for(int h=0;h<matriz_tiempo[i][j].length;h++){
+	    			  bw.write(i+" "+j+" "+h+" "+ matriz_tiempo[i][j][h]+"\n");
+	    		  }
+	      bw.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	      
+ catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+		
+		
 		solutionType_ = new ArrayIntAndPermutationSolutionType(this);
 	}
 
@@ -83,6 +112,7 @@ public class HCTScheduling extends Problem {
 			}else{
 					maquina_tarea_estado.get(maqActual).add(new TareaEstado(tareas.vector_[i],estados.getValue(j)));
 			}
+			j++;
 		}
 		//recorro la lista obtenida y quiero calcular cuanto tiempo consume en cada maquina el ejecutar las tareas
 		makespan =0;

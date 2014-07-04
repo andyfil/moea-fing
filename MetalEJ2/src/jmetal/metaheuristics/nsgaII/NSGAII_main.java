@@ -112,8 +112,8 @@ public class NSGAII_main {
     //algorithm = new ssNSGAII(problem);
 
     // Algorithm parameters
-    algorithm.setInputParameter("populationSize",100);
-    algorithm.setInputParameter("maxEvaluations",25000);
+    algorithm.setInputParameter("populationSize",50);
+    algorithm.setInputParameter("maxEvaluations",250000);
 
     // Crossover 
     parameters = new HashMap<String, Double>() ;
