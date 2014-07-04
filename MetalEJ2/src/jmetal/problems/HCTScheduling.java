@@ -111,8 +111,8 @@ public class HCTScheduling extends Problem {
 				maqActual =tareas.vector_[i] - cantidadTareas + 1; 
 			}else{
 					maquina_tarea_estado.get(maqActual).add(new TareaEstado(tareas.vector_[i],estados.getValue(j)));
+					j++;
 			}
-			j++;
 		}
 		//recorro la lista obtenida y quiero calcular cuanto tiempo consume en cada maquina el ejecutar las tareas
 		makespan =0;
