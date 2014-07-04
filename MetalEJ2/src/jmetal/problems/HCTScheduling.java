@@ -60,18 +60,24 @@ public class HCTScheduling extends Problem {
 		matriz_energia = new double[cantidadMaquinas][cantidadEstados];
 		matriz_energia_idle = new double[cantidadMaquinas];
 		populateMatriz();
-		/*
+		///*
 		FileOutputStream fos;
 		try {
 			fos = new FileOutputStream("matriz tiempo");
 		
 	      OutputStreamWriter osw = new OutputStreamWriter(fos)    ;
 	      BufferedWriter bw      = new BufferedWriter(osw)        ;            
-	      for(int i=0;i<matriz_tiempo.length;i++)
-	    	  for (int j=0;j<matriz_tiempo[i].length;j++)
-	    		  for(int h=0;h<matriz_tiempo[i][j].length;h++){
-	    			  bw.write(i+" "+j+" "+h+" "+ matriz_tiempo[i][j][h]+"\n");
-	    		  }
+	      for(int maq=0;maq<matriz_tiempo.length;maq++)
+	    	  for (int tar=0;tar<cantidadTareas;tar++)
+	    		  for (int est=0;est<cantidadEstados;est++)
+	    			  bw.write("m "+maq+" "+"t "+tar+" "+"e "+est+" "+ matriz_tiempo[maq][est][tar]+"\n");
+	      bw.write("\n\nEnergía\n\n");
+	      for(int maq=0;maq<cantidadMaquinas;maq++)
+	    		  for (int est=0;est<cantidadEstados;est++)
+	    			  bw.write("m "+maq+" "+"e "+est+" "+ matriz_energia[maq][est]+"\n");
+	      bw.write("\n\nEnergía Idle\n\n");
+	      for(int maq=0;maq<cantidadMaquinas;maq++)
+	    			  bw.write("m "+maq+" "+ matriz_energia_idle[maq]+"\n");
 	      bw.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -82,7 +88,7 @@ public class HCTScheduling extends Problem {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		*/
+		//*/
 		
 		
 		solutionType_ = new ArrayIntAndPermutationSolutionType(this);
@@ -129,7 +135,7 @@ public class HCTScheduling extends Problem {
 			makespan = Math.max(makespan, tiempoMaquina);//el maximo entre el makespan anterior y el de esta maquina
 		}
 		for(int i=0;i<cantidadMaquinas;i++){
-			energy +=energyNoIdle[i]+ (tiempoNoIdle[i] - makespan) * matriz_energia_idle[i]/1000;//el tiempo que quedo idle por la energia y se suma al total
+			energy +=energyNoIdle[i]+ (makespan - tiempoNoIdle[i]) * matriz_energia_idle[i]/1000;//el tiempo que quedo idle por la energia y se suma al total
 		}
 		
 		solution.setObjective(0, makespan);
@@ -160,7 +166,7 @@ public class HCTScheduling extends Problem {
 				matriz_energia[m][e] = energiaBaseMaq * freqPerState[e];
 				
 				for (int t = 0; t < cantidadTareas; t++) {
-					matriz_tiempo[m][e][t] = tiempoBaseTarea[t] * (1 - timeBoost);
+					matriz_tiempo[m][e][t] = tiempoBaseTarea[t] * (1 + timeBoost);
 
 				}
 			}
