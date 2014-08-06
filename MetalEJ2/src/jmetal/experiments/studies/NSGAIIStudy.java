@@ -28,6 +28,7 @@ import jmetal.experiments.settings.NSGAII_Settings;
 import jmetal.experiments.util.Friedman;
 import jmetal.util.JMException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -45,11 +46,12 @@ public class NSGAIIStudy extends Experiment {
    * @param problemIndex
    * @param algorithm Array containing the algorithms to run
    * @throws ClassNotFoundException 
+ * @throws FileNotFoundException 
    */
   public synchronized void algorithmSettings(String problemName, 
   		                                       int problemIndex, 
   		                                       Algorithm[] algorithm) 
-    throws ClassNotFoundException {  	
+    throws ClassNotFoundException, FileNotFoundException {  	
   	try {
       int numberOfAlgorithms = algorithmNameList_.length;
 
@@ -94,20 +96,20 @@ public class NSGAIIStudy extends Experiment {
     exp.algorithmNameList_   = new String[] {
       "NSGAIIa", "NSGAIIb", "NSGAIIc", "NSGAIId"} ;
     exp.problemList_     = new String[] {
-      "ZDT1", "ZDT2", "ZDT3", "ZDT4", "DTLZ1", "WFG2"} ;
+      "HCTScheduling"} ;
     exp.paretoFrontFile_ = new String[] {
-      "ZDT1.pf", "ZDT2.pf", "ZDT3.pf","ZDT4.pf", "DTLZ1.2D.pf", "WFG2.2D.pf"} ;
+      "pareto_study"} ;
     exp.indicatorList_   = new String[] {"HV", "SPREAD", "IGD", "EPSILON"} ;
     
     int numberOfAlgorithms = exp.algorithmNameList_.length ;
 
-    exp.experimentBaseDirectory_ = "/Users/antelverde/Softw/pruebas/jmetal/" +
+    exp.experimentBaseDirectory_ = "C:\\Users\\usuario\\workspace\\MetalEJ2\\" +
                                    exp.experimentName_;
-    exp.paretoFrontDirectory_ = "/Users/antelverde/Softw/pruebas/data/paretoFronts";
+    exp.paretoFrontDirectory_ = "C:\\Users\\usuario\\workspace\\MetalEJ2\\paretoFronts";
     
     exp.algorithmSettings_ = new Settings[numberOfAlgorithms] ;
     
-    exp.independentRuns_ = 30 ;
+    exp.independentRuns_ = 10 ;
 
     exp.initExperiment();
 
@@ -129,7 +131,7 @@ public class NSGAIIStudy extends Experiment {
     rows = 2 ;
     columns = 3 ;
     prefix = new String("Problems");
-    problems = new String[]{"ZDT1", "ZDT2","ZDT3", "ZDT4", "DTLZ1", "WFG2"} ;
+    problems = new String[]{"HCTScheduling"} ;
 
     boolean notch ;
     exp.generateRBoxplotScripts(rows, columns, problems, prefix, notch = true, exp) ;
