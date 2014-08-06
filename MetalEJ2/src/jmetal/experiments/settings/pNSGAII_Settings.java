@@ -62,7 +62,7 @@ public class pNSGAII_Settings extends Settings {
 	    e.printStackTrace();
     }  
     // Default experiments.settings
-    populationSize_              = 100   ; 
+    populationSize_              = 50   ; 
     maxEvaluations_              = 25000 ;
     mutationProbability_         = 1.0/problem_.getNumberOfVariables() ;
     crossoverProbability_        = 0.9   ;
