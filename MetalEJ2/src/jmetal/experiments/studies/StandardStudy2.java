@@ -28,6 +28,7 @@ import jmetal.experiments.settings.*;
 import jmetal.experiments.util.Friedman;
 import jmetal.util.JMException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -47,10 +48,11 @@ public class StandardStudy2 extends Experiment {
    * @param problemName The problem to solve
    * @param problemIndex
    * @throws ClassNotFoundException 
+ * @throws FileNotFoundException 
    */
   public void algorithmSettings(String problemName, 
   		                          int problemIndex, 
-  		                          Algorithm[] algorithm) throws ClassNotFoundException {
+  		                          Algorithm[] algorithm) throws ClassNotFoundException, FileNotFoundException {
     try {
       int numberOfAlgorithms = algorithmNameList_.length;
 
@@ -66,10 +68,10 @@ public class StandardStudy2 extends Experiment {
         } // if
 
         algorithm[0] = new NSGAII_Settings(problemName).configure(parameters[0]);
-        algorithm[1] = new SPEA2_Settings(problemName).configure(parameters[1]);
-        algorithm[2] = new MOCell_Settings(problemName).configure(parameters[2]);
-        algorithm[3] = new SMPSO_Settings(problemName).configure(parameters[3]);
-        algorithm[4] = new GDE3_Settings(problemName).configure(parameters[4]);
+        //algorithm[1] = new SPEA2_Settings(problemName).configure(parameters[1]);
+        //algorithm[2] = new MOCell_Settings(problemName).configure(parameters[2]);
+        //algorithm[3] = new SMPSO_Settings(problemName).configure(parameters[3]);
+        //algorithm[4] = new GDE3_Settings(problemName).configure(parameters[4]);
       } catch (IllegalArgumentException ex) {
       Logger.getLogger(StandardStudy2.class.getName()).log(Level.SEVERE, null, ex);
     } catch (IllegalAccessException ex) {
@@ -90,26 +92,23 @@ public class StandardStudy2 extends Experiment {
 
     exp.experimentName_ = "StandardStudy2";
     exp.algorithmNameList_ = new String[]{
-                                "NSGAII", "SPEA2", "MOCell", "SMPSO", "GDE3"};
-    exp.problemList_ = new String[]{"ZDT1", "ZDT2","ZDT3", "ZDT4","ZDT6",
-                                    "WFG1","WFG2","WFG3","WFG4","WFG5","WFG6",
-                                    "WFG7","WFG8","WFG9",
-                                    "DTLZ1","DTLZ2","DTLZ3","DTLZ4"}; //,"DTLZ5",
-                                    //"DTLZ6","DTLZ7"};
-    exp.paretoFrontFile_ = new String[18] ; // Space allocation for 18 fronts
+                                "NSGAII"};
+    exp.problemList_ = new String[]{"HCTScheduling"}; 
+    
+    exp.paretoFrontFile_ = new String[1] ; // Space allocation for 1 front
 
 
     exp.indicatorList_ = new String[]{"HV", "SPREAD", "EPSILON"};
 
     int numberOfAlgorithms = exp.algorithmNameList_.length;
 
-    exp.experimentBaseDirectory_ = "/Users/antelverde/Softw/pruebas/jmetal/" +
+    exp.experimentBaseDirectory_ = "C:\\Users\\usuario\\workspace\\MetalEJ2\\" +
                                    exp.experimentName_;
     exp.paretoFrontDirectory_ = "" ; // This directory must be empty
 
     exp.algorithmSettings_ = new Settings[numberOfAlgorithms];
 
-    exp.independentRuns_ = 4;
+    exp.independentRuns_ = 10;
 
     exp.initExperiment();
 
@@ -120,43 +119,7 @@ public class StandardStudy2 extends Experiment {
 
     // Generate latex tables
     exp.generateLatexTables() ;
-
-    // Configure the R scripts to be generated
-    int rows  ;
-    int columns  ;
-    String prefix ;
-    String [] problems ;
-    boolean notch ;
-
-    // Configuring scripts for ZDT
-    rows = 3 ;
-    columns = 2 ;
-    prefix = new String("ZDT");
-    problems = new String[]{"ZDT1", "ZDT2","ZDT3", "ZDT4","ZDT6"} ;
     
-    exp.generateRBoxplotScripts(rows, columns, problems, prefix, notch = false, exp) ;
-    exp.generateRWilcoxonScripts(problems, prefix, exp) ;
-
-    // Configure scripts for DTLZ
-    rows = 3 ;
-    columns = 3 ;
-    prefix = new String("DTLZ");
-    problems = new String[]{"DTLZ1","DTLZ2","DTLZ3","DTLZ4","DTLZ5",
-                                    "DTLZ6","DTLZ7"} ;
-
-    exp.generateRBoxplotScripts(rows, columns, problems, prefix, notch=false, exp) ;
-    exp.generateRWilcoxonScripts(problems, prefix, exp) ;
-
-    // Configure scripts for WFG
-    rows = 3 ;
-    columns = 3 ;
-    prefix = new String("WFG");
-    problems = new String[]{"WFG1","WFG2","WFG3","WFG4","WFG5","WFG6",
-                            "WFG7","WFG8","WFG9"} ;
-
-    exp.generateRBoxplotScripts(rows, columns, problems, prefix, notch=false, exp) ;
-    exp.generateRWilcoxonScripts(problems, prefix, exp) ;
-
     // Applying Friedman test
     Friedman test = new Friedman(exp);
     test.executeTest("EPSILON");
