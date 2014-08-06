@@ -34,6 +34,7 @@ import jmetal.problems.HCTScheduling;
 import jmetal.problems.ProblemFactory;
 import jmetal.util.JMException;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -50,13 +51,14 @@ public class NSGAII_Settings extends Settings {
 
   /**
    * Constructor
+ * @throws FileNotFoundException 
    */
-  public NSGAII_Settings(String problem) {
+  public NSGAII_Settings(String problem) throws FileNotFoundException {
     super(problem) ;
 
     problem_ = new HCTScheduling(100,20,4);
     // Default experiments.settings
-    populationSize_              = 100   ;
+    populationSize_              = 50   ;
     maxEvaluations_              = 25000 ;
     mutationProbability_         = 1.0/problem_.getNumberOfVariables() ;
     crossoverProbability_        = 0.9   ;
@@ -87,17 +89,17 @@ public class NSGAII_Settings extends Settings {
     algorithm.setInputParameter("populationSize",populationSize_);
     algorithm.setInputParameter("maxEvaluations",maxEvaluations_);
 
-    // Mutation and Crossover for Real codification
-    parameters = new HashMap() ;
-    parameters.put("probability", crossoverProbability_) ;
-    parameters.put("distributionIndex", crossoverDistributionIndex_) ;
-    crossover = CrossoverFactory.getCrossoverOperator("SBXCrossover", parameters);
-
-    parameters = new HashMap() ;
-    parameters.put("probability", mutationProbability_) ;
-    parameters.put("distributionIndex", mutationDistributionIndex_) ;
-    mutation = MutationFactory.getMutationOperator("PolynomialMutation", parameters);
-
+    // Crossover 
+    parameters = new HashMap<String, Double>() ;
+    parameters.put("crossoverProbability", 0.9);
+    crossover = CrossoverFactory.getCrossoverOperator("SinglePointTwoPointCrossover", parameters);  
+    
+    // Mutation 
+    HashMap<String,Double> parameters2 = new HashMap<String, Double>() ;
+    parameters2.put("intMutationProbability", 0.1);
+    parameters2.put("permutationMutationProbability", 0.1);
+    mutation= MutationFactory.getMutationOperator("BitFlipSwapMutation", parameters2);   
+    
     // Selection Operator
     parameters = null ;
     selection = SelectionFactory.getSelectionOperator("BinaryTournament2", parameters) ;
