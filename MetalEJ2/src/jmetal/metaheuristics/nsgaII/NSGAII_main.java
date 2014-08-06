@@ -104,7 +104,7 @@ public class NSGAII_main {
       //problem = new Kursawe("Real", 3);
       //problem = new Kursawe("BinaryReal", 3);
       //problem = new Water("Real");
-      problem = new HCTScheduling(1000, 24,4);//*************************************CAMBIA
+      problem = new HCTScheduling(1000, 10,4);
       //problem = new ConstrEx("Real");
       //problem = new DTLZ1("Real");
       //problem = new OKA2("Real") ;
