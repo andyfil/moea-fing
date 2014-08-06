@@ -231,8 +231,9 @@ public abstract class Experiment {
    * @param problemId Index of the problem in problemList_
    * @param algorithm Array containing the algorithms to execute
    * @throws ClassNotFoundException
+ * @throws FileNotFoundException 
    */
-  public abstract void algorithmSettings(String problemName, int problemId, Algorithm[] algorithm) throws ClassNotFoundException;
+  public abstract void algorithmSettings(String problemName, int problemId, Algorithm[] algorithm) throws ClassNotFoundException, FileNotFoundException;
 
   public static void main(String[] args) throws JMException, IOException {
   }
