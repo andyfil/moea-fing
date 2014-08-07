@@ -31,6 +31,7 @@ import jmetal.experiments.settings.SPEA2_Settings;
 import jmetal.experiments.util.Friedman;
 import jmetal.util.JMException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -73,7 +74,10 @@ public class ConstrainedProblemsStudy extends Experiment {
       Logger.getLogger(ConstrainedProblemsStudy.class.getName()).log(Level.SEVERE, null, ex);
     } catch  (JMException ex) {
       Logger.getLogger(ConstrainedProblemsStudy.class.getName()).log(Level.SEVERE, null, ex);
-    }
+    } catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
   }
 
   public static void main(String[] args) throws JMException, IOException {

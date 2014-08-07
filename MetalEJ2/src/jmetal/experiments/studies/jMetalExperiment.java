@@ -28,6 +28,7 @@ import jmetal.experiments.settings.NSGAII_Settings;
 import jmetal.experiments.util.Friedman;
 import jmetal.util.JMException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -81,7 +82,10 @@ public class jMetalExperiment extends Experiment {
       Logger.getLogger(jMetalExperiment.class.getName()).log(Level.SEVERE, null, ex);
     } catch  (JMException ex) {
       Logger.getLogger(jMetalExperiment.class.getName()).log(Level.SEVERE, null, ex);
-    }
+    } catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
   } // algorithmSettings
 
   /**

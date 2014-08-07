@@ -40,109 +40,120 @@ import java.util.logging.Logger;
  * in NSGA-II.
  */
 public class NSGAIIStudy extends Experiment {
-  /**
-   * Configures the algorithms in each independent run
-   * @param problemName The problem to solve
-   * @param problemIndex
-   * @param algorithm Array containing the algorithms to run
-   * @throws ClassNotFoundException 
- * @throws FileNotFoundException 
-   */
-  public synchronized void algorithmSettings(String problemName, 
-  		                                       int problemIndex, 
-  		                                       Algorithm[] algorithm) 
-    throws ClassNotFoundException, FileNotFoundException {  	
-  	try {
-      int numberOfAlgorithms = algorithmNameList_.length;
+	/**
+	 * Configures the algorithms in each independent run
+	 * 
+	 * @param problemName
+	 *            The problem to solve
+	 * @param problemIndex
+	 * @param algorithm
+	 *            Array containing the algorithms to run
+	 * @throws ClassNotFoundException
+	 * @throws FileNotFoundException
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public synchronized void algorithmSettings(String problemName,
+			int problemIndex, Algorithm[] algorithm)
+			throws ClassNotFoundException, FileNotFoundException {
+		try {
+			int numberOfAlgorithms = algorithmNameList_.length;
 
-      HashMap[] parameters = new HashMap[numberOfAlgorithms];
+			HashMap[] parameters = new HashMap[numberOfAlgorithms];
 
-      for (int i = 0; i < numberOfAlgorithms; i++) {
-        parameters[i] = new HashMap();
-      } // for
+			for (int i = 0; i < numberOfAlgorithms; i++) {
+				parameters[i] = new HashMap();
+			} // for
 
-      if (!paretoFrontFile_[problemIndex].equals("")) {
-        for (int i = 0; i < numberOfAlgorithms; i++)
-          parameters[i].put("paretoFrontFile_", paretoFrontFile_[problemIndex]);
-      } // if
+			if (!paretoFrontFile_[problemIndex].equals("")) {
+				for (int i = 0; i < numberOfAlgorithms; i++)
+					parameters[i].put("paretoFrontFile_",
+							paretoFrontFile_[problemIndex]);
+			} // if
 
-      parameters[0].put("crossoverProbability_", 1.0);
-      parameters[1].put("crossoverProbability_", 0.9);
-      parameters[2].put("crossoverProbability_", 0.8);
-      parameters[3].put("crossoverProbability_", 0.7); 
+			parameters[0].put("crossoverProbability_", 0.8);
+			parameters[1].put("crossoverProbability_", 0.6);
+			parameters[2].put("crossoverProbability_", 0.4);
+			parameters[3].put("mutationProbability_", 0.1);
+			parameters[4].put("mutationProbability_", 0.05);
+			parameters[5].put("mutationProbability_", 0.01);
+			parameters[6].put("populationSize_", 50);
+			parameters[7].put("populationSize_", 100);
+			parameters[8].put("populationSize_", 200);
 
-      if ((!paretoFrontFile_[problemIndex].equals("")) || 
-      		(paretoFrontFile_[problemIndex] == null)) {
-        for (int i = 0; i < numberOfAlgorithms; i++)
-          parameters[i].put("paretoFrontFile_",  paretoFrontFile_[problemIndex]);
-      } // if
- 
-      for (int i = 0; i < numberOfAlgorithms; i++)
-        algorithm[i] = new NSGAII_Settings(problemName).configure(parameters[i]);
-      
-    } catch (IllegalArgumentException ex) {
-      Logger.getLogger(NSGAIIStudy.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      Logger.getLogger(NSGAIIStudy.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (JMException ex) {
-      Logger.getLogger(NSGAIIStudy.class.getName()).log(Level.SEVERE, null, ex);
-    }
-  } // algorithmSettings
-  
-  public static void main(String[] args) throws JMException, IOException {
-    NSGAIIStudy exp = new NSGAIIStudy() ; // exp = experiment
-    
-    exp.experimentName_  = "NSGAIIStudy" ;
-    exp.algorithmNameList_   = new String[] {
-      "NSGAIIa", "NSGAIIb", "NSGAIIc", "NSGAIId"} ;
-    exp.problemList_     = new String[] {
-      "HCTScheduling"} ;
-    exp.paretoFrontFile_ = new String[] {
-      "pareto_study"} ;
-    exp.indicatorList_   = new String[] {"HV", "SPREAD", "IGD", "EPSILON"} ;
-    
-    int numberOfAlgorithms = exp.algorithmNameList_.length ;
+			if ((!paretoFrontFile_[problemIndex].equals(""))
+					|| (paretoFrontFile_[problemIndex] == null)) {
+				for (int i = 0; i < numberOfAlgorithms; i++)
+					parameters[i].put("paretoFrontFile_",
+							paretoFrontFile_[problemIndex]);
+			} // if
 
-    exp.experimentBaseDirectory_ = "C:\\Users\\usuario\\workspace\\MetalEJ2\\" +
-                                   exp.experimentName_;
-    exp.paretoFrontDirectory_ = "C:\\Users\\usuario\\workspace\\MetalEJ2\\paretoFronts";
-    
-    exp.algorithmSettings_ = new Settings[numberOfAlgorithms] ;
-    
-    exp.independentRuns_ = 10 ;
+			for (int i = 0; i < numberOfAlgorithms; i++)
+				algorithm[i] = new NSGAII_Settings(problemName)
+						.configure(parameters[i]);
 
-    exp.initExperiment();
+		} catch (IllegalArgumentException ex) {
+			Logger.getLogger(NSGAIIStudy.class.getName()).log(Level.SEVERE,
+					null, ex);
+		} catch (IllegalAccessException ex) {
+			Logger.getLogger(NSGAIIStudy.class.getName()).log(Level.SEVERE,
+					null, ex);
+		} catch (JMException ex) {
+			Logger.getLogger(NSGAIIStudy.class.getName()).log(Level.SEVERE,
+					null, ex);
+		}
+	} // algorithmSettings
 
-    // Run the experiments
-    int numberOfThreads ;
-    exp.runExperiment(numberOfThreads = 6) ;
+	public static void main(String[] args) throws JMException, IOException {
+		NSGAIIStudy exp = new NSGAIIStudy(); // exp = experiment
 
-    exp.generateQualityIndicators() ;
-    
-    // Generate latex tables (comment this sentence is not desired)
-    exp.generateLatexTables() ;
-    
-    // Configure the R scripts to be generated
-    int rows  ;
-    int columns  ;
-    String prefix ;
-    String [] problems ;
+		exp.experimentName_ = "HTCEstudio";
+		exp.algorithmNameList_ = new String[] { "NSGAIIa", "NSGAIIb",
+				"NSGAIIc", "NSGAIId","NSGAIIe","NSGAIIf","NSGAIIg","NSGAIIh","NSGAIIi" };
+		exp.problemList_ = new String[] { "HCTScheduling" };
+		exp.paretoFrontFile_ = new String [1];
+		exp.indicatorList_ = new String[] { "HV", "SPREAD", "IGD", "EPSILON" };
 
-    rows = 2 ;
-    columns = 3 ;
-    prefix = new String("Problems");
-    problems = new String[]{"HCTScheduling"} ;
+		int numberOfAlgorithms = exp.algorithmNameList_.length;
 
-    boolean notch ;
-    exp.generateRBoxplotScripts(rows, columns, problems, prefix, notch = true, exp) ;
-    exp.generateRWilcoxonScripts(problems, prefix, exp) ;
+		exp.experimentBaseDirectory_ = "C:\\"
+				+ exp.experimentName_;
+		exp.paretoFrontDirectory_ = "";
 
-    // Applying Friedman test
-    Friedman test = new Friedman(exp);
-    test.executeTest("EPSILON");
-    test.executeTest("HV");
-    test.executeTest("SPREAD");
-  } // main
+		exp.algorithmSettings_ = new Settings[numberOfAlgorithms];
+
+		exp.independentRuns_ = 25;
+
+		exp.initExperiment();
+
+		// Run the experiments
+		exp.runExperiment(4);
+
+		exp.generateQualityIndicators();
+
+		// Generate latex tables (comment this sentence is not desired)
+		exp.generateLatexTables();
+
+		// Configure the R scripts to be generated
+		int rows;
+		int columns;
+		String prefix;
+		String[] problems;
+
+		rows = 2;
+		columns = 3;
+		prefix = new String("Problems");
+		problems = new String[] { "HCTScheduling" };
+
+		boolean notch;
+		exp.generateRBoxplotScripts(rows, columns, problems, prefix,
+				notch = true, exp);
+		exp.generateRWilcoxonScripts(problems, prefix, exp);
+
+		// Applying Friedman test
+		Friedman test = new Friedman(exp);
+		test.executeTest("EPSILON");
+		test.executeTest("HV");
+		test.executeTest("SPREAD");
+	} // main
 } // NSGAIIStudy
-
 

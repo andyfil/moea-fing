@@ -1,6 +1,5 @@
 package jmetal.problems;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,6 +19,7 @@ import jmetal.encodings.variable.ArrayInt;
 import jmetal.encodings.variable.Permutation;
 import jmetal.util.JMException;
 
+@SuppressWarnings("serial")
 public class HCTScheduling extends Problem {
 
 	private int cantidadTareas = 0;
@@ -34,6 +34,8 @@ public class HCTScheduling extends Problem {
 	public HCTScheduling (){
 	
 	}
+	//------------------------------------------------------------------------------------------------------
+	//TODO El constructor debería cambiar y dejar de tomar como parámetros la cantidad de tareas, maquinas y estados
 	public HCTScheduling(int cant_tareas,
 			int cant_maquinas, int cant_estados) throws FileNotFoundException {
 
@@ -152,7 +154,7 @@ public class HCTScheduling extends Problem {
 		
 		// Leo del archivo que tiene cantidad de operaciones por tarea
 		FileInputStream fis;
-		fis = new FileInputStream("C:\\Users\\usuario\\workspace\\MetalEJ2\\instancia");
+		fis = new FileInputStream("C:\\instancia");
 		InputStreamReader isr = new InputStreamReader(fis);
 	    //BufferedReader br      = new BufferedReader(isr);  
 	    Scanner scan = new Scanner(isr);

@@ -29,11 +29,12 @@ import jmetal.operators.mutation.Mutation;
 import jmetal.operators.mutation.MutationFactory;
 import jmetal.operators.selection.Selection;
 import jmetal.operators.selection.SelectionFactory;
-import jmetal.problems.ProblemFactory;
+import jmetal.problems.HCTScheduling;
 import jmetal.util.JMException;
 import jmetal.util.parallel.IParallelEvaluator;
 import jmetal.util.parallel.MultithreadedEvaluator;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -41,13 +42,11 @@ import java.util.Properties;
  * Settings class of algorithm pNSGA-II (real encoding)
  */
 public class pNSGAII_Settings extends Settings {
-  public int populationSize_                 ; 
-  public int maxEvaluations_                 ;
-  public double mutationProbability_         ;
-  public double crossoverProbability_        ;
-  public double mutationDistributionIndex_   ;
-  public double crossoverDistributionIndex_  ;
-  public int    numberOfThreads_             ;
+	  public int populationSize_                 ;
+	  public int maxEvaluations_                 ;
+	  public double mutationProbability_         ;
+	  public double crossoverProbability_        ;
+	  public int    numberOfThreads_             ;
   
   /**
    * Constructor
@@ -55,20 +54,18 @@ public class pNSGAII_Settings extends Settings {
   public pNSGAII_Settings(String problem) {
     super(problem) ;
     
-    Object [] problemParams = {"Real"};
+
     try {
-	    problem_ = (new ProblemFactory()).getProblem(problemName_, problemParams);
-    } catch (JMException e) {
-	    e.printStackTrace();
-    }  
+		problem_ = new HCTScheduling(100,20,4);
+	} catch (FileNotFoundException e) {
+		e.printStackTrace();
+	}  
     // Default experiments.settings
     populationSize_              = 50   ; 
     maxEvaluations_              = 25000 ;
-    mutationProbability_         = 1.0/problem_.getNumberOfVariables() ;
-    crossoverProbability_        = 0.9   ;
-    mutationDistributionIndex_   = 20.0  ;
-    crossoverDistributionIndex_  = 20.0  ;
-    numberOfThreads_             = 8 ; // 0 - number of available cores
+    mutationProbability_         = 0.1 ;
+    crossoverProbability_        = 0.5   ;
+    numberOfThreads_             = 4 ; // 0 - number of available cores
   } // pNSGAII_Settings
 
   
@@ -77,7 +74,8 @@ public class pNSGAII_Settings extends Settings {
    * @return A NSGAII algorithm object
    * @throws jmetal.util.JMException
    */
-  public Algorithm configure() throws JMException {
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+public Algorithm configure() throws JMException {
     Algorithm algorithm ;
     Selection  selection ;
     Crossover  crossover ;
@@ -97,13 +95,12 @@ public class pNSGAII_Settings extends Settings {
     // Mutation and Crossover for Real codification
     parameters = new HashMap() ;
     parameters.put("probability", crossoverProbability_) ;
-    parameters.put("distributionIndex", crossoverDistributionIndex_) ;
-    crossover = CrossoverFactory.getCrossoverOperator("SBXCrossover", parameters);                   
+    crossover = CrossoverFactory.getCrossoverOperator("SinglePointTwoPointCrossover", parameters);                   
 
     parameters = new HashMap() ;
-    parameters.put("probability", mutationProbability_) ;
-    parameters.put("distributionIndex", mutationDistributionIndex_) ;
-    mutation = MutationFactory.getMutationOperator("PolynomialMutation", parameters);                        
+    parameters.put("intMutationProbability", mutationProbability_);
+    parameters.put("permutationMutationProbability", mutationProbability_);
+    mutation = MutationFactory.getMutationOperator("BitFlipSwapMutation", parameters);                        
 
     // Selection Operator 
     parameters = null ;
@@ -121,7 +118,8 @@ public class pNSGAII_Settings extends Settings {
    * Configure pNSGAII with user-defined parameter experiments.settings
    * @return A pNSGAII algorithm object
    */
-  @Override
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+@Override
   public Algorithm configure(Properties configuration) throws JMException {
     Algorithm algorithm ;
     Selection  selection ;
@@ -145,18 +143,14 @@ public class pNSGAII_Settings extends Settings {
 
     // Mutation and Crossover for Real codification
     crossoverProbability_ = Double.parseDouble(configuration.getProperty("crossoverProbability",String.valueOf(crossoverProbability_)));
-    crossoverDistributionIndex_ = Double.parseDouble(configuration.getProperty("crossoverDistributionIndex",String.valueOf(crossoverDistributionIndex_)));
     parameters = new HashMap() ;
     parameters.put("probability", crossoverProbability_) ;
-    parameters.put("distributionIndex", crossoverDistributionIndex_) ;
-    crossover = CrossoverFactory.getCrossoverOperator("SBXCrossover", parameters);
+    crossover = CrossoverFactory.getCrossoverOperator("SinglePointTwoPointCrossover", parameters);
 
     mutationProbability_ = Double.parseDouble(configuration.getProperty("mutationProbability",String.valueOf(mutationProbability_)));
-    mutationDistributionIndex_ = Double.parseDouble(configuration.getProperty("mutationDistributionIndex",String.valueOf(mutationDistributionIndex_)));
     parameters = new HashMap() ;
     parameters.put("probability", mutationProbability_) ;
-    parameters.put("distributionIndex", mutationDistributionIndex_) ;
-    mutation = MutationFactory.getMutationOperator("PolynomialMutation", parameters);
+    mutation = MutationFactory.getMutationOperator("BitFlipSwapMutation", parameters);
 
     // Selection Operator
     parameters = null ;

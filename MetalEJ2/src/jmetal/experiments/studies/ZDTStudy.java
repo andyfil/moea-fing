@@ -29,6 +29,7 @@ import jmetal.experiments.settings.SMPSO_Settings;
 import jmetal.experiments.util.Friedman;
 import jmetal.util.JMException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -74,7 +75,10 @@ public class ZDTStudy extends Experiment {
       Logger.getLogger(StandardStudy.class.getName()).log(Level.SEVERE, null, ex);
     } catch  (JMException ex) {
       Logger.getLogger(StandardStudy.class.getName()).log(Level.SEVERE, null, ex);
-    }
+    } catch (FileNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
   } // algorithmSettings
 
   /**

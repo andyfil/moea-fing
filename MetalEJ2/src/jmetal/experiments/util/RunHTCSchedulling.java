@@ -37,7 +37,7 @@ import java.util.logging.Logger;
 /**
  * Class implementing the steps to run an experiment
  */
-public class RunExperiment extends Thread {
+public class RunHTCSchedulling extends Thread {
 
 	public Experiment experiment_ ;
 	public int id_ ;
@@ -67,7 +67,7 @@ public class RunExperiment extends Thread {
 	Settings[] algorithmSettings_; // Paremeter experiments.settings of each algorithm
 	
 
-	public RunExperiment(Experiment experiment, 
+	public RunHTCSchedulling(Experiment experiment, 
 			HashMap<String, Object> map,
 			int id,
 			int numberOfThreads,
