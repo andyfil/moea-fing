@@ -56,14 +56,12 @@ public class NSGAII_Settings extends Settings {
   public NSGAII_Settings(String problem) throws FileNotFoundException {
     super(problem) ;
 
-    problem_ = new HCTScheduling(100,20,4);
+    problem_ = new HCTScheduling(1000,10,4);
     // Default experiments.settings
     populationSize_              = 50   ;
     maxEvaluations_              = 25000 ;
-    mutationProbability_         = 1.0/problem_.getNumberOfVariables() ;
+    mutationProbability_         = 0.1;
     crossoverProbability_        = 0.9   ;
-    mutationDistributionIndex_   = 20.0  ;
-    crossoverDistributionIndex_  = 20.0  ;
   } // NSGAII_Settings
 
 

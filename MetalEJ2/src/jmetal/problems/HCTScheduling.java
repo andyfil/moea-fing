@@ -27,9 +27,9 @@ public class HCTScheduling extends Problem {
 	//por ahora se supone 4 estados 100% 80% 60% 40% 
 	private int cantidadEstados = 0;// se supone que el estado más alto es el
 									// más rapido y más consumidor de energía
-	private double[][][] matriz_tiempo;// maquina_estado_tarea = militiempo
-	private double[][] matriz_energia;// maquina_energia = energia/segundo 
-	private double[] matriz_energia_idle;// consumo de cada maquina en estado idle
+	private long[][][] matriz_tiempo;// maquina_estado_tarea = militiempo
+	private long[][] matriz_energia;// maquina_energia = energia/segundo 
+	private long[] matriz_energia_idle;// consumo de cada maquina en estado idle
 
 	public HCTScheduling (){
 	
@@ -62,9 +62,9 @@ public class HCTScheduling extends Problem {
 		cantidadTareas = cant_tareas;
 		cantidadMaquinas = cant_maquinas;
 		cantidadEstados = cant_estados;
-		matriz_tiempo = new double[cantidadMaquinas][cantidadEstados][cantidadTareas];
-		matriz_energia = new double[cantidadMaquinas][cantidadEstados];
-		matriz_energia_idle = new double[cantidadMaquinas];
+		matriz_tiempo = new long[cantidadMaquinas][cantidadEstados][cantidadTareas];
+		matriz_energia = new long[cantidadMaquinas][cantidadEstados];
+		matriz_energia_idle = new long[cantidadMaquinas];
 		populateMatriz();
 		///*
 		FileOutputStream fos;
@@ -145,8 +145,8 @@ public class HCTScheduling extends Problem {
 			energy +=energyNoIdle[i]+ (makespan - tiempoNoIdle[i]) * matriz_energia_idle[i]/1000;//el tiempo que quedo idle por la energia y se suma al total
 		}
 		
-		solution.setObjective(0, makespan);
-		solution.setObjective(1, energy);
+		solution.setObjective(0, makespan/1000);
+		solution.setObjective(1, energy/1000);
 
 	}
 
@@ -159,65 +159,66 @@ public class HCTScheduling extends Problem {
 	    //BufferedReader br      = new BufferedReader(isr);  
 	    Scanner scan = new Scanner(isr);
 	    String linea, token_t, token_ops;
-		int ops;
+		long ops;
 		int tarea;
 	    int i = 0;
-	    int[] ops_por_tarea = new int[1000];
+	    long[] op_por_tarea = new long[cantidadTareas];
 
-	    while (scan.hasNext()){
+	    while (scan.hasNext() && i < cantidadTareas){
 	    	token_t = scan.next();
 	    	tarea = scan.nextInt();
 	    	token_ops = scan.next();
-	    	ops = scan.nextInt();
-	    	ops_por_tarea[i] = ops;
+	    	ops = scan.nextLong();
+	    	op_por_tarea[i] = ops;
 	    	i++;
 	    }
 	    scan.close();
 	    
 	    // Leo del archivo que tiene la matriz_idle_frec_consumo_operaciones por maquinas
 	    FileInputStream fis2;
-		fis2 = new FileInputStream("C:\\Users\\usuario\\workspace\\MetalEJ2\\matriz_idle_frec_consumo_operaciones");
+		fis2 = new FileInputStream("C:\\matriz_idle_frec_consumo_operaciones");
 		InputStreamReader isr2 = new InputStreamReader(fis2);
 	    Scanner scan2 = new Scanner(isr2);
-	    double[] matriz_idle = new double[cantidadMaquinas];
+	    long[] matriz_idle = new long[cantidadMaquinas];
 	    double[] matriz_frec = new double[cantidadMaquinas];
-	    double[] consumo = new double[cantidadMaquinas];
-	    double[] operaciones = new double[cantidadMaquinas];
+	    long[] consumo = new long[cantidadMaquinas];
+	    long[] operaciones = new long[cantidadMaquinas];
 	    
-	    double energia_idle, frecuencia_maq, consumo_maq, operaciones_maq;
+	    double energia_idle, frecuencia_maq, consumo_maq;
+	    long operaciones_maq;
 	    int maq;
 	    while (scan2.hasNext()){
 	    	maq = scan2.nextInt();
 	    	energia_idle = scan2.nextDouble();
 	    	frecuencia_maq = scan2.nextDouble();
 	    	consumo_maq = scan2.nextDouble();
-	    	operaciones_maq = scan2.nextDouble();
-	    	matriz_idle[maq-1] = energia_idle;
-	    	matriz_frec[maq-1] = frecuencia_maq;
-	    	consumo[maq-1] = consumo_maq;
-	    	operaciones[maq-1] = operaciones_maq;
+	    	operaciones_maq = scan2.nextLong();
+	    	matriz_idle[maq-1] = (long) energia_idle;
+	    	matriz_frec[maq-1] =  frecuencia_maq;
+	    	consumo[maq-1] = (long) consumo_maq;
+	    	operaciones[maq-1] = (long) operaciones_maq;
 	    }
 	    scan2.close();
 	    
 	    /********************* PRUEBO QUE CARGUE BIEN OPERACIONES POR TAREA ***********************/
-	    FileOutputStream fos;
-		try {
-			fos = new FileOutputStream("operaciones por tarea");
-		
-	      OutputStreamWriter osw = new OutputStreamWriter(fos)    ;
-	      BufferedWriter bw      = new BufferedWriter(osw)        ;            
-	      for(int j=0; j < ops_por_tarea.length; j++)
-	    			  bw.write("tarea  " + j + " " + "ops "+ ops_por_tarea[j] + "\n");
-	      bw.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	      
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//	    FileOutputStream fos;
+//		try {
+//			fos = new FileOutputStream("operaciones por tarea");
+//		
+//	      OutputStreamWriter osw = new OutputStreamWriter(fos)    ;
+//	      BufferedWriter bw      = new BufferedWriter(osw)        ;            
+//	      for(int j=0; j < ops_por_tarea.length; j++)
+//	    			  bw.write("tarea  " + j + " " + "ops "+ ops_por_tarea[j] + "\n");
+//	      bw.close();
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	      
+//		catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		/******************************************************************************************/
 		/********************* PRUEBO QUE CARGUE BIEN MATRIZ_IDLE_FREC_CONSUMO_OPERACIONES ***********************/
 	    FileOutputStream fos2;
@@ -241,95 +242,33 @@ public class HCTScheduling extends Problem {
 		}
 		/******************************************************************************************/
 		
-		double factor = 0, ops_estado;
+		double factor = 0;
+		long ops_estado;
 		for (int m = 0; m < cantidadMaquinas; m++) {
 			
 			matriz_energia_idle[m] = matriz_idle[m];
 			
 			for (int e = 0; e < cantidadEstados; e++) {
 				switch (e){
-				case 0: factor = 0.25;
+				case 0: factor = 0.40;
 						break;
-				case 1: factor = 0.50;
+				case 1: factor = 0.60;
 						break;
-				case 2: factor = 0.75;
+				case 2: factor = 0.80;
 						break;
 				case 3: factor = 1.00;
 						break;
 				}
-				matriz_energia[m][e] = consumo[m]*factor;
+				matriz_energia[m][e] = (long) (consumo[m]*factor);
 				
 				for (int t = 0; t < cantidadTareas; t++) {
-					ops_estado = operaciones[m]*factor;
-					matriz_tiempo[m][e][t] = ops_por_tarea[t] / ops_estado ;
+					ops_estado = (long) (operaciones[m]*factor);
+					matriz_tiempo[m][e][t] = op_por_tarea[t] / ops_estado ;
 
 				}
 			}
 		}
 	}
-
-	// Esto es para usar luego, una vez que tengamos medio dominado el tema del
-	// problema comenzamos a leer los datos que definen la instancia de un
-	// archivo
-	public void readProblem(String fileName) throws IOException {
-		// Reader inputFile = new BufferedReader(new InputStreamReader(
-		// new FileInputStream(fileName)));
-		//
-		// StreamTokenizer token = new StreamTokenizer(inputFile);
-		// try {
-		// boolean found;
-		// found = false;
-		//
-		// token.nextToken();
-		// for(int )
-		// numberOfCities_ = (int) token.nval;
-		//
-		// distanceMatrix_ = new double[numberOfCities_][numberOfCities_];
-		//
-		// // Find the string SECTION
-		// found = false;
-		// token.nextToken();
-		// while (!found) {
-		// if ((token.sval != null)
-		// && ((token.sval.compareTo("SECTION") == 0)))
-		// found = true;
-		// else
-		// token.nextToken();
-		// } // while
-		//
-		// // Read the data
-		//
-		// double[] c = new double[2 * numberOfCities_];
-		//
-		// for (int i = 0; i < numberOfCities_; i++) {
-		// token.nextToken();
-		// int j = (int) token.nval;
-		//
-		// token.nextToken();
-		// c[2 * (j - 1)] = token.nval;
-		// token.nextToken();
-		// c[2 * (j - 1) + 1] = token.nval;
-		// } // for
-		//
-		// double dist;
-		// for (int k = 0; k < numberOfCities_; k++) {
-		// distanceMatrix_[k][k] = 0;
-		// for (int j = k + 1; j < numberOfCities_; j++) {
-		// dist = Math.sqrt(Math.pow((c[k * 2] - c[j * 2]), 2.0)
-		// + Math.pow((c[k * 2 + 1] - c[j * 2 + 1]), 2));
-		// dist = (int) (dist + .5);
-		// distanceMatrix_[k][j] = dist;
-		// distanceMatrix_[j][k] = dist;
-		// } // for
-		// } // for
-		// } // try
-		// catch (Exception e) {
-		// System.err
-		// .println("TSP.readProblem(): error when reading data file "
-		// + e);
-		// System.exit(1);
-		// } // catch
-	} // readProblem
 
 	private class TareaEstado{
 		public TareaEstado(int p_tarea, int p_estado){

@@ -64,12 +64,6 @@ public class NSGAIIStudy extends Experiment {
 				parameters[i] = new HashMap();
 			} // for
 
-			if (!paretoFrontFile_[problemIndex].equals("")) {
-				for (int i = 0; i < numberOfAlgorithms; i++)
-					parameters[i].put("paretoFrontFile_",
-							paretoFrontFile_[problemIndex]);
-			} // if
-
 			parameters[0].put("crossoverProbability_", 0.8);
 			parameters[1].put("crossoverProbability_", 0.6);
 			parameters[2].put("crossoverProbability_", 0.4);
@@ -79,13 +73,6 @@ public class NSGAIIStudy extends Experiment {
 			parameters[6].put("populationSize_", 50);
 			parameters[7].put("populationSize_", 100);
 			parameters[8].put("populationSize_", 200);
-
-			if ((!paretoFrontFile_[problemIndex].equals(""))
-					|| (paretoFrontFile_[problemIndex] == null)) {
-				for (int i = 0; i < numberOfAlgorithms; i++)
-					parameters[i].put("paretoFrontFile_",
-							paretoFrontFile_[problemIndex]);
-			} // if
 
 			for (int i = 0; i < numberOfAlgorithms; i++)
 				algorithm[i] = new NSGAII_Settings(problemName)
@@ -121,7 +108,7 @@ public class NSGAIIStudy extends Experiment {
 
 		exp.algorithmSettings_ = new Settings[numberOfAlgorithms];
 
-		exp.independentRuns_ = 25;
+		exp.independentRuns_ = 5;
 
 		exp.initExperiment();
 

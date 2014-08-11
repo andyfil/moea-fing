@@ -56,7 +56,7 @@ public class pNSGAII_Settings extends Settings {
     
 
     try {
-		problem_ = new HCTScheduling(100,20,4);
+		problem_ = new HCTScheduling(100,10,4);
 	} catch (FileNotFoundException e) {
 		e.printStackTrace();
 	}  
