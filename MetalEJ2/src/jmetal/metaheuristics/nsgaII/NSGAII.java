@@ -184,7 +184,7 @@ public class NSGAII extends Algorithm {
     // Return the first non-dominated front
     Ranking ranking = new Ranking(population);
     ranking.getSubfront(0).printFeasibleFUN("FUN_NSGAII") ;
-
+   
     return ranking.getSubfront(0);
   } // execute
 } // NSGA-II
