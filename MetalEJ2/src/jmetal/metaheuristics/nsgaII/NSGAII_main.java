@@ -142,8 +142,11 @@ public class NSGAII_main {
     
     // Execute the Algorithm
     long initTime = System.currentTimeMillis();
+    System.out.println(initTime);
     SolutionSet population = algorithm.execute();
     long estimatedTime = System.currentTimeMillis() - initTime;
+    System.out.println(estimatedTime);
+    
     
     // Result messages 
     logger_.info("Total execution time: "+estimatedTime + "ms");
