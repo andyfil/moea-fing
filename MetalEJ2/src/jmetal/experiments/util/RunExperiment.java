@@ -29,8 +29,12 @@ import jmetal.experiments.Experiment;
 import jmetal.experiments.Settings;
 import jmetal.util.JMException;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -107,79 +111,101 @@ public class RunExperiment extends Thread {
 
 		int[] problemData; // Contains current problemId, algorithmId and iRun
 
-		while(!finished){
-
-			problemData = null;
-			problemData = experiment_.getNextProblem();
-
-			if(!finished && problemData != null){
-				int problemId = problemData[0];
-				int alg = problemData[1];
-				int runs = problemData[2];
-
-				// The problem to solve
-				Problem problem;
-				String problemName;
-
-				// STEP 2: get the problem from the list
-				problemName = problemList_[problemId];
-
-				// STEP 3: check the file containing the Pareto front of the problem
-
-				// STEP 4: configure the algorithms
-				try {
-					experiment_.algorithmSettings(problemName, problemId, algorithm);
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				problem = algorithm[0].getProblem() ;
-				
-				// STEP 5: run the algorithms
-				
-				// STEP 6: create output directories
-				File experimentDirectory;
-				String directory;
-
-				directory = experimentBaseDirectory_ + "/data/" + algorithmNameList_[alg] + "/" +
-						problemList_[problemId];
-
-				experimentDirectory = new File(directory);
-				if (!experimentDirectory.exists()) {
-					boolean result = new File(directory).mkdirs();
-					System.out.println("Creating " + directory);
-				}
-
-				// STEP 7: run the algorithm
-				System.out.println(Thread.currentThread().getName() + " Running algorithm: " + 
-						algorithmNameList_[alg] +
-						", problem: " + problemList_[problemId] +
-						", run: " + runs);
-				try {
+		FileOutputStream fos;
+		try {
+			// GUARDO EN ARCHIVO LOS TIEMPOS DE EJECUCIONES DE CADA ALGORITMO
+			fos = new FileOutputStream("C:\\HTCEstudio\\tiempos de ejecuciones");
+			OutputStreamWriter osw = new OutputStreamWriter(fos);
+			BufferedWriter bw      = new BufferedWriter(osw);
+			while(!finished){
+	
+				problemData = null;
+				problemData = experiment_.getNextProblem();
+	
+				if(!finished && problemData != null){
+					int problemId = problemData[0];
+					int alg = problemData[1];
+					int runs = problemData[2];
+	
+					// The problem to solve
+					Problem problem;
+					String problemName;
+	
+					// STEP 2: get the problem from the list
+					problemName = problemList_[problemId];
+	
+					// STEP 3: check the file containing the Pareto front of the problem
+	
+					// STEP 4: configure the algorithms
 					try {
-						resultFront= algorithm[alg].execute();
-					} catch (ClassNotFoundException e) {
+						experiment_.algorithmSettings(problemName, problemId, algorithm);
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (FileNotFoundException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				} catch (JMException ex) {
-					Logger.getLogger(Experiment.class.getName()).log(Level.SEVERE, null, ex);
-				}
-
-				// STEP 8: put the results in the output directory
-				resultFront.printObjectivesToFile(directory + "/" + outputParetoFrontFile_ + "." + runs);
-				resultFront.printVariablesToFile(directory + "/" + outputParetoSetFile_ + "." + runs);
-				if(!finished){
-					if(experiment_.finished_){
-						finished = true;						
+	
+					problem = algorithm[0].getProblem() ;
+					
+					// STEP 5: run the algorithms
+					
+					// STEP 6: create output directories
+					File experimentDirectory;
+					String directory;
+	
+					directory = experimentBaseDirectory_ + "/data/" + algorithmNameList_[alg] + "/" +
+							problemList_[problemId];
+	
+					experimentDirectory = new File(directory);
+					if (!experimentDirectory.exists()) {
+						boolean result = new File(directory).mkdirs();
+						System.out.println("Creating " + directory);
 					}
-				}
-			} // if
-		} //while
+	
+					// STEP 7: run the algorithm
+					System.out.println(Thread.currentThread().getName() + " Running algorithm: " + 
+							algorithmNameList_[alg] +
+							", problem: " + problemList_[problemId] +
+							", run: " + runs);
+					try {
+						try {
+							long initTime = System.currentTimeMillis();
+							System.out.println(algorithmNameList_[alg] + ", run: " + runs + " -> Tiempo de inicio : " + initTime);
+							bw.write(algorithmNameList_[alg] + ", run: " + runs + " -> Tiempo de inicio : " + initTime + "\n");
+								
+							resultFront= algorithm[alg].execute();
+								
+							long finTime = System.currentTimeMillis();
+							System.out.println(algorithmNameList_[alg] + ", run: " + runs + " -> Tiempo de fin : " + finTime);
+							bw.write(algorithmNameList_[alg] + ", run: " + runs + " -> Tiempo de fin : " + finTime + "\n");
+						} catch (ClassNotFoundException e) {
+								e.printStackTrace();
+						}
+					} catch (JMException ex) {
+						Logger.getLogger(Experiment.class.getName()).log(Level.SEVERE, null, ex);
+					}
+	
+					// STEP 8: put the results in the output directory
+					resultFront.printObjectivesToFile(directory + "/" + outputParetoFrontFile_ + "." + runs);
+					resultFront.printVariablesToFile(directory + "/" + outputParetoSetFile_ + "." + runs);
+					if(!finished){
+						if(experiment_.finished_){
+							finished = true;						
+						}
+					}
+				} // if
+			} //while
+		
+		bw.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// Fin modificación planificación Threads
 	}
 }
