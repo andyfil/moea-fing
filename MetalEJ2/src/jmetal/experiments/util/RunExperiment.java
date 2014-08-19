@@ -173,9 +173,9 @@ public class RunExperiment extends Thread {
 //						System.out.println(algorithmNameList_[alg]
 //								+ ", run: " + runs
 //								+ " -> Tiempo de inicio : " + initTime);
-//						singleton.writeToFile(algorithmNameList_[alg] + ", run: " + runs
-//								+ " -> Tiempo de inicio : " + initTime
-//								+ "\n");
+						singleton.writeToFile(algorithmNameList_[alg] + ", run: " + runs
+								+ " -> Tiempo de inicio : " + initTime
+								+ "\n");
 
 						resultFront = algorithm[alg].execute();
 
