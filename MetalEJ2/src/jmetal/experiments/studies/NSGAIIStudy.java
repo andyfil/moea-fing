@@ -28,6 +28,7 @@ import jmetal.experiments.settings.NSGAII_Settings;
 import jmetal.experiments.util.Friedman;
 import jmetal.util.JMException;
 
+import java.io.Console;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -256,7 +257,10 @@ public class NSGAIIStudy extends Experiment {
 		exp.initExperiment();
 
 		// Run the experiments
+		long initTime = System.currentTimeMillis();
 		exp.runExperiment(4);
+		System.out.println("Tiempo total del algoritmo");
+		System.out.println(System.currentTimeMillis()-initTime);
 
 		exp.generateQualityIndicators();
 
