@@ -35,26 +35,29 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  * Class implementing the steps to run an experiment
  */
 public class RunExperiment extends Thread {
 
-	public Experiment experiment_ ;
-	public int id_ ;
-	public HashMap<String, Object> map_ ;
-	public int numberOfThreads_ ;
-	public int numberOfProblems_ ;
+	public Experiment experiment_;
+	public int id_;
+	public HashMap<String, Object> map_;
+	public int numberOfThreads_;
+	public int numberOfProblems_;
 
 	// Inicio modificación planificación Threads
 	static boolean finished;
 	// Fin modificación planificación Threads
 
 	String experimentName_;
-	String[] algorithmNameList_; // List of the names of the algorithms to be executed
+	String[] algorithmNameList_; // List of the names of the algorithms to be
+									// executed
 	String[] problemList_; // List of problems to be solved
 	String[] paretoFrontFile_; // List of the files containing the pareto fronts
 	// corresponding to the problems in problemList_
@@ -68,28 +71,25 @@ public class RunExperiment extends Thread {
 	String outputParetoSetFile_; // Name of the file containing the output
 	// Pareto set
 	int independentRuns_; // Number of independent runs per algorithm
-	Settings[] algorithmSettings_; // Paremeter experiments.settings of each algorithm
-	
+	Settings[] algorithmSettings_; // Paremeter experiments.settings of each
+									// algorithm
 
-	public RunExperiment(Experiment experiment, 
-			HashMap<String, Object> map,
-			int id,
-			int numberOfThreads,
-			int numberOfProblems) {
-		experiment_ = experiment ;
-		id_ = id ;
-		map_ = map ;
-		numberOfThreads_ = numberOfThreads  ;
+	public RunExperiment(Experiment experiment, HashMap<String, Object> map,
+			int id, int numberOfThreads, int numberOfProblems) {
+		experiment_ = experiment;
+		id_ = id;
+		map_ = map;
+		numberOfThreads_ = numberOfThreads;
 		numberOfProblems_ = numberOfProblems;
 
 		// Inicio modificación planificación Threads
 		finished = false;
-		// Fin modificación planificación Threads		
+		// Fin modificación planificación Threads
 	}
 
 	public void run() {
 		Algorithm[] algorithm; // jMetal algorithms to be executed
-
+		Singleton singleton = Singleton.getInstance();
 		String experimentName = (String) map_.get("experimentName");
 		experimentBaseDirectory_ = (String) map_.get("experimentDirectory");
 		algorithmNameList_ = (String[]) map_.get("algorithmNameList");
@@ -102,110 +102,141 @@ public class RunExperiment extends Thread {
 		outputParetoSetFile_ = (String) map_.get("outputParetoSetFile");
 
 		int numberOfAlgorithms = algorithmNameList_.length;
-		
-		algorithm = new Algorithm[numberOfAlgorithms] ;
+
+		algorithm = new Algorithm[numberOfAlgorithms];
 
 		// Inicio modificación planificación Threads
 
-		SolutionSet resultFront = null;  
+		SolutionSet resultFront = null;
 
 		int[] problemData; // Contains current problemId, algorithmId and iRun
 
 		FileOutputStream fos;
-		try {
-			// GUARDO EN ARCHIVO LOS TIEMPOS DE EJECUCIONES DE CADA ALGORITMO
-			fos = new FileOutputStream("C:\\HTCEstudio\\tiempos de ejecuciones");
-			OutputStreamWriter osw = new OutputStreamWriter(fos);
-			BufferedWriter bw      = new BufferedWriter(osw);
-			while(!finished){
-	
-				problemData = null;
-				problemData = experiment_.getNextProblem();
-	
-				if(!finished && problemData != null){
-					int problemId = problemData[0];
-					int alg = problemData[1];
-					int runs = problemData[2];
-	
-					// The problem to solve
-					Problem problem;
-					String problemName;
-	
-					// STEP 2: get the problem from the list
-					problemName = problemList_[problemId];
-	
-					// STEP 3: check the file containing the Pareto front of the problem
-	
-					// STEP 4: configure the algorithms
+		while (!finished) {
+
+			problemData = null;
+			problemData = experiment_.getNextProblem();
+
+			if (!finished && problemData != null) {
+				int problemId = problemData[0];
+				int alg = problemData[1];
+				int runs = problemData[2];
+
+				// The problem to solve
+				Problem problem;
+				String problemName;
+
+				// STEP 2: get the problem from the list
+				problemName = problemList_[problemId];
+
+				// STEP 3: check the file containing the Pareto front of the
+				// problem
+
+				// STEP 4: configure the algorithms
+				try {
+					experiment_.algorithmSettings(problemName, problemId,
+							algorithm);
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				problem = algorithm[0].getProblem();
+
+				// STEP 5: run the algorithms
+
+				// STEP 6: create output directories
+				File experimentDirectory;
+				String directory;
+
+				directory = experimentBaseDirectory_ + "/data/"
+						+ algorithmNameList_[alg] + "/"
+						+ problemList_[problemId];
+
+				experimentDirectory = new File(directory);
+				if (!experimentDirectory.exists()) {
+					boolean result = new File(directory).mkdirs();
+					System.out.println("Creating " + directory);
+				}
+
+				// STEP 7: run the algorithm
+				System.out.println(Thread.currentThread().getName()
+						+ " Running algorithm: " + algorithmNameList_[alg]
+						+ ", problem: " + problemList_[problemId]
+						+ ", run: " + runs);
+				try {
 					try {
-						experiment_.algorithmSettings(problemName, problemId, algorithm);
-					} catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
+						long initTime = System.currentTimeMillis();
+//						System.out.println(algorithmNameList_[alg]
+//								+ ", run: " + runs
+//								+ " -> Tiempo de inicio : " + initTime);
+//						singleton.writeToFile(algorithmNameList_[alg] + ", run: " + runs
+//								+ " -> Tiempo de inicio : " + initTime
+//								+ "\n");
+
+						resultFront = algorithm[alg].execute();
+
+						long finTime = System.currentTimeMillis() - initTime;
+//						System.out.println(algorithmNameList_[alg]
+//								+ ", run: " + runs + " -> Tiempo de fin : "
+//								+ finTime);
+						singleton.writeToFile(algorithmNameList_[alg] + ", run: " + runs
+								+ " -> Tiempo de fin : " + finTime + "\n");
+					} catch (ClassNotFoundException e) {
 						e.printStackTrace();
 					}
-	
-					problem = algorithm[0].getProblem() ;
-					
-					// STEP 5: run the algorithms
-					
-					// STEP 6: create output directories
-					File experimentDirectory;
-					String directory;
-	
-					directory = experimentBaseDirectory_ + "/data/" + algorithmNameList_[alg] + "/" +
-							problemList_[problemId];
-	
-					experimentDirectory = new File(directory);
-					if (!experimentDirectory.exists()) {
-						boolean result = new File(directory).mkdirs();
-						System.out.println("Creating " + directory);
+				} catch (JMException ex) {
+					Logger.getLogger(Experiment.class.getName()).log(
+							Level.SEVERE, null, ex);
+				}
+
+				// STEP 8: put the results in the output directory
+				resultFront.printObjectivesToFile(directory + "/"
+						+ outputParetoFrontFile_ + "." + runs);
+				resultFront.printVariablesToFile(directory + "/"
+						+ outputParetoSetFile_ + "." + runs);
+				if (!finished) {
+					if (experiment_.finished_) {
+						finished = true;
 					}
-	
-					// STEP 7: run the algorithm
-					System.out.println(Thread.currentThread().getName() + " Running algorithm: " + 
-							algorithmNameList_[alg] +
-							", problem: " + problemList_[problemId] +
-							", run: " + runs);
-					try {
-						try {
-							long initTime = System.currentTimeMillis();
-							System.out.println(algorithmNameList_[alg] + ", run: " + runs + " -> Tiempo de inicio : " + initTime);
-							bw.write(algorithmNameList_[alg] + ", run: " + runs + " -> Tiempo de inicio : " + initTime + "\n");
-								
-							resultFront= algorithm[alg].execute();
-								
-							long finTime = System.currentTimeMillis();
-							System.out.println(algorithmNameList_[alg] + ", run: " + runs + " -> Tiempo de fin : " + finTime);
-							bw.write(algorithmNameList_[alg] + ", run: " + runs + " -> Tiempo de fin : " + finTime + "\n");
-						} catch (ClassNotFoundException e) {
-								e.printStackTrace();
-						}
-					} catch (JMException ex) {
-						Logger.getLogger(Experiment.class.getName()).log(Level.SEVERE, null, ex);
-					}
-	
-					// STEP 8: put the results in the output directory
-					resultFront.printObjectivesToFile(directory + "/" + outputParetoFrontFile_ + "." + runs);
-					resultFront.printVariablesToFile(directory + "/" + outputParetoSetFile_ + "." + runs);
-					if(!finished){
-						if(experiment_.finished_){
-							finished = true;						
-						}
-					}
-				} // if
-			} //while
-		
-		bw.close();
+				}
+			} // if
+		} // while
+	}
+
+}
+
+class Singleton {
+
+	private static final Singleton inst = new Singleton();
+	private static BufferedWriter bw;
+
+	private Singleton() {
+		super();
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream("C:\\HTCEstudio\\tiempos de ejecuciones");
+			OutputStreamWriter osw = new OutputStreamWriter(fos);
+			bw = new BufferedWriter(osw);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// Fin modificación planificación Threads
 	}
+
+	public synchronized void writeToFile(String str) {
+		try {
+			bw.write(str);
+			bw.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Singleton getInstance() {
+		return inst;
+	}
+
 }
