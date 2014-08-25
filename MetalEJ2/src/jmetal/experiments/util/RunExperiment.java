@@ -50,6 +50,9 @@ public class RunExperiment extends Thread {
 	public HashMap<String, Object> map_;
 	public int numberOfThreads_;
 	public int numberOfProblems_;
+	//int cantAlgoritmos = 9;
+	//int cantEjecuciones = 5;
+	//long[][] matriz_tiempos = new long[cantAlgoritmos][cantEjecuciones];
 
 	// Inicio modificación planificación Threads
 	static boolean finished;
@@ -85,6 +88,7 @@ public class RunExperiment extends Thread {
 		// Inicio modificación planificación Threads
 		finished = false;
 		// Fin modificación planificación Threads
+		
 	}
 
 	public void run() {
@@ -176,10 +180,11 @@ public class RunExperiment extends Thread {
 						singleton.writeToFile(algorithmNameList_[alg] + ", run: " + runs
 								+ " -> Tiempo de inicio : " + initTime
 								+ "\n");
-
+						
 						resultFront = algorithm[alg].execute();
 
 						long finTime = System.currentTimeMillis() - initTime;
+						//matriz_tiempos[alg][runs] = finTime;
 //						System.out.println(algorithmNameList_[alg]
 //								+ ", run: " + runs + " -> Tiempo de fin : "
 //								+ finTime);
@@ -218,7 +223,7 @@ class Singleton {
 		super();
 		FileOutputStream fos;
 		try {
-			fos = new FileOutputStream("C:\\HTCEstudio\\tiempos de ejecuciones");
+			fos = new FileOutputStream("C:\\HTCEstudio\\tiempos_de_ejecuciones");
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
 			bw = new BufferedWriter(osw);
 		} catch (FileNotFoundException e) {
