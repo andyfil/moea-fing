@@ -163,7 +163,7 @@ public abstract class Experiment {
     //generateQualityIndicators();
     // Fin modificación ReferenceFronts
   }
-
+  
   /**
    * Runs the experiment
    */
