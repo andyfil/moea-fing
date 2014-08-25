@@ -173,7 +173,7 @@ public class NSGAIIStudy extends Experiment {
 			parameters[26].put("crossoverProbability_", 0.8);
 			parameters[26].put("mutationProbability_", 0.1);
 			parameters[26].put("populationSize_", 200);
-*/
+
 			// Combino las probabilidades de cruzamiento y mutacion con poblacion fija
 			// NSGAII0: crossoverProbability-> 0.4 |  mutationProbability-> 0.01 | populationSize-> 50
 			parameters[0].put("crossoverProbability_", 0.4);
@@ -181,36 +181,50 @@ public class NSGAIIStudy extends Experiment {
 			parameters[0].put("populationSize_", 50);
 			// NSGAII1: crossoverProbability-> 0.4 |  mutationProbability-> 0.05 | populationSize-> 50
 			parameters[1].put("crossoverProbability_", 0.4);
-			parameters[1].put("mutationProbability_", 0.01);
-			parameters[1].put("populationSize_", 100);
+			parameters[1].put("mutationProbability_", 0.05);
+			parameters[1].put("populationSize_", 50);
 			// NSGAII2: crossoverProbability-> 0.4 |  mutationProbability-> 0.1 | populationSize-> 50
 			parameters[2].put("crossoverProbability_", 0.4);
-			parameters[2].put("mutationProbability_", 0.01);
-			parameters[2].put("populationSize_", 200);
+			parameters[2].put("mutationProbability_", 0.1);
+			parameters[2].put("populationSize_", 50);
 			// NSGAII3: crossoverProbability-> 0.6 |  mutationProbability-> 0.01 | populationSize-> 50
-			parameters[3].put("crossoverProbability_", 0.4);
-			parameters[3].put("mutationProbability_", 0.05);
+			parameters[3].put("crossoverProbability_", 0.6);
+			parameters[3].put("mutationProbability_", 0.01);
 			parameters[3].put("populationSize_", 50);
 			// NSGAII4: crossoverProbability-> 0.6 |  mutationProbability-> 0.05 | populationSize-> 50
-			parameters[4].put("crossoverProbability_", 0.4);
+			parameters[4].put("crossoverProbability_", 0.6);
 			parameters[4].put("mutationProbability_", 0.05);
-			parameters[4].put("populationSize_", 100);
+			parameters[4].put("populationSize_", 50);
 			// NSGAII5: crossoverProbability-> 0.6 |  mutationProbability-> 0.1 | populationSize-> 50
-			parameters[5].put("crossoverProbability_", 0.4);
-			parameters[5].put("mutationProbability_", 0.05);
-			parameters[5].put("populationSize_", 200);
-			// NSGAII6: crossoverProbability-> 0.6 |  mutationProbability-> 0.01  | populationSize-> 50
-			parameters[6].put("crossoverProbability_", 0.4);
-			parameters[6].put("mutationProbability_", 0.1);
+			parameters[5].put("crossoverProbability_", 0.6);
+			parameters[5].put("mutationProbability_", 0.1);
+			parameters[5].put("populationSize_", 50);
+			// NSGAII6: crossoverProbability-> 0.8 |  mutationProbability-> 0.01  | populationSize-> 50
+			parameters[6].put("crossoverProbability_", 0.8);
+			parameters[6].put("mutationProbability_", 0.01);
 			parameters[6].put("populationSize_", 50);
-			// NSGAII7: crossoverProbability-> 0.6 |  mutationProbability-> 0.05  | populationSize-> 50
-			parameters[7].put("crossoverProbability_", 0.4);
-			parameters[7].put("mutationProbability_", 0.1);
-			parameters[7].put("populationSize_", 100);
-			// NSGAII8: crossoverProbability-> 0.6 |  mutationProbability-> 0.1  | populationSize-> 50
-			parameters[8].put("crossoverProbability_", 0.4);
+			// NSGAII7: crossoverProbability-> 0.8 |  mutationProbability-> 0.05  | populationSize-> 50
+			parameters[7].put("crossoverProbability_", 0.8);
+			parameters[7].put("mutationProbability_", 0.05);
+			parameters[7].put("populationSize_", 50);
+			// NSGAII8: crossoverProbability-> 0.8 |  mutationProbability-> 0.1  | populationSize-> 50
+			parameters[8].put("crossoverProbability_", 0.8);
 			parameters[8].put("mutationProbability_", 0.1);
-			parameters[8].put("populationSize_", 200);
+			parameters[8].put("populationSize_", 50);
+*/			
+			// Realizo el estudio variando el tamaño de la poblacion
+			// NSGAII0: crossoverProbability-> 0.6 |  mutationProbability-> 0.05 | populationSize-> 50
+			parameters[0].put("crossoverProbability_", 0.6);
+			parameters[0].put("mutationProbability_", 0.05);
+			parameters[0].put("populationSize_", 50);
+			// NSGAII1: crossoverProbability-> 0.6 |  mutationProbability-> 0.05 | populationSize-> 100
+			parameters[1].put("crossoverProbability_", 0.6);
+			parameters[1].put("mutationProbability_", 0.05);
+			parameters[1].put("populationSize_", 100);
+			// NSGAII2: crossoverProbability-> 0.6 |  mutationProbability-> 0.05 | populationSize-> 200
+			parameters[2].put("crossoverProbability_", 0.6);
+			parameters[2].put("mutationProbability_", 0.05);
+			parameters[2].put("populationSize_", 200);
 			
 			for (int i = 0; i < numberOfAlgorithms; i++)
 				algorithm[i] = new NSGAII_Settings(problemName)
@@ -236,10 +250,14 @@ public class NSGAIIStudy extends Experiment {
 				"NSGAII2", "NSGAII3","NSGAII4","NSGAII5","NSGAII6","NSGAII7","NSGAII8", "NSGAII9", "NSGAII10",
 				"NSGAII11", "NSGAII12","NSGAII13","NSGAII14","NSGAII15","NSGAII16","NSGAII17", "NSGAII18", "NSGAII19",
 				"NSGAII20", "NSGAII21","NSGAII22","NSGAII23","NSGAII24","NSGAII25","NSGAII26" };
-*/
+
 		// Defino para los 9 algoritmos (9 combinaciones)
 		exp.algorithmNameList_ = new String[] { "NSGAII0", "NSGAII1",
 				"NSGAII2", "NSGAII3","NSGAII4","NSGAII5","NSGAII6","NSGAII7","NSGAII8" };
+*/
+		// Defino para los 3 algoritmos (vario poblacion)
+				exp.algorithmNameList_ = new String[] { "NSGAII0", "NSGAII1",
+						"NSGAII2"};
 		exp.problemList_ = new String[] { "HCTScheduling" };
 		exp.paretoFrontFile_ = new String [1];
 		exp.indicatorList_ = new String[] { "HV", "SPREAD", "IGD", "EPSILON" };
