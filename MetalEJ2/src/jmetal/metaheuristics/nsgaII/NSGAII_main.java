@@ -119,13 +119,13 @@ public class NSGAII_main {
 
     // Crossover 
     parameters = new HashMap<String, Double>() ;
-    parameters.put("crossoverProbability", 0.9);
+    parameters.put("crossoverProbability", 0.4);
     crossover = CrossoverFactory.getCrossoverOperator("SinglePointTwoPointCrossover", parameters);  
                   
 	// Mutation 
     HashMap<String,Double> parameters2 = new HashMap<String, Double>() ;
-    parameters2.put("intMutationProbability", 0.1);
-    parameters2.put("permutationMutationProbability", 0.1);
+    parameters2.put("intMutationProbability", 0.3);
+    parameters2.put("permutationMutationProbability", 0.3);
     mutation= MutationFactory.getMutationOperator("BitFlipSwapMutation", parameters2);   
 
     // Selection Operator 

@@ -27,9 +27,9 @@ public class HCTScheduling extends Problem {
 	// por ahora se supone 4 estados 100% 80% 60% 40%
 	private int cantidadEstados = 0;// se supone que el estado más alto es el
 									// más rapido y más consumidor de energía
-	private long[][][] matriz_tiempo;// maquina_estado_tarea = militiempo
-	private long[][] matriz_energia;// maquina_energia = energia/segundo
-	private long[] matriz_energia_idle;// consumo de cada maquina en estado idle
+	public long[][][] matriz_tiempo;// maquina_estado_tarea = militiempo
+	public long[][] matriz_energia;// maquina_energia = energia/segundo
+	public long[] matriz_energia_idle;// consumo de cada maquina en estado idle
 
 	public HCTScheduling() {
 
@@ -128,6 +128,7 @@ public class HCTScheduling extends Problem {
 		int j = 0;
 		// recorro la permutación de tareas, y obtengo de la misma las tareas
 		// que se ejecutan en cada maquina y en que estado
+		try{
 		for (int i = 0; i < tareas.getLength(); i++) {
 			if (tareas.vector_[i] >= cantidadTareas) {
 				maqActual = tareas.vector_[i] - cantidadTareas + 1;
@@ -137,6 +138,9 @@ public class HCTScheduling extends Problem {
 								.getValue(j)));
 				j++;
 			}
+		}
+		}catch (Exception e){
+			e.printStackTrace();
 		}
 		// recorro la lista obtenida y quiero calcular cuanto tiempo consume en
 		// cada maquina el ejecutar las tareas
@@ -175,8 +179,8 @@ public class HCTScheduling extends Problem {
 													// al total
 		}
 
-		solution.setObjective(0, makespan / 1000);
-		solution.setObjective(1, energy / 1000);
+		solution.setObjective(0, makespan);
+		solution.setObjective(1, energy);
 
 	}
 
