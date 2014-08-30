@@ -162,7 +162,7 @@ public class HCTScheduling extends Problem {
 																		// una
 																		// maquina
 				energiaMaquina += matriz_tiempo[i][te.estado][te.tarea]
-						* matriz_energia[i][te.estado] / 1000;// tiempo por
+						* matriz_energia[i][te.estado];// tiempo por
 																// energia/tiempo
 			}
 			energyNoIdle[i] = energiaMaquina;
@@ -174,7 +174,7 @@ public class HCTScheduling extends Problem {
 		}
 		for (int i = 0; i < cantidadMaquinas; i++) {
 			energy += energyNoIdle[i] + (makespan - tiempoNoIdle[i])
-					* matriz_energia_idle[i] / 1000;// el tiempo que quedo idle
+					* matriz_energia_idle[i];// el tiempo que quedo idle
 													// por la energia y se suma
 													// al total
 		}
