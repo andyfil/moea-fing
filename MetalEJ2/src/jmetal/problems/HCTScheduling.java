@@ -188,7 +188,7 @@ public class HCTScheduling extends Problem {
 
 		// Leo del archivo que tiene cantidad de operaciones por tarea
 		FileInputStream fis;
-		fis = new FileInputStream("C:\\instancia");
+		fis = new FileInputStream("instancia");
 		InputStreamReader isr = new InputStreamReader(fis);
 		// BufferedReader br = new BufferedReader(isr);
 		Scanner scan = new Scanner(isr);
@@ -209,7 +209,7 @@ public class HCTScheduling extends Problem {
 		// Leo del archivo que tiene la matriz_idle_frec_consumo_operaciones por
 		// maquinas
 		FileInputStream fis2;
-		fis2 = new FileInputStream("C:\\matriz_idle_frec_consumo_operaciones");
+		fis2 = new FileInputStream("matriz_idle_frec_consumo_operaciones");
 		InputStreamReader isr2 = new InputStreamReader(fis2);
 		Scanner scan2 = new Scanner(isr2);
 		long[] matriz_idle = new long[cantidadMaquinas];
