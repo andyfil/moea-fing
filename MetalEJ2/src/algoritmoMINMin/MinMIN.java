@@ -30,7 +30,7 @@ class TareasMaquina {
 public class MinMIN {
 
 	public static final int cant_tareas = 10000;
-	public static final int cant_maquinas = 20;
+	public static final int cant_maquinas = 10;
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {

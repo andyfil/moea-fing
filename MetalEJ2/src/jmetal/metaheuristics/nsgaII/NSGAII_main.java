@@ -120,7 +120,7 @@ public class NSGAII_main {
     // Crossover 
     parameters = new HashMap<String, Double>() ;
     parameters.put("crossoverProbability", 0.4);
-    crossover = CrossoverFactory.getCrossoverOperator("SinglePointTwoPointCrossover", parameters);  
+    crossover = CrossoverFactory.getCrossoverOperator("HCTCrossover", parameters);  
                   
 	// Mutation 
     HashMap<String,Double> parameters2 = new HashMap<String, Double>() ;

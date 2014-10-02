@@ -21,6 +21,7 @@
 
 package jmetal.operators.crossover;
 
+import jmetal.core.Operator;
 import jmetal.util.Configuration;
 import jmetal.util.JMException;
 
@@ -53,6 +54,8 @@ public class CrossoverFactory {
       return new BLXAlphaCrossover(parameters);
     else if (name.equalsIgnoreCase("SinglePointTwoPointCrossover"))
       return new SinglePointTwoPointCrossover(parameters);
+    else if (name.equalsIgnoreCase("HCTCrossover"))
+    	return new HCTCrossover(parameters);
     else {
       Configuration.logger_.severe("CrossoverFactory.getCrossoverOperator. " +
           "Operator '" + name + "' not found ");

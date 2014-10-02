@@ -90,7 +90,7 @@ public class NSGAII_Settings extends Settings {
     // Crossover 
     parameters = new HashMap<String, Double>() ;
     parameters.put("crossoverProbability", 0.9);
-    crossover = CrossoverFactory.getCrossoverOperator("SinglePointTwoPointCrossover", parameters);  
+    crossover = CrossoverFactory.getCrossoverOperator("HCTCrossover", parameters);  
     
     // Mutation 
     HashMap<String,Double> parameters2 = new HashMap<String, Double>() ;

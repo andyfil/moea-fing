@@ -15,15 +15,14 @@ import java.util.Scanner;
 import jmetal.core.Problem;
 import jmetal.core.Solution;
 import jmetal.encodings.solutionType.ArrayIntAndPermutationSolutionType;
-import jmetal.encodings.variable.ArrayInt;
-import jmetal.encodings.variable.Permutation;
 import jmetal.util.JMException;
+import jmetal.util.TareaEstado;
 
 @SuppressWarnings("serial")
 public class HCTScheduling extends Problem {
 
-	private int cantidadTareas = 0;
-	private int cantidadMaquinas = 0;
+	public int cantidadTareas = 0;
+	public int cantidadMaquinas = 0;
 	// por ahora se supone 4 estados 100% 80% 60% 40%
 	private int cantidadEstados = 0;// se supone que el estado más alto es el
 									// más rapido y más consumidor de energía
@@ -91,12 +90,10 @@ public class HCTScheduling extends Problem {
 				bw.write("m " + maq + " " + matriz_energia_idle[maq] + "\n");
 			bw.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// */
@@ -106,42 +103,12 @@ public class HCTScheduling extends Problem {
 
 	@Override
 	public void evaluate(Solution solution) throws JMException {
-		Permutation tareas;// guarda las tareas codificadas del 0 a cantTareas
-							// -1 y luego las maquinas como i- cantTareas
-		ArrayInt estados; // contiene el estado en que se realiza cada tarea
 		double makespan;
 		double energy = 0;
 		double[] energyNoIdle = new double[cantidadMaquinas];
 		double[] tiempoNoIdle = new double[cantidadMaquinas];
 		// maquina_tarea_estado: contiene estados para cada maquina
-		ArrayList<LinkedList<TareaEstado>> maquina_tarea_estado = new ArrayList<LinkedList<TareaEstado>>(
-				cantidadMaquinas);
-		for (int i = 0; i < cantidadMaquinas; i++)
-			maquina_tarea_estado.add(new LinkedList<TareaEstado>());// inicializo
-																	// el array
-																	// list
-		estados = (ArrayInt) solution.getDecisionVariables()[0];
-		tareas = (Permutation) solution.getDecisionVariables()[1];
-
-		// First function calculo de energía
-		int maqActual = 0;
-		int j = 0;
-		// recorro la permutación de tareas, y obtengo de la misma las tareas
-		// que se ejecutan en cada maquina y en que estado
-		try{
-		for (int i = 0; i < tareas.getLength(); i++) {
-			if (tareas.vector_[i] >= cantidadTareas) {
-				maqActual = tareas.vector_[i] - cantidadTareas + 1;
-			} else {
-				maquina_tarea_estado.get(maqActual)
-						.add(new TareaEstado(tareas.vector_[i], estados
-								.getValue(j)));
-				j++;
-			}
-		}
-		}catch (Exception e){
-			e.printStackTrace();
-		}
+		ArrayList<LinkedList<TareaEstado>> maquina_tarea_estado = ArrayIntAndPermutationSolutionType.solutionToMachineList(solution);
 		// recorro la lista obtenida y quiero calcular cuanto tiempo consume en
 		// cada maquina el ejecutar las tareas
 		makespan = 0;
@@ -217,15 +184,14 @@ public class HCTScheduling extends Problem {
 		long[][] consumo = new long[cantidadMaquinas][cantidadEstados];
 		long[][] operaciones = new long[cantidadMaquinas][cantidadEstados];
 
-		double energia_idle, frecuencia_maq, consumo_maq;
+		double energia_idle, consumo_maq;
 		long operaciones_maq;
-		int maq;
-		while (scan2.hasNext()) {
+		int maq =0;
+		while (scan2.hasNext() && maq < cantidadMaquinas) {
 			maq = scan2.nextInt();
 			energia_idle = scan2.nextDouble();
-			frecuencia_maq = scan2.nextDouble();
+			scan2.nextDouble();
 			matriz_idle[maq - 1] = (long) energia_idle;
-			// matriz_frec[maq-1] = frecuencia_maq;
 			for (int est = 0; est < cantidadEstados; est++) {
 				consumo_maq = scan2.nextDouble();
 				consumo[maq - 1][est] = (long) consumo_maq;
@@ -246,12 +212,10 @@ public class HCTScheduling extends Problem {
 		// bw.write("tarea  " + j + " " + "ops "+ ops_por_tarea[j] + "\n");
 		// bw.close();
 		// } catch (FileNotFoundException e) {
-		// // TODO Auto-generated catch block
 		// e.printStackTrace();
 		// }
 		//
 		// catch (IOException e) {
-		// // TODO Auto-generated catch block
 		// e.printStackTrace();
 		// }
 		/******************************************************************************************/
@@ -269,17 +233,14 @@ public class HCTScheduling extends Problem {
 		// }
 		// bw2.close();
 		// } catch (FileNotFoundException e) {
-		// // TODO Auto-generated catch block
 		// e.printStackTrace();
 		// }
 		//
 		// catch (IOException e) {
-		// // TODO Auto-generated catch block
 		// e.printStackTrace();
 		// }
 		/******************************************************************************************/
 
-		double factor = 0;
 		long ops_estado;
 		for (int m = 0; m < cantidadMaquinas; m++) {
 
@@ -297,13 +258,5 @@ public class HCTScheduling extends Problem {
 		}
 	}
 
-	private class TareaEstado {
-		public TareaEstado(int p_tarea, int p_estado) {
-			tarea = p_tarea;
-			estado = p_estado;
-		}
-
-		public int tarea;
-		public int estado;
-	}
+	
 }
