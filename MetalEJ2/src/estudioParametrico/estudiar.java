@@ -16,7 +16,7 @@ public class estudiar {
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		int cantAlgoritmos = 9;
-		int cantEjecuciones = 20;
+		int cantEjecuciones = 5;
 		double [] mejorM_alg = new double [cantAlgoritmos];
 		double [] mejorE_alg = new double [cantAlgoritmos];
 		for (int l=0; l<cantAlgoritmos; l++)
@@ -90,15 +90,15 @@ public class estudiar {
 					fis = new FileInputStream("C:\\HTCEstudio\\data\\" + alg + "\\HCTScheduling\\" + ejec);
 					InputStreamReader isr = new InputStreamReader(fis); 
 				    Scanner scan = new Scanner(isr);
-				    double makespan;
-				    double energy;
-				    double mejorM = 10000;
-				    double mejorE = 10000;
+				    long makespan;
+				    long energy;
+				    long mejorM = Long.MAX_VALUE;
+				    long mejorE = Long.MAX_VALUE;
 				    double peorM = 0;
 				    double peorE = 0;
 				    int cantidad = 0;
-				    double menor_distancia = 1000000;
-				    double distancia = 0;
+				    long menor_distancia = Long.MAX_VALUE;
+				    long distancia = 0;
 				    double res = 0;
 				    double sol_comp_x = 0;
 				    double sol_comp_y = 0;
@@ -108,7 +108,7 @@ public class estudiar {
 				    
 				    while (scan.hasNext()){
 				    	String token = scan.next();
-				    	makespan = Double.parseDouble(token);
+				    	makespan = (long) Double.parseDouble(token);
 				    	//acumuladorM += makespan;
 				    	if (makespan < mejorM)
 				    		mejorM = makespan;
@@ -116,7 +116,7 @@ public class estudiar {
 				    		peorM = makespan;
 				    	
 				    	token = scan.next();
-				    	energy = Double.parseDouble(token);
+				    	energy = (long) Double.parseDouble(token);
 				    	//acumuladorE += energy;
 				    	if (energy < mejorE)
 				    		mejorE = energy;
@@ -124,7 +124,8 @@ public class estudiar {
 				    		peorE = energy;
 				    	
 				    	res = Math.pow(makespan-x,2) + Math.pow(energy-y, 2);
-				    	distancia = Math.sqrt(res);
+				    	distancia = (long) Math.sqrt(res);
+				    	System.out.println("Ejecucion: " + ejec + ", distancia : " + distancia);
 				    	
 				    	// Pregunto si es mejor distancia
 				    	if (distancia < menor_distancia){
@@ -143,6 +144,7 @@ public class estudiar {
 				    	
 				    	cantidad++;
 				    }
+				    System.out.println("Menor distancia : " + menor_distancia);
 				    //promedioM = acumuladorM / cantidad;
 				    //promedioE = acumuladorE / cantidad;
 				    // Promedio de distancia de soluciones de compromiso
