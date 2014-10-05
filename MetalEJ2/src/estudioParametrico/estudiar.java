@@ -15,8 +15,8 @@ public class estudiar {
 	private static int [] index_orders;	
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		int cantAlgoritmos = 9;
-		int cantEjecuciones = 5;
+		int cantAlgoritmos = 3;
+		int cantEjecuciones = 20;
 		double [] mejorM_alg = new double [cantAlgoritmos];
 		double [] mejorE_alg = new double [cantAlgoritmos];
 		for (int l=0; l<cantAlgoritmos; l++)
@@ -37,19 +37,19 @@ public class estudiar {
 	    
 	    // Leo de archivo el frente de pareto de referencia: "HCTScheduling.rf"
 		FileInputStream fisRF;
-		fisRF = new FileInputStream("C:\\HTCEstudio\\referenceFronts\\HCTScheduling.rf");
+		fisRF = new FileInputStream("C:\\HTCEstudioPoblacion\\referenceFronts\\HCTScheduling.rf");
 		InputStreamReader isrRF = new InputStreamReader(fisRF);
 	    Scanner scanRF = new Scanner(isrRF);
 	    int iRF = 0;
-	    double makespanRF;
-	    double energyRF;
-	    double [][] paretoRF = new double[1000][2]; // Array con el frente de pareto real de todas las ejecuciones
+	    float makespanRF;
+	    float energyRF;
+	    float [][] paretoRF = new float[1000][2]; // Array con el frente de pareto real de todas las ejecuciones
 	    while (scanRF.hasNext()){
 	    	String tokenRF = scanRF.next();
-	    	makespanRF = Double.parseDouble(tokenRF);
+	    	makespanRF = Float.parseFloat(tokenRF);
 	    	
 	    	tokenRF = scanRF.next();
-	    	energyRF = Double.parseDouble(tokenRF);
+	    	energyRF = (float) Double.parseDouble(tokenRF);
 	    	
 	    	paretoRF[iRF][0] = makespanRF;
 	    	paretoRF[iRF][1] = energyRF;
@@ -63,7 +63,7 @@ public class estudiar {
 	    
 		FileOutputStream fos;
 		try {
-			fos = new FileOutputStream("C:\\HTCEstudio\\estudio");
+			fos = new FileOutputStream("C:\\HTCEstudioPoblacion\\estudio");
 			OutputStreamWriter osw = new OutputStreamWriter(fos)    ;
 			BufferedWriter bw      = new BufferedWriter(osw); 
 		    
@@ -87,15 +87,15 @@ public class estudiar {
 					numEjec = Integer.toString(j);
 					String ejec = "FUN.";
 					ejec = ejec.concat(numEjec);
-					fis = new FileInputStream("C:\\HTCEstudio\\data\\" + alg + "\\HCTScheduling\\" + ejec);
+					fis = new FileInputStream("C:\\HTCEstudioPoblacion\\data\\" + alg + "\\HCTScheduling\\" + ejec);
 					InputStreamReader isr = new InputStreamReader(fis); 
 				    Scanner scan = new Scanner(isr);
 				    long makespan;
-				    long energy;
-				    long mejorM = Long.MAX_VALUE;
-				    long mejorE = Long.MAX_VALUE;
+				    float energy;
+				    double mejorM = Double.MAX_VALUE;
+				    float mejorE = Float.MAX_VALUE;
 				    double peorM = 0;
-				    double peorE = 0;
+				    float peorE = 0;
 				    int cantidad = 0;
 				    long menor_distancia = Long.MAX_VALUE;
 				    long distancia = 0;
@@ -116,7 +116,7 @@ public class estudiar {
 				    		peorM = makespan;
 				    	
 				    	token = scan.next();
-				    	energy = (long) Double.parseDouble(token);
+				    	energy = (float) Float.parseFloat(token);
 				    	//acumuladorE += energy;
 				    	if (energy < mejorE)
 				    		mejorE = energy;
@@ -263,7 +263,7 @@ public class estudiar {
 		index_orders = orderIntIndex(sol_alg, auxiliarND);
 		FileOutputStream fosND;
 		try {
-			fosND = new FileOutputStream("C:\\HTCEstudio\\Orden Alg por #ND en FPrf");
+			fosND = new FileOutputStream("C:\\HTCEstudioPoblacion\\Orden Alg por #ND en FPrf");
 			OutputStreamWriter oswND = new OutputStreamWriter(fosND);
 			BufferedWriter bwND      = new BufferedWriter(oswND);
 			String numAlg = ""; 
@@ -294,7 +294,7 @@ public class estudiar {
 		index_orders = orderDoubleIndex(promedio_compromiso, auxiliarSC);
 		FileOutputStream fosSC;
 		try {
-			fosSC = new FileOutputStream("C:\\HTCEstudio\\Orden Alg por distancia SC");
+			fosSC = new FileOutputStream("C:\\HTCEstudioPoblacion\\Orden Alg por distancia SC");
 			OutputStreamWriter oswSC = new OutputStreamWriter(fosSC);
 			BufferedWriter bwSC      = new BufferedWriter(oswSC);
 			String numAlg = ""; 
@@ -319,7 +319,7 @@ public class estudiar {
 		//NSGAII1, run: 0 -> Tiempo de inicio : 1408485191622
 		//NSGAII3, run: 0 -> Tiempo de fin : 6911
 		FileInputStream fist;
-		fist = new FileInputStream("C:\\HTCEstudio\\tiempos_de_ejecuciones");
+		fist = new FileInputStream("C:\\HTCEstudioPoblacion\\tiempos_de_ejecuciones");
 		InputStreamReader isrt = new InputStreamReader(fist);
 		Scanner scant = new Scanner(isrt);
 		String token, token_if = "";
@@ -366,7 +366,7 @@ public class estudiar {
 			System.out.println(index_orders[i]);
 		FileOutputStream fost;
 		try {
-			fost = new FileOutputStream("C:\\HTCEstudio\\Orden Alg por tiempo");
+			fost = new FileOutputStream("C:\\HTCEstudioPoblacion\\Orden Alg por tiempo");
 			OutputStreamWriter oswt = new OutputStreamWriter(fost);
 			BufferedWriter bwt      = new BufferedWriter(oswt);
 			String numAlg = ""; 
