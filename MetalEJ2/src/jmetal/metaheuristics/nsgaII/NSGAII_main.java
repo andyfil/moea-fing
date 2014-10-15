@@ -104,14 +104,14 @@ public class NSGAII_main {
       //problem = new Kursawe("Real", 3);
       //problem = new Kursawe("BinaryReal", 3);
       //problem = new Water("Real");
-      problem = new HCTScheduling(1000, 10,4);
+      problem = new HCTScheduling(10, 3,4);
       //problem = new ConstrEx("Real");
       //problem = new DTLZ1("Real");
       //problem = new OKA2("Real") ;
     } // else
-    IParallelEvaluator paralelEvaluator_ = new MultithreadedEvaluator(4);
-    algorithm = new pNSGAII(problem,paralelEvaluator_);
-    //algorithm = new ssNSGAII(problem);
+    //IParallelEvaluator paralelEvaluator_ = new MultithreadedEvaluator(4);
+    //algorithm = new pNSGAII(problem,paralelEvaluator_);
+    algorithm = new NSGAII(problem);
 
     // Algorithm parameters
     algorithm.setInputParameter("populationSize",50);
