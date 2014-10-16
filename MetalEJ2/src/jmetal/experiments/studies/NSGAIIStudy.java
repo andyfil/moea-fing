@@ -21,19 +21,18 @@
 
 package jmetal.experiments.studies;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import jmetal.core.Algorithm;
 import jmetal.experiments.Experiment;
 import jmetal.experiments.Settings;
 import jmetal.experiments.settings.NSGAII_Settings;
 import jmetal.experiments.util.Friedman;
 import jmetal.util.JMException;
-
-import java.io.Console;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Class implementing an example of experiment using NSGA-II as base algorithm.
@@ -65,7 +64,9 @@ public class NSGAIIStudy extends Experiment {
 				parameters[i] = new HashMap();
 			} // for
 
-/*			// NSGAII0: crossoverProbability-> 0.4 |  mutationProbability-> 0.01 | populationSize-> 50
+/*			
+  			// Todas las combinaciones existentes con cruzameinto, mutacion y tamaño de poblacion (3^3=27)
+ 			// NSGAII0: crossoverProbability-> 0.4 |  mutationProbability-> 0.01 | populationSize-> 50
 			parameters[0].put("crossoverProbability_", 0.4);
 			parameters[0].put("mutationProbability_", 0.01);
 			parameters[0].put("populationSize_", 50);
@@ -173,7 +174,7 @@ public class NSGAIIStudy extends Experiment {
 			parameters[26].put("crossoverProbability_", 0.8);
 			parameters[26].put("mutationProbability_", 0.1);
 			parameters[26].put("populationSize_", 200);
-
+*/
 			// Combino las probabilidades de cruzamiento y mutacion con poblacion fija
 			// NSGAII0: crossoverProbability-> 0.4 |  mutationProbability-> 0.01 | populationSize-> 50
 			parameters[0].put("crossoverProbability_", 0.4);
@@ -211,21 +212,21 @@ public class NSGAIIStudy extends Experiment {
 			parameters[8].put("crossoverProbability_", 0.8);
 			parameters[8].put("mutationProbability_", 0.1);
 			parameters[8].put("populationSize_", 50);
-*/			
+/*			
 			// Realizo el estudio variando el tamaño de la poblacion
 			// NSGAII0: crossoverProbability-> 0.6 |  mutationProbability-> 0.05 | populationSize-> 50
-			parameters[0].put("crossoverProbability_", 0.6);
+			parameters[0].put("crossoverProbability_", 0.4);
 			parameters[0].put("mutationProbability_", 0.05);
 			parameters[0].put("populationSize_", 50);
 			// NSGAII1: crossoverProbability-> 0.6 |  mutationProbability-> 0.05 | populationSize-> 100
-			parameters[1].put("crossoverProbability_", 0.6);
+			parameters[1].put("crossoverProbability_", 0.4);
 			parameters[1].put("mutationProbability_", 0.05);
 			parameters[1].put("populationSize_", 100);
 			// NSGAII2: crossoverProbability-> 0.6 |  mutationProbability-> 0.05 | populationSize-> 200
-			parameters[2].put("crossoverProbability_", 0.6);
+			parameters[2].put("crossoverProbability_", 0.4);
 			parameters[2].put("mutationProbability_", 0.05);
 			parameters[2].put("populationSize_", 200);
-			
+*/		
 			for (int i = 0; i < numberOfAlgorithms; i++)
 				algorithm[i] = new NSGAII_Settings(problemName)
 						.configure(parameters[i]);
@@ -245,19 +246,21 @@ public class NSGAIIStudy extends Experiment {
 	public static void main(String[] args) throws JMException, IOException {
 		NSGAIIStudy exp = new NSGAIIStudy(); // exp = experiment
 
-		exp.experimentName_ = "HTCEstudio";
+		exp.experimentName_ = "HCTEstudio";
 /*		exp.algorithmNameList_ = new String[] { "NSGAII0", "NSGAII1",
 				"NSGAII2", "NSGAII3","NSGAII4","NSGAII5","NSGAII6","NSGAII7","NSGAII8", "NSGAII9", "NSGAII10",
 				"NSGAII11", "NSGAII12","NSGAII13","NSGAII14","NSGAII15","NSGAII16","NSGAII17", "NSGAII18", "NSGAII19",
 				"NSGAII20", "NSGAII21","NSGAII22","NSGAII23","NSGAII24","NSGAII25","NSGAII26" };
-
-		// Defino para los 9 algoritmos (9 combinaciones)
+*/
+/*		// Defino para los 9 algoritmos (9 combinaciones)
 		exp.algorithmNameList_ = new String[] { "NSGAII0", "NSGAII1",
 				"NSGAII2", "NSGAII3","NSGAII4","NSGAII5","NSGAII6","NSGAII7","NSGAII8" };
 */
+
 		// Defino para los 3 algoritmos (vario poblacion)
 				exp.algorithmNameList_ = new String[] { "NSGAII0", "NSGAII1",
-						"NSGAII2"};
+						"NSGAII2", "NSGAII3", "NSGAII4",
+						"NSGAII5", "NSGAII6", "NSGAII7", "NSGAII8"};
 		exp.problemList_ = new String[] { "HCTScheduling" };
 		exp.paretoFrontFile_ = new String [1];
 		exp.indicatorList_ = new String[] { "HV", "SPREAD", "IGD", "EPSILON" };
@@ -265,19 +268,20 @@ public class NSGAIIStudy extends Experiment {
 		int numberOfAlgorithms = exp.algorithmNameList_.length;
 
 		exp.experimentBaseDirectory_ = "C:\\"
-				+ exp.experimentName_;
+				+ exp.experimentName_; // Escribo el resultado del estudio en el disco C
 		exp.paretoFrontDirectory_ = "";
 
+		// Utiliza el NSGAII_Settings! Cambiarlo para que tome nuestro operador de cruzamiento: HCTCrossover
 		exp.algorithmSettings_ = new Settings[numberOfAlgorithms];
 
-		exp.independentRuns_ = 5;
+		exp.independentRuns_ = 20;
 
 		exp.initExperiment();
 
 		// Run the experiments
 		long initTime = System.currentTimeMillis();
 		exp.runExperiment(4);
-		System.out.println("Tiempo total del algoritmo");
+		System.out.println("Tiempo total del experimento");
 		System.out.println(System.currentTimeMillis()-initTime);
 
 		exp.generateQualityIndicators();
