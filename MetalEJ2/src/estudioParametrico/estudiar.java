@@ -10,12 +10,14 @@ import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import com.sun.javafx.geom.transform.CanTransformVec3d;
+
 public class estudiar {
 
 	private static int [] index_orders;	
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		int cantAlgoritmos = 3;
+		int cantAlgoritmos = 9;
 		int cantEjecuciones = 20;
 		double [] mejorM_alg = new double [cantAlgoritmos];
 		double [] mejorE_alg = new double [cantAlgoritmos];
@@ -37,7 +39,7 @@ public class estudiar {
 	    
 	    // Leo de archivo el frente de pareto de referencia: "HCTScheduling.rf"
 		FileInputStream fisRF;
-		fisRF = new FileInputStream("C:\\HTCEstudioPoblacion\\referenceFronts\\HCTScheduling.rf");
+		fisRF = new FileInputStream("C:\\HCTEstudio\\referenceFronts\\HCTScheduling.rf");
 		InputStreamReader isrRF = new InputStreamReader(fisRF);
 	    Scanner scanRF = new Scanner(isrRF);
 	    int iRF = 0;
@@ -63,7 +65,7 @@ public class estudiar {
 	    
 		FileOutputStream fos;
 		try {
-			fos = new FileOutputStream("C:\\HTCEstudioPoblacion\\estudio");
+			fos = new FileOutputStream("C:\\HCTEstudio\\estudio");
 			OutputStreamWriter osw = new OutputStreamWriter(fos)    ;
 			BufferedWriter bw      = new BufferedWriter(osw); 
 		    
@@ -74,7 +76,7 @@ public class estudiar {
 				numAlg = Integer.toString(i);
 				String alg = "NSGAII";
 				alg = alg.concat(numAlg);
-				//System.out.println("****Algoritmo " + alg + "****");
+				System.out.println("****Algoritmo " + alg + "****");
 				bw.write("****Algoritmo " + alg + "****\n");
 				
 				// Busco el mejor valor, promedio y peor de cada ejecucion para un algoritmo
@@ -87,13 +89,15 @@ public class estudiar {
 					numEjec = Integer.toString(j);
 					String ejec = "FUN.";
 					ejec = ejec.concat(numEjec);
-					fis = new FileInputStream("C:\\HTCEstudioPoblacion\\data\\" + alg + "\\HCTScheduling\\" + ejec);
+					fis = new FileInputStream("C:\\HCTEstudio\\data\\" + alg + "\\HCTScheduling\\" + ejec);
 					InputStreamReader isr = new InputStreamReader(fis); 
 				    Scanner scan = new Scanner(isr);
 				    long makespan;
 				    float energy;
 				    double mejorM = Double.MAX_VALUE;
 				    float mejorE = Float.MAX_VALUE;
+				    double acumuladorM = 0;
+				    float acumuladorE = 0;
 				    double peorM = 0;
 				    float peorE = 0;
 				    int cantidad = 0;
@@ -109,7 +113,7 @@ public class estudiar {
 				    while (scan.hasNext()){
 				    	String token = scan.next();
 				    	makespan = (long) Double.parseDouble(token);
-				    	//acumuladorM += makespan;
+				    	acumuladorM += makespan;
 				    	if (makespan < mejorM)
 				    		mejorM = makespan;
 				    	if (makespan > peorM)
@@ -117,7 +121,7 @@ public class estudiar {
 				    	
 				    	token = scan.next();
 				    	energy = (float) Float.parseFloat(token);
-				    	//acumuladorE += energy;
+				    	acumuladorE += energy;
 				    	if (energy < mejorE)
 				    		mejorE = energy;
 				    	if (energy > peorE)
@@ -145,8 +149,8 @@ public class estudiar {
 				    	cantidad++;
 				    }
 				    System.out.println("Menor distancia : " + menor_distancia);
-				    //promedioM = acumuladorM / cantidad;
-				    //promedioE = acumuladorE / cantidad;
+				    double promedioM = acumuladorM / cantidad;
+				    float promedioE = acumuladorE / cantidad;
 				    // Promedio de distancia de soluciones de compromiso
 				    total_distancias += menor_distancia;
 				    
@@ -181,10 +185,10 @@ public class estudiar {
 /*					// Salida a consola
 					System.out.println(ejec + ":");
 				    System.out.println("Mejor makespan: " + mejorM);
-				    System.out.println("Mejor energy: " + mejorE);
+				    System.out.println("Mejor energy: " + mejorE);*/
 				    System.out.println("Promedio makespan " + promedioM);
 				    System.out.println("Promedio energy " + promedioE);
-				    System.out.println("Peor makespan " + peorM);
+				  /*  System.out.println("Peor makespan " + peorM);
 				    System.out.println("Peor energy " + peorE);
 				    System.out.println("Mejor cantidad de iteraciones " + mejorI_alg[i]);
 				    System.out.println("Promedio cantidad de iteraciones " + promedioI_alg[i]);
@@ -263,7 +267,7 @@ public class estudiar {
 		index_orders = orderIntIndex(sol_alg, auxiliarND);
 		FileOutputStream fosND;
 		try {
-			fosND = new FileOutputStream("C:\\HTCEstudioPoblacion\\Orden Alg por #ND en FPrf");
+			fosND = new FileOutputStream("C:\\HCTEstudio\\Orden Alg por #ND en FPrf");
 			OutputStreamWriter oswND = new OutputStreamWriter(fosND);
 			BufferedWriter bwND      = new BufferedWriter(oswND);
 			String numAlg = ""; 
@@ -294,7 +298,7 @@ public class estudiar {
 		index_orders = orderDoubleIndex(promedio_compromiso, auxiliarSC);
 		FileOutputStream fosSC;
 		try {
-			fosSC = new FileOutputStream("C:\\HTCEstudioPoblacion\\Orden Alg por distancia SC");
+			fosSC = new FileOutputStream("C:\\HCTEstudio\\Orden Alg por distancia SC");
 			OutputStreamWriter oswSC = new OutputStreamWriter(fosSC);
 			BufferedWriter bwSC      = new BufferedWriter(oswSC);
 			String numAlg = ""; 
@@ -319,7 +323,7 @@ public class estudiar {
 		//NSGAII1, run: 0 -> Tiempo de inicio : 1408485191622
 		//NSGAII3, run: 0 -> Tiempo de fin : 6911
 		FileInputStream fist;
-		fist = new FileInputStream("C:\\HTCEstudioPoblacion\\tiempos_de_ejecuciones");
+		fist = new FileInputStream("C:\\HCTEstudio\\tiempos_de_ejecuciones");
 		InputStreamReader isrt = new InputStreamReader(fist);
 		Scanner scant = new Scanner(isrt);
 		String token, token_if = "";
@@ -346,6 +350,7 @@ public class estudiar {
 			
 		}
 		scant.close();
+		imprimirTiempoDeFinPorAlgPorEjec(matriz_tiempos, cantAlgoritmos, cantEjecuciones);
 		double [][] auxiliar_tiempos = new double [cantAlgoritmos][cantEjecuciones];
 		// Tiempos por algoritmos
 		double [] totales_tiempos = new double [cantAlgoritmos];
@@ -366,7 +371,7 @@ public class estudiar {
 			System.out.println(index_orders[i]);
 		FileOutputStream fost;
 		try {
-			fost = new FileOutputStream("C:\\HTCEstudioPoblacion\\Orden Alg por tiempo");
+			fost = new FileOutputStream("C:\\HCTEstudio\\Orden Alg por tiempo");
 			OutputStreamWriter oswt = new OutputStreamWriter(fost);
 			BufferedWriter bwt      = new BufferedWriter(oswt);
 			String numAlg = ""; 
@@ -389,6 +394,36 @@ public class estudiar {
 		}
 		
 	} // main
+
+	private static void imprimirTiempoDeFinPorAlgPorEjec(
+			double[][] matriz_tiempos, int cantAlgoritmos, int cantEjecuciones) {
+		FileOutputStream fosMT;
+		try {
+			fosMT = new FileOutputStream("C:\\HCTEstudio\\Tiempos Fin ALG x EJEC");
+			OutputStreamWriter oswMT = new OutputStreamWriter(fosMT);
+			BufferedWriter bwMT      = new BufferedWriter(oswMT);
+			String numAlg = ""; 
+			for (int i = 0; i < cantAlgoritmos; i++){
+				String alg = "NSGAII";
+				numAlg = Integer.toString(i);
+				alg = alg.concat(numAlg);
+				bwMT.write("****Algoritmo " + alg + "****\n");
+				for (int j = 0; j < cantEjecuciones; j++) 
+					
+					/*bwMT.write("Tiempo de duracion de ejecucion " + j + " : " +*/bwMT.write(matriz_tiempos[i][j] + "\n");
+					//bwMT.write("\n");
+			}
+			
+			bwMT.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 	@SuppressWarnings("unused")
 	private static double[] invertDoubleArray(double[] array) {
