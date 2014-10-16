@@ -19,6 +19,8 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package jmetal.metaheuristics.singleObjective.cmaes;
 
+import java.io.FileNotFoundException;
+
 import jmetal.core.Algorithm;
 import jmetal.core.Problem;
 import jmetal.core.SolutionSet;
@@ -30,7 +32,7 @@ import jmetal.util.JMException;
  */
 public class CMAES_main {
 
-  public static void main(String [] args) throws JMException, ClassNotFoundException {
+  public static void main(String [] args) throws JMException, ClassNotFoundException, FileNotFoundException {
     int numberOfVariables = 20;
     int populationSize = 10;
     int maxEvaluations = 1000000;
