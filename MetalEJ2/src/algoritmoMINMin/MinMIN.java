@@ -2,7 +2,6 @@ package algoritmoMINMin;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import jmetal.core.Solution;
@@ -29,8 +28,8 @@ class TareasMaquina {
 
 public class MinMIN {
 
-	public static final int cant_tareas = 10000;
-	public static final int cant_maquinas = 10;
+	public static final int cant_tareas = 1000;
+	public static final int cant_maquinas = 20;
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
@@ -62,7 +61,7 @@ public class MinMIN {
 			// en realacion a la energía que consume
 			while (!listaTareas.isEmpty()) {
 				Tarea candidate = null;
-				long candidate_value = Long.MAX_VALUE;
+				double candidate_value = Double.MAX_VALUE;
 				for (int i = 0; i < listaTareas.size(); i++) {
 					Tarea _tarea = listaTareas.get(i);
 					int mejor_maquina_tarea = -1;
@@ -78,7 +77,7 @@ public class MinMIN {
 					}
 					_tarea.mejor_maquina = mejor_maquina_tarea;
 					_tarea.mejor_estado = 0;
-					long _tarea_energy_value = _hct.matriz_tiempo[_tarea.mejor_maquina][0][_tarea.tarea]
+					double _tarea_energy_value = _hct.matriz_tiempo[_tarea.mejor_maquina][0][_tarea.tarea]
 							* _hct.matriz_energia[_tarea.mejor_maquina][0];
 					if (_tarea_energy_value <= candidate_value) {
 						candidate = _tarea;
@@ -151,9 +150,9 @@ public class MinMIN {
 	// gasto energético
 	public static int EvaluateEnergy(HCTScheduling p_hct, int p_tarea) {
 		int candidate = -1;
-		long candidate_value = Long.MAX_VALUE;
+		double candidate_value = Double.MAX_VALUE;
 		for (int maq = 0; maq < cant_maquinas; maq++) {
-			long maq_value = p_hct.matriz_tiempo[maq][0][p_tarea]
+			double maq_value = p_hct.matriz_tiempo[maq][0][p_tarea]
 					* p_hct.matriz_energia[maq][0];
 			if (maq_value <= candidate_value) {
 				candidate = maq;
