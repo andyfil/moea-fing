@@ -56,12 +56,12 @@ public class NSGAII_Settings extends Settings {
   public NSGAII_Settings(String problem) throws FileNotFoundException {
     super(problem) ;
 
-    problem_ = new HCTScheduling(1000,10,4);
+    problem_ = new HCTScheduling(1000,20,4);
     // Default experiments.settings
     populationSize_              = 50   ;
     maxEvaluations_              = 25000 ;
     mutationProbability_         = 0.1;
-    crossoverProbability_        = 0.9   ;
+    crossoverProbability_        = 0.3   ;
   } // NSGAII_Settings
 
 
@@ -89,8 +89,9 @@ public class NSGAII_Settings extends Settings {
 
     // Crossover 
     parameters = new HashMap<String, Double>() ;
-    parameters.put("crossoverProbability", 0.9);
-    crossover = CrossoverFactory.getCrossoverOperator("HCTCrossover", parameters);  
+    parameters.put("crossoverProbability", 0.3);
+    crossover = CrossoverFactory.getCrossoverOperator("HCTCrossover", parameters);
+    //crossover = CrossoverFactory.getCrossoverOperator("SinglePointTwoPointCrossover", parameters);
     
     // Mutation 
     HashMap<String,Double> parameters2 = new HashMap<String, Double>() ;
