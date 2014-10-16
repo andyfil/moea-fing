@@ -27,8 +27,8 @@ public class HCTScheduling extends Problem {
 	private int cantidadEstados = 0;// se supone que el estado más alto es el
 									// más rapido y más consumidor de energía
 	public long[][][] matriz_tiempo;// maquina_estado_tarea = militiempo
-	public long[][] matriz_energia;// maquina_energia = energia/segundo
-	public long[] matriz_energia_idle;// consumo de cada maquina en estado idle
+	public double[][] matriz_energia;// maquina_energia = energia/segundo
+	public double[] matriz_energia_idle;// consumo de cada maquina en estado idle
 
 	public HCTScheduling() {
 
@@ -64,8 +64,8 @@ public class HCTScheduling extends Problem {
 		cantidadMaquinas = cant_maquinas;
 		cantidadEstados = cant_estados;
 		matriz_tiempo = new long[cantidadMaquinas][cantidadEstados][cantidadTareas];
-		matriz_energia = new long[cantidadMaquinas][cantidadEstados];
-		matriz_energia_idle = new long[cantidadMaquinas];
+		matriz_energia = new double[cantidadMaquinas][cantidadEstados];
+		matriz_energia_idle = new double[cantidadMaquinas];
 		populateMatriz();
 		// /*
 		FileOutputStream fos;
@@ -181,7 +181,7 @@ public class HCTScheduling extends Problem {
 		Scanner scan2 = new Scanner(isr2);
 		long[] matriz_idle = new long[cantidadMaquinas];
 		// double[] matriz_frec = new double[cantidadMaquinas];
-		long[][] consumo = new long[cantidadMaquinas][cantidadEstados];
+		double[][] consumo = new double[cantidadMaquinas][cantidadEstados];
 		long[][] operaciones = new long[cantidadMaquinas][cantidadEstados];
 
 		double energia_idle, consumo_maq;
@@ -194,7 +194,7 @@ public class HCTScheduling extends Problem {
 			matriz_idle[maq - 1] = (long) energia_idle;
 			for (int est = 0; est < cantidadEstados; est++) {
 				consumo_maq = scan2.nextDouble();
-				consumo[maq - 1][est] = (long) consumo_maq;
+				consumo[maq - 1][est] = consumo_maq;
 				operaciones_maq = scan2.nextLong();
 				operaciones[maq - 1][est] = (long) operaciones_maq;
 			}
