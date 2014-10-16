@@ -10,8 +10,6 @@ import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import com.sun.javafx.geom.transform.CanTransformVec3d;
-
 public class estudiar {
 
 	private static int [] index_orders;	

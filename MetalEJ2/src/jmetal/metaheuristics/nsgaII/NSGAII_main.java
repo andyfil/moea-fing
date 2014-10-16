@@ -104,28 +104,30 @@ public class NSGAII_main {
       //problem = new Kursawe("Real", 3);
       //problem = new Kursawe("BinaryReal", 3);
       //problem = new Water("Real");
-      problem = new HCTScheduling(10, 3,4);
+      problem = new HCTScheduling(1000, 20,4);
       //problem = new ConstrEx("Real");
       //problem = new DTLZ1("Real");
       //problem = new OKA2("Real") ;
     } // else
-    //IParallelEvaluator paralelEvaluator_ = new MultithreadedEvaluator(4);
-    //algorithm = new pNSGAII(problem,paralelEvaluator_);
+    /*IParallelEvaluator paralelEvaluator_ = new MultithreadedEvaluator(4);
+    algorithm = new pNSGAII(problem,paralelEvaluator_);*/
+    //algorithm = new ssNSGAII(problem);
     algorithm = new NSGAII(problem);
-
+    
     // Algorithm parameters
     algorithm.setInputParameter("populationSize",50);
     algorithm.setInputParameter("maxEvaluations",250000);
 
     // Crossover 
     parameters = new HashMap<String, Double>() ;
-    parameters.put("crossoverProbability", 0.4);
-    crossover = CrossoverFactory.getCrossoverOperator("HCTCrossover", parameters);  
+    parameters.put("crossoverProbability", 0.3);
+    crossover = CrossoverFactory.getCrossoverOperator("HCTCrossover", parameters);
+    //crossover = CrossoverFactory.getCrossoverOperator("SinglePointTwoPointCrossover", parameters);
                   
 	// Mutation 
     HashMap<String,Double> parameters2 = new HashMap<String, Double>() ;
-    parameters2.put("intMutationProbability", 0.3);
-    parameters2.put("permutationMutationProbability", 0.3);
+    parameters2.put("intMutationProbability", 0.1);
+    parameters2.put("permutationMutationProbability", 0.1);
     mutation= MutationFactory.getMutationOperator("BitFlipSwapMutation", parameters2);   
 
     // Selection Operator 
@@ -142,9 +144,11 @@ public class NSGAII_main {
     
     // Execute the Algorithm
     long initTime = System.currentTimeMillis();
+    System.out.print("Tiempo de inicio: ");
     System.out.println(initTime);
     SolutionSet population = algorithm.execute();
     long estimatedTime = System.currentTimeMillis() - initTime;
+    System.out.print("Duracion: ");
     System.out.println(estimatedTime);
     
     
