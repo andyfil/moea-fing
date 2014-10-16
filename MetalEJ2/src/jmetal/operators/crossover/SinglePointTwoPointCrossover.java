@@ -178,7 +178,8 @@ public class SinglePointTwoPointCrossover extends Crossover {
 		} // if 
 		Solution [] offSpring;
 		offSpring = doCrossover(crossoverProbability_,parents[0], parents[1]);
-
+		
+		System.out.println("UTILIZA EL OPERADOR SINGLEPOINTTWOPOINTCROSSOVER");
 		return offSpring ;
 	} // execute
 
