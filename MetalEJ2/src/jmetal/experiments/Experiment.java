@@ -559,6 +559,7 @@ public abstract class Experiment {
     String latexFile = latexDirectory_ + "/" + experimentName_ + ".tex";
     printHeaderLatexCommands(latexFile);
     for (int i = 0; i < indicatorList_.length; i++) {
+    	
       printMeanStdDev(latexFile, i, mean, stdDeviation);
       printMedianIQR(latexFile, i, median, iqr);
     } // for
@@ -665,8 +666,14 @@ public abstract class Experiment {
     os.write("\\begin{tabular}{l");
 
     // calculate the number of columns
+    int ii = 0;
     for (String anAlgorithmNameList_ : algorithmNameList_) {
-      os.write("l");
+    	ii++;
+    	os.write("l");
+    	if ((ii / 4) == 0){
+    		ii = 0;
+    		os.write("}\n");
+    	}
     }
     os.write("}\n");
 
@@ -778,8 +785,14 @@ public abstract class Experiment {
     os.write("\\begin{tabular}{l");
 
     // calculate the number of columns
+    int iii = 0;
     for (String anAlgorithmNameList_ : algorithmNameList_) {
-      os.write("l");
+    	iii++;
+    	os.write("l");
+    	if ((iii / 4) == 0){
+    		iii = 0;
+    		os.write("}\n");
+    	}
     }
     os.write("}\n");
 
