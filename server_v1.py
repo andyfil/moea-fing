@@ -25,9 +25,7 @@ class BDHandler():
 		try:
 			csv = "'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}'".format(jdata['pc'],jdata['timestamp'],jdata['state'],jdata['on_time'],jdata['users'],jdata['process'],jdata['process_active'],jdata['process_sleep'],jdata['process_per_user'],jdata['cpu_use'],jdata['memory_use'])
 			query = "INSERT INTO datos 	(`pc`,`timestamp`,`state`,`on_time`,`users`,`process`, `process_active`,`process_sleep`, `process_per_user`,`cpu_use`,`memory_use`) VALUES	("+ csv+ ");"
-			#query = "INSERT INTO `proy`.`datos` (`pc`) VALUES ('pc23');"
-			print 'ejecute comando'
-			print self.cursor.execute(query)
+			self.cursor.execute(query)
 			self.connection.commit()
 		except:
 			self.connection.rollback()
@@ -44,16 +42,6 @@ class FileHandler():
 		
 	
 	def saveJson(self,jdata):
-		print(jdata['pc'])
-		print(jdata['timestamp'])
-		print(jdata['state'])
-		print(jdata['on_time'])
-		print(jdata['users'])
-		print(jdata['process'])
-		print(jdata['process_active'])
-		print(jdata['process_sleep'])
-		print(jdata['cpu_use'])
-		print(jdata['memory_use'])
 		csv = '{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10}\n'.format(jdata['pc'],jdata['timestamp'],jdata['state'],jdata['on_time'],jdata['users'],jdata['process'],jdata['process_active'],jdata['process_sleep'],jdata['process_per_user'],jdata['cpu_use'],jdata['memory_use'])
 		self.f.write(csv) 
 
