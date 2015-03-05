@@ -2,17 +2,17 @@ import SocketServer
 import json
 import MySQLdb
 
-TCP_IP = '127.0.0.1' #direccion ip donde escucha
+TCP_IP = '' #direccion ip donde escucha se deja vacia para escuchar en todas
 TCP_PORT = 5005 #puerto donde escucha
 BUFFER_SIZE = 1024  #tamano del buffer, ajustarlo al tamano maximo del paquete json
 datos = []
 
 
 class BDHandler():
-	host = 'localhost'
-	user = 'root'
-	password = 'root'
-	db = 'proy'
+	host = 'fingproy.cloudapp.net'
+	user = 'user'
+	password = 'user'
+	db = 'fing'
     
 	def __init__(self):
 		self.connection = MySQLdb.connect(self.host, self.user, self.password, self.db)

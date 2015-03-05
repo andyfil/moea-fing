@@ -30,7 +30,7 @@ while 1:
 	tokens = secondLine[1].split()
 	JSON += '"process_active": ' + tokens[1] + "," + "\n"
 	tokens = secondLine[2].split()
-	JSON += '"process_Sleep": ' + tokens[1] + "," + "\n"
+	JSON += '"process_sleep": ' + tokens[1] + "," + "\n"
 	# Procces x User
 	lineas_procesos = lineas[7:-1]
 	diccionario = {}
