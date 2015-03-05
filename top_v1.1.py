@@ -53,7 +53,7 @@ while 1:
 	fourthLine = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\xff]', '', fourthLine)
 	fourthLine = fourthLine.split(",") # Memory use
 	tokens = fourthLine[0].split()
-	memTotal = float(tokens[2][:-1]) 
+	memTotal = float(tokens[3][:-1]) 
 	tokens = fourthLine[1].split()
 	memUsed = float(tokens[0])
 	strPorcMem = str(round((memUsed/memTotal)*100,1))
