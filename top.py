@@ -50,7 +50,7 @@ def obtener_datos():
 	cpu = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\xff]', '', cpu)
 	reg_cpu = re.compile('([0-9\.]){1,5}\sid')
 	res = reg_cpu.findall(cpu)
-	cpu_use = 100 - float(res[0])
+	cpu_use = float(res[0])
 	JSON += '"cpu_use": ' +  str(cpu_use) + "," 
 	fourthLine = re.sub(r'\x1b[^m]*m','',lineas[3])
 	fourthLine = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\xff]', '', fourthLine)
