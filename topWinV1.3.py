@@ -20,17 +20,17 @@ while 1:
 	JSON = ""
 	tareas = subprocess.check_output(['systeminfo']).split("\n")
 	########################################
-	f = open("C:\Users\usuario\Desktop\salidaSystemInfo.txt", "w")
-	for tarea in tareas:
-		f.write(tarea)
-	f.close()
+	#f = open("C:\Users\Martin\Desktop\salidaSystemInfo.txt", "w")
+	#for tarea in tareas:
+#		f.write(tarea)
+#	f.close()
 	########################################
 	memVirMax = float ((tareas[26].split())[4])
 	memVirUse = float ((tareas[28].split())[4])
 	porcMemUse = round((memVirUse*100)/memVirMax,1)
 	# PC 
 	strHost = tareas[1].split()
-	JSON += '"pc": "%s"' %strHost[3] + ",\n"
+	JSON += '"pc": "%s"' %strHost[2] + ",\n"
 	# TimeStamp
 	fechaHoy = time.strftime("%c")
 	JSON += '"timestamp": "%s"' %fechaHoy + ",\n"
@@ -38,15 +38,16 @@ while 1:
 	state = ""
 	JSON += '"state": "%s"' %state + ",\n"
 	# On time
+	print tareas[1]
 	onTime = tareas[1].split()[6]
 	JSON += '"on_time": "%s"' %onTime + ",\n"
 	# Users
 	tareas = subprocess.check_output(['tasklist', '-v']).split("\n")
 	########################################
-	f = open("C:\Users\usuario\Desktop\salidaTaskListV.txt", "w")
-	for tarea in tareas:
-		f.write(tarea)
-	f.close()
+	#f = open("C:\Users\usuario\Desktop\salidaTaskListV.txt", "w")
+	#for tarea in tareas:
+#		f.write(tarea)
+	#f.close()
 	########################################
 	users = []
 	for indice in range(3,len(tareas)-1):

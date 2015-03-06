@@ -1,9 +1,10 @@
 import SocketServer
 import json
-import MySQLdb
+import os
+#import MySQLdb descomentar para utilizar la base de datos
 
 TCP_IP = '' #direccion ip donde escucha se deja vacia para escuchar en todas
-TCP_PORT = 5005 #puerto donde escucha
+TCP_PORT = 5000 #puerto donde escucha
 BUFFER_SIZE = 1024  #tamano del buffer, ajustarlo al tamano maximo del paquete json
 datos = []
 
@@ -36,14 +37,16 @@ class FileHandler():
 	def __init__(self):
 			self.f = open("archivo.log",'w')	
 			self.f.write('pc;timestamp;state;on_time;users;process;process_active;process_sleep;process_per_user;cpu_use;memory_use\n')
-	
+			self.f.flush()
+			os.fsync(self.f)	
 	def __del__(self):
 		self.f.close()
 		
 	
 	def saveJson(self,jdata):
 		csv = '{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10}\n'.format(jdata['pc'],jdata['timestamp'],jdata['state'],jdata['on_time'],jdata['users'],jdata['process'],jdata['process_active'],jdata['process_sleep'],jdata['process_per_user'],jdata['cpu_use'],jdata['memory_use'])
-		self.f.write(csv) 
+		self.f.write(csv)
+		self.f.flush()
 
 		
 class TCPHandler(SocketServer.BaseRequestHandler):
@@ -51,6 +54,7 @@ class TCPHandler(SocketServer.BaseRequestHandler):
     def handle(self):
 		self.data = self.request.recv(BUFFER_SIZE).strip()
 		print "{} wrote".format(self.client_address[0])
+		print self.data
 		j = json.loads(self.data)
 		dataHandler.saveJson(j)
 		
