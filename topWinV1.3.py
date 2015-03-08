@@ -9,45 +9,47 @@ import subprocess
 import json
 import psutil
 
-
-print "COMIENZO A LEER"
-
 while 1:
 	#op"lineas = os.popen("tasklist -n 1").readlines()
 	
 	#Gral. Inf. of pc
-	# Variable de JSON
-	JSON = ""
-	tareas = subprocess.check_output(['systeminfo']).split("\n")
+	#tareas = subprocess.check_output(['systeminfo']).split("\n")
 	########################################
-	#f = open("C:\Users\Martin\Desktop\salidaSystemInfo.txt", "w")
+	#f = open("C:\Users\usuario\Desktop\salidaSystemInfo.txt", "w")
 	#for tarea in tareas:
-#		f.write(tarea)
-#	f.close()
+	#	f.write(tarea)
+	#f.close()
 	########################################
-	memVirMax = float ((tareas[26].split())[4])
-	memVirUse = float ((tareas[28].split())[4])
-	porcMemUse = round((memVirUse*100)/memVirMax,1)
+	#memVirMax = float ((tareas[26].split())[4])
+	#memVirUse = float ((tareas[28].split())[4])
+	#porcMemUse = round((memVirUse*100)/memVirMax,1)
+	# Variable de JSON
+	JSON = "{"#comienzo JSON
 	# PC 
-	strHost = tareas[1].split()
-	JSON += '"pc": "%s"' %strHost[2] + ",\n"
+	users = psutil.users()
+	hostIP = str(str(users[0]).split(",")[2]).split("=")[1]
+	strHostIP = hostIP.replace("'", "")        # Elimino el caracter '
+	JSON += '"pc": "' + strHostIP + '", '
 	# TimeStamp
 	fechaHoy = time.strftime("%c")
-	JSON += '"timestamp": "%s"' %fechaHoy + ",\n"
+	JSON += '"timestamp": "%s"' %fechaHoy + ", "
 	# State
-	state = ""
-	JSON += '"state": "%s"' %state + ",\n"
+	if (len(users) == 0):
+		state = "SLEEP"
+	else:
+		state = "RUNNING"
+	JSON += '"state": "' + state + '", '
 	# On time
-	print tareas[1]
-	onTime = tareas[1].split()[6]
-	JSON += '"on_time": "%s"' %onTime + ",\n"
+	tiempos = psutil.cpu_times()
+	onTime = int(tiempos[2]/60/60)
+	JSON += '"on_time": ' + str(onTime) + ", "
 	# Users
 	tareas = subprocess.check_output(['tasklist', '-v']).split("\n")
 	########################################
-	#f = open("C:\Users\usuario\Desktop\salidaTaskListV.txt", "w")
-	#for tarea in tareas:
-#		f.write(tarea)
-	#f.close()
+	f = open("C:\Users\usuario\Desktop\salidaTaskListV.txt", "w")
+	for tarea in tareas:
+		f.write(tarea)
+	f.close()
 	########################################
 	users = []
 	for indice in range(3,len(tareas)-1):
@@ -55,10 +57,10 @@ while 1:
 		user = int(strTarea[3])
 		users.append(user)
 	cantUsers = len(list(set(users)))
-	JSON += '"users": ' + str(cantUsers) + ",\n"
+	JSON += '"users": ' + str(cantUsers) + ", "
 	# Process
 	cantProcess = len(tareas) - 5 # System Idle Process no cuenta
-	JSON += '"proces": ' + str(cantProcess) + ",\n"
+	JSON += '"proces": ' + str(cantProcess) + ", "
 	# Process Active
 	cantProcessActive = 0
 	cantProcessSleep = 0
@@ -69,9 +71,9 @@ while 1:
 			cantProcessActive += 1
 		if (stateProcess == "Unknown"):
 			cantProcessSleep += 1
-	JSON += '"process_active": ' + str(cantProcessActive) + ",\n"		
+	JSON += '"process_active": ' + str(cantProcessActive) + ", "		
 	# Process Sleep
-	JSON += '"process_sleep": ' + str(cantProcessSleep) + ",\n"
+	JSON += '"process_sleep": ' + str(cantProcessSleep) + ", "
 	# Procces x User
 	 #lineas_procesos = lineas[7:-1]
 	diccionario = {}
@@ -89,13 +91,16 @@ while 1:
 			diccionario[user] += 1
 		else:
 			diccionario[user] = 1
-	JSON += '"process_per_user": '+ json.dumps(diccionario)+ ",\n"
+	JSON += '"process_per_user": '+ json.dumps(diccionario)+ ", "
 	# Cpu Use
-	JSON += '"cpu_use": '+ str(round(psutil.cpu_percent(),1))+ ",\n"
+	JSON += '"cpu_use": '+ str(round(psutil.cpu_percent(),1))+ ", "
 	# %Mem used
 	percentMem = psutil.virtual_memory()[2]
-	JSON += '"memory_use": '+ str(percentMem) + ",\n"
-	print JSON
+	JSON += '"memory_use": '+ str(percentMem)
+	JSON += "}" #fin jason
+	
+	print JSON ### PARA PROBAR ###
+	#return JSON
 
 	time.sleep(5)
 		
