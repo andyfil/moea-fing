@@ -46,15 +46,18 @@ while 1:
 	# Users
 	tareas = subprocess.check_output(['tasklist', '-v']).split("\n")
 	########################################
-	f = open("C:\Users\usuario\Desktop\salidaTaskListV.txt", "w")
-	for tarea in tareas:
-		f.write(tarea)
-	f.close()
+	#f = open("C:\Users\usuario\Desktop\salidaTaskListV.txt", "w")
+	#for tarea in tareas:
+	#	f.write(tarea)
+	#f.close()
 	########################################
 	users = []
 	for indice in range(3,len(tareas)-1):
 		strTarea = tareas[indice].split()
-		user = int(strTarea[3])
+		i = 1
+		while (not strTarea[i].isdigit()):
+			i+=1
+		user = int(strTarea[i- 1 + 3])
 		users.append(user)
 	cantUsers = len(list(set(users)))
 	JSON += '"users": ' + str(cantUsers) + ", "
