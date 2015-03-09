@@ -9,7 +9,7 @@ CREATE TABLE `fing`.`datos` (
   `process_active` INT NULL,
   `process_sleep` INT NULL,
   `process_per_user` VARCHAR(500) NULL,
-  `cpu_use` DECIMAL NULL,
-  `memory_use` DECIMAL NULL,
+  `cpu_use` DECIMAL(10,2) NULL,
+  `memory_use` DECIMAL(10,2) NULL,
   PRIMARY KEY (`id`))
 COMMENT = 'Tabla que almacena los datos recibidos de las pc';
