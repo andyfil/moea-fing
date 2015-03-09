@@ -66,7 +66,11 @@ while 1:
 	cantProcessSleep = 0
 	for indice in range(4,len(tareas)-1):
 		strTarea = tareas[indice].split()
-		stateProcess = strTarea[6]
+		# Busco comienzo del PID 
+		i = 1
+		while (not strTarea[i].isdigit()):
+			i+=1
+		stateProcess = strTarea[i-1+6]
 		if (stateProcess == "Running"):
 			cantProcessActive += 1
 		if (stateProcess == "Unknown"):
@@ -86,7 +90,11 @@ while 1:
 		and ((tareas[indice].split())[2] == "Process") ):
 			user = "NT AUTHORITY\SYSTEM"
 		else:"""
-		user = (tareas[indice].split())[3]
+		# Busco comienzo del PID 
+		i = 1
+		while (not strTarea[i].isdigit()):
+			i+=1
+		user = (tareas[indice].split())[i-1+3]
 		if (user in diccionario):
 			diccionario[user] += 1
 		else:
