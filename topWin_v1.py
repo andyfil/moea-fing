@@ -10,13 +10,14 @@ import json
 import psutil
 
 def obtener_datos():
-	
 	JSON = "{"#comienzo JSON
 	# PC 
 	users = psutil.users()
-	hostIP = str(str(users[0]).split(",")[2]).split("=")[1]
-	strHostIP = hostIP.replace("'", "")        # Elimino el caracter '
-	JSON += '"pc": "' + strHostIP + '", '
+	#hostIP = str(str(users[0]).split(",")[2]).split("=")[1]
+	#strHostIP = hostIP.replace("'", "")        # Elimino el caracter '
+	#JSON += '"pc": "' + strHostIP + '", '
+	host = subprocess.check_output(['hostname']).strip()
+	JSON += '"pc": "' + host + '", '
 	# TimeStamp
 	fechaHoy = time.strftime("%c")
 	JSON += '"timestamp": "%s"' %fechaHoy + ", "
