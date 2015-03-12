@@ -1,4 +1,5 @@
 import SocketServer
+import sys
 import json
 import os
 import MySQLdb #descomentar para utilizar la base de datos
@@ -50,13 +51,24 @@ class BDHandler():
 	def saveJson(self, jdata):
 		try:
 			query = "INSERT INTO datos 	(`pc`,`timestamp`,`state`,`on_time`,`users`,`process`, `process_active`,`process_sleep`, `process_per_user`,`cpu_use`,`memory_use`) VALUES	( %s, %s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
-			print query
-			datos_query = (jdata['pc'],jdata['timestamp'],jdata['state'],jdata['on_time'],jdata['users'],jdata['process'],jdata['process_active'],jdata['process_sleep'],jdata['process_per_user'],jdata['cpu_use'],jdata['memory_use'])
+			print "query: ",query
+			datos_query = (jdata['pc'],jdata['timestamp'],jdata['state'],jdata['on_time'],jdata['users'],jdata['process'],jdata['process_active'],jdata['process_sleep'],json.dumps(jdata['process_per_user']),jdata['cpu_use'],jdata['memory_use'])
+			#datos_query = (jdata['pc'],jdata['timestamp'],jdata['state'],jdata['on_time'],jdata['users'],jdata['process'],jdata['process_active'],jdata['process_sleep'],'',jdata['cpu_use'],jdata['memory_use'])
+			print "datos: ",datos_query
 			self.cursor.execute(query,datos_query)
 			self.connection.commit()
+		except MySQLdb.Error, e:
+                        try:
+                                print "MySQL Error [%d]: %s" % (e.args[0], e.args[1])
+                        except IndexError:
+                                print "MySQL Error: %s" % str(e)
+                        self.connection.rollback()
+                except AttributeError, e:
+                        print e
 		except:
+                        print "Unexpected error:", sys.exc_info()[0]
 			self.connection.rollback()
-	
+
 		
 class FileHandler():
 		
@@ -91,6 +103,3 @@ if __name__ == "__main__":
 	#dataHandler = FileHandler()
 	server = SocketServer.TCPServer((TCP_IP, TCP_PORT), TCPHandler)
 	server.serve_forever()
-	 
-	 
-
