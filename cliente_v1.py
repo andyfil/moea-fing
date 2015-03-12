@@ -2,6 +2,7 @@ import socket
 import sys
 import json
 import topWin_v1 as top
+import time
 #import topLin_v1 as top
 
 #TCP_IP = '164.73.44.114' pcunix114
@@ -14,14 +15,19 @@ def funcionTop():
 	"Funcion que parsea la salida del top y devuelve un json con la informacion"
 	return top.obtener_datos()
 
+	
 server_address = (TCP_IP, TCP_PORT)
-sock = socket.create_connection(server_address)
-try:
-	data = funcionTop()
-	#print data
-	sock.sendall(data)
-except:
-	print "Error inesperado:", sys.exc_info()
-finally:
-	print >>sys.stderr, 'Cerrando socket'
-	sock.close()
+
+
+for i in range(1,100):
+	try:
+		sock = socket.create_connection(server_address)
+		data = funcionTop()
+		#print data
+		sock.sendall(data)
+		time.sleep(2)
+	except:
+		print "Error inesperado:", sys.exc_info()
+	finally:
+		print >>sys.stderr, 'Cerrando socket'
+		sock.close()
