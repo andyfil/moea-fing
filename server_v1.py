@@ -1,8 +1,6 @@
 import SocketServer
 import sys
 import json
-import os
-import MySQLdb #descomentar para utilizar la base de datos
 import dataHandler
 from fileHandler import FileHandler
 from dbHandler import BDHandler

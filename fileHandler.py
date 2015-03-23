@@ -1,5 +1,6 @@
 import dataHandler
 import os
+import json
 
 class FileHandler(dataHandler.DataHandler):
 	"""Clase que permite almacenar la informacion capturada en un archivo csv"""
