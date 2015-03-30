@@ -29,7 +29,6 @@ def proxi():
 try:
 	data = funcionTop()
 	url = BASE_URL + str(id)
-	data = MESSAGE
 	headers = {'content-type': 'application/json'}
 	r = requests.post(url,data = data,headers = headers, proxies= proxi())
 	print r

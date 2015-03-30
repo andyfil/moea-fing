@@ -19,7 +19,7 @@ def obtener_datos():
 	host = subprocess.check_output(['hostname']).strip()
 	JSON += '"pc": "' + host + '", '
 	# TimeStamp
-	fechaHoy = time.strftime("%c")
+	fechaHoy = time.strftime("%Y/%m/%d %H:%M:%S")
 	JSON += '"timestamp": "%s"' %fechaHoy + ", "
 	# State
 	if (len(users) == 0):
