@@ -1,6 +1,7 @@
 import dataHandler 
 import MySQLdb 
 import json
+import sys
 
 class BDHandler(dataHandler.DataHandler):
 	"""Clase que implementa a dataHandler, permite almacenar la informacion obtenida en base de datos"""

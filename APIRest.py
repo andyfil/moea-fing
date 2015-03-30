@@ -137,8 +137,11 @@ class PCAPI(Resource):
 		pcs_selected = [pc for pc in pcs if pc['id'] == id]
 		if len(pcs_selected) == 0:
 			abort(404)
-		j = request.get_json()
-		dataHandler.save_json(j)
+		try:
+			j = request.get_json()
+			dataHandler.saveJson(j)
+		except:
+			print "Error ", sys.exc_info()
 		
 		
 
