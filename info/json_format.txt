@@ -1,0 +1,13 @@
+{
+	"pc": "pcunix114",
+	"timestamp": "2014-12-10 10:48:20",
+	"state": "working",
+	"on_time": 1238.3,
+	"users": 3,
+	"process": 98,
+	"process_active": 5,
+	"process_sleep": 93,
+	"process_per_user": [10,2,4],
+	"cpu_use": 34.2,
+	"memory_use": 45.0
+}
