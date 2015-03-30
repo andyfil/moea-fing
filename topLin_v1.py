@@ -18,7 +18,7 @@ def obtener_datos():
 	nombre_pc = socket.gethostname()											# PC
 	JSON = "{"#comienzo JSON
 	JSON += '"pc": "' + nombre_pc + '", '	
-	JSON += '"timestamp": "' + time.strftime("%x") + " " + tokens[2] + '",' # TimeStamp
+	JSON += '"timestamp": "' + time.strftime("%Y/%m/%d %H:%M:%S") + '",' # TimeStamp
 	JSON += '"state": "' + tokens[3] + '",' # State --- No esta levantando el estado del sistema
 	days = float(tokens[4])
 	horas = abs(days*24)

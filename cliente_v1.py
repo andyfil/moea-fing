@@ -10,9 +10,9 @@ import requests
 TCP_IP = 'fingproy.cloudapp.net'
 TCP_PORT = 80
 id = 1
-BASE_URL = "http://fingproy.cloudapp.net:80/proy/api/v1/pcs/"
-#PROXY="http://proxy.fing.edu.uy"
-PROXY=""
+BASE_URL = "http://fingproy.cloudapp.net:5000/proy/api/v1/pcs/"
+PROXY="http://proxy.fing.edu.uy"
+#PROXY=""
 PROXY_PORT=3128
 MESSAGE = '{"pc": "pcunix114","timestamp": "2014-12-10 10:48:20","state": "working","on_time": 1238.3,"users": 3,"process": 98,"process_active": 5,"process_sleep": 93,"process_per_user":[10,2,4],"cpu_use": 34.2,"memory_use": 45.0}'#Mensaje JSON de prueba
 
@@ -23,7 +23,7 @@ def funcionTop():
 	
 def proxi():
 	if PROXY:
-		return {"http":PROXY + str(PROXY_PORT)}
+		return {"http":PROXY +':'+ str(PROXY_PORT)}
 	else:
 		return {}
 try:
