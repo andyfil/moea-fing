@@ -1,0 +1,121 @@
+{
+  "_type": "export",
+  "__export_format": 1,
+  "__export_date": "2015-03-30T23:16:20.856Z",
+  "__export_source": "insomnia.chrome.app:v1.1.1",
+  "items": [
+    {
+      "_type": "request_group",
+      "_id": "grp_1426546956727",
+      "name": "Test",
+      "environments": {},
+      "requests": [
+        {
+          "_type": "request",
+          "_id": "req_1427066975874",
+          "url": "http://localhost:5000/proy/api/v1/pcs/1",
+          "method": "GET",
+          "body": "",
+          "headers": [],
+          "authentication": {
+            "_type": "basic",
+            "username": "",
+            "password": ""
+          },
+          "__insomnia": {
+            "format": "text",
+            "panel_width": 0.5
+          },
+          "name": "Get PC"
+        },
+        {
+          "_type": "request",
+          "_id": "req_1427067106408",
+          "url": "http://fingproy.cloudapp.net:80/proy/api/v1/salones",
+          "method": "POST",
+          "body": "{\"Nombre\":\"112\", \"Ubicacion\":\"Tercer Piso\"}",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "authentication": {
+            "_type": "basic",
+            "username": "",
+            "password": ""
+          },
+          "__insomnia": {
+            "format": "json",
+            "panel_width": 0.5
+          },
+          "name": "Post Salon"
+        },
+        {
+          "_type": "request",
+          "_id": "req_1427067120947",
+          "url": "http://fingproy.cloudapp.net:80/proy/api/v1/salones",
+          "method": "GET",
+          "body": "{\"title\":\"Read a book\"}",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "authentication": {
+            "_type": "basic",
+            "username": "",
+            "password": ""
+          },
+          "__insomnia": {
+            "format": "text",
+            "panel_width": 0.5
+          },
+          "name": "Get Salones"
+        },
+        {
+          "_type": "request",
+          "_id": "req_1427067242371",
+          "url": "http://fingproy.cloudapp.net:80/proy/api/v1/salones/315",
+          "method": "GET",
+          "body": "",
+          "headers": [],
+          "authentication": {
+            "_type": "basic",
+            "username": "",
+            "password": ""
+          },
+          "__insomnia": {
+            "format": "text",
+            "panel_width": 0.5
+          },
+          "name": "Get PC by salon"
+        },
+        {
+          "_type": "request",
+          "_id": "req_1427754345034",
+          "url": "http://fingproy.cloudapp.net:80/proy/api/v1/pcs/1",
+          "method": "POST",
+          "body": "{\"pc\": \"pcunix114\",\"timestamp\": \"2014-12-10 10:48:20\",\"state\": \"working\",\"on_time\": 1238.3,\"users\": 3,\"process\": 98,\"process_active\": 5,\"process_sleep\": 93,\"process_per_user\":[10,2,4],\"cpu_use\": 34.2,\"memory_use\": 45.0}",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "authentication": {
+            "_type": "basic",
+            "username": "",
+            "password": ""
+          },
+          "__insomnia": {
+            "format": "json",
+            "panel_width": 0.5
+          },
+          "name": "Post pc data"
+        }
+      ]
+    }
+  ]
+}
