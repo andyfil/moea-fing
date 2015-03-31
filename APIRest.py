@@ -6,6 +6,7 @@ from flask.ext.httpauth import HTTPBasicAuth
 import dataHandler
 from fileHandler import FileHandler
 from dbHandler import BDHandler
+import constantes as cts
 
 app = Flask(__name__, static_url_path="")
 api = Api(app)
@@ -72,12 +73,12 @@ class SalonAPI(Resource):
 	def post(self):
 		args = self.reqparse.parse_args()
 		salon = {
-			'id': salones[-1]['id'] + 1,
-			'Nombre': args['Nombre'],
-			'Ubicacion': args['Ubicacion'],
-			'Cantidad': args['Cantidad']
+			cts.nombre: args['Nombre'],
+			cts.lugar: args['Ubicacion'],
+			cts.cantidad: 0
 		}
-		salones.append(salon)
+		dataHandler.saveSalon(salon)
+		salon[cts.ident] = 3
 		return {'salon': marshal(salon, campos_salon)}, 201
 
 class Salon_PCAPI(Resource):
