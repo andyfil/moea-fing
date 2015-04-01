@@ -2,28 +2,15 @@
 
 from flask import Flask, jsonify, abort, make_response
 from flask.ext.restful import Api, Resource, reqparse, fields, marshal
-from flask.ext.httpauth import HTTPBasicAuth
 import dataHandler
 from fileHandler import FileHandler
 from dbHandler import BDHandler
 import constantes as cts
+import sys
 
 app = Flask(__name__, static_url_path="")
 api = Api(app)
 dataHandler = BDHandler()
-#auth = HTTPBasicAuth()
-
-
-#@auth.get_password
-# def get_password(username):
-	# if username == 'user':
-		# return 'user'
-	# return None
-
-
-#@auth.error_handler
-#def unauthorized():
-#	return make_response(jsonify({'message': 'Unauthorized access'}), 401)
 
 salones = [
 	{
@@ -42,9 +29,9 @@ pcs = [
 ]
 
 campos_salon = {
-	'Nombre': fields.String,
-	'Ubicacion': fields.String,
-	'Cantidad': fields.Integer,
+	cts.nombre: fields.String,
+	cts.ubicacion: fields.String,
+	cts.cantidad: fields.Integer,
 	'uri': fields.Url('salon')
 }
 
@@ -54,6 +41,19 @@ campos_pc = {
 	'uri': fields.Url('pc')
 }
 
+campos_registro = {
+	cts.pc: fields.String,
+	cts.timestamp : fields.DateTime(dt_format = 'iso8601'),
+	cts.state : fields.String,
+	cts.on_time : fileds.Float,
+	cts.users : fields.Integer,
+	cts.process : fields.Integer,
+	cts.process_active : fields.Integer,
+	cts.process_sleep : fields.Integer,
+	cts.process_per_user : fields.String,
+	cts.cpu_use : fields.Float,
+	cts.memory_use : fields.Float
+}
 
 class SalonAPI(Resource):
 	#decorators = [auth.login_required]

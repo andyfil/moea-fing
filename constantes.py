@@ -15,7 +15,7 @@ process = 'process'
 process_active = 'process_active'
 process_sleep = 'process_sleep'
 process_per_user = 'process_per_user'
-cpu_use = 'cpu_use '
+cpu_use = 'cpu_use'
 memory_use = 'memory_use'
 
 #dato salon
