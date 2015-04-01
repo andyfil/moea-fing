@@ -1,6 +1,6 @@
 #!flask/bin/python
 
-from flask import Flask, jsonify, abort, make_response
+from flask import Flask, jsonify, abort, make_response, request
 from flask.ext.restful import Api, Resource, reqparse, fields, marshal
 import dataHandler
 from fileHandler import FileHandler
