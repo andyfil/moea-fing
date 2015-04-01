@@ -1,12 +1,20 @@
+import os
+sistemOper = os.name
+if (sistemOper == "posix"):
+	print "SO: LINUX"
+	from topLin_v1 import TopLin_v1
+	top = TopLin_v1()
+else: #nt
+	print "SO: WINDOWS"
+	from topWin_v1 import TopWin_v1
+	top = TopWin_v1()
+
 import socket
 import sys
 import json
-import top
-from topWin_v1 import TopWin_v1
-from topLin_v1 import TopLin_v1
+import top as top_Base
 import time
 import requests
-import os
 #import topLin_v1 as top
 
 #TCP_IP = '164.73.44.114' pcunix114
@@ -22,13 +30,6 @@ MESSAGE = '{"pc": "pcunix114","timestamp": "2014-12-10 10:48:20","state": "worki
 
 
 def funcionTop():
-		sistemOper = os.name
-		if (sistemOper == "posix"):
-			top = TopLin_v1()
-			print "SO: LINUX"
-		else: #nt
-			print "SO: WINDOWS"
-			top = TopWin_v1()
 		return top.obtener_datos(top)
 
 def proxi():
@@ -38,7 +39,6 @@ def proxi():
 				return {}
 try:
 		data = funcionTop()
-		print "LLEGUE A RETORNAR LOS DATOS"
 		url = BASE_URL + str(id)
 		headers = {'content-type': 'application/json'}
 		r = requests.post(url,data = data,headers = headers, proxies= proxi())

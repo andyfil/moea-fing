@@ -12,7 +12,7 @@ import json
 class TopLin_v1(top.Top):
 
 	def __init__(self):
-		print "Inciciando Top de windows"
+		print "Inciciando Top de linux"
 		self.lineas = os.popen("/usr/bin/top -n 1").readlines()
 		self.firstLine = self.lineas[0].split(",")
 		self.tokens = self.firstLine[0].split()
@@ -35,7 +35,7 @@ class TopLin_v1(top.Top):
 		horas = abs(days*24)
 		horas_restantes = float(self.firstLine[1].split(":")[0])
 		on_time = horas + horas_restantes
-		return onTime
+		return on_time
 	
 	def obtenerUsers(self):
 		tokens = self.firstLine[2].split()
@@ -43,18 +43,18 @@ class TopLin_v1(top.Top):
 		return cantUsers
 
 	def obtenerProcess(self):
-		secondLine = self.lineas[1].split(",")
-		tokens = secondLine[0].split()
-		cantProcess = tokens[1]
+		self.secondLine = self.lineas[1].split(",")
+		tokens = self.secondLine[0].split()
+		cantProcess = int(tokens[1])
 		return cantProcess
 		
 	def obtenerProcess_active(self):
-		tokens = secondLine[1].split()
+		tokens = self.secondLine[1].split()
 		cantProcessActive = tokens[1]
 		return cantProcessActive
 			
 	def obtenerProcess_sleep(self):
-		tokens = secondLine[2].split()
+		tokens = self.secondLine[2].split()
 		cantProcessSleep = tokens[1] 
 		return cantProcessSleep
 		
@@ -69,7 +69,7 @@ class TopLin_v1(top.Top):
 						diccionario[user] += 1
 				else:
 						diccionario[user] = 1
-		return json.dumps(diccionario)
+		return diccionario
 
 	def obtenerCpu_use(self):
 		cpu = re.sub(r'\x1b[^m]*m','',self.lineas[2].strip())
