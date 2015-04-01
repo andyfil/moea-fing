@@ -30,7 +30,7 @@ pcs = [
 
 campos_salon = {
 	cts.nombre: fields.String,
-	cts.ubicacion: fields.String,
+	cts.lugar: fields.String,
 	cts.cantidad: fields.Integer,
 	'uri': fields.Url('salon')
 }
@@ -45,7 +45,7 @@ campos_registro = {
 	cts.pc: fields.String,
 	cts.timestamp : fields.DateTime(dt_format = 'iso8601'),
 	cts.state : fields.String,
-	cts.on_time : fileds.Float,
+	cts.on_time : fields.Float,
 	cts.users : fields.Integer,
 	cts.process : fields.Integer,
 	cts.process_active : fields.Integer,
@@ -59,10 +59,10 @@ class SalonAPI(Resource):
 	#decorators = [auth.login_required]
 
 	def __init__(self):
-		self.reqparse = reqparse.RequestParser()
-		self.reqparse.add_argument('Nombre', type=str, required=True,help='Se debe introducir un nombre para el salon', location='json')
-		self.reqparse.add_argument('Ubicacion', type=str, default="",  location='json')
-		self.reqparse.add_argument('Cantidad', type=int, default=0, location='json')
+		self.request_parser = reqparse.RequestParser()
+		self.request_parser.add_argument('Nombre', type=str, required=True,help='Se debe introducir un nombre para el salon', location='json')
+		self.request_parser.add_argument('Ubicacion', type=str, default="",  location='json')
+		self.request_parser.add_argument('Cantidad', type=int, default=0, location='json')
 		super(SalonAPI, self).__init__()
 
 	def get(self):
@@ -71,7 +71,7 @@ class SalonAPI(Resource):
 
 
 	def post(self):
-		args = self.reqparse.parse_args()
+		args = self.request_parser.parse_args()
 		salon = {
 			cts.nombre: args['Nombre'],
 			cts.lugar: args['Ubicacion'],
@@ -85,9 +85,9 @@ class Salon_PCAPI(Resource):
 	# decorators = [auth.login_required]
 
 	def __init__(self):
-		self.reqparse = reqparse.RequestParser()
-		self.reqparse.add_argument('Nombre', type=str, location='json', required = True, help = 'Se debe proveer un nombre para la PC')
-		self.reqparse.add_argument('Salon', type=str, location='json')
+		self.request_parser = reqparse.RequestParser()
+		self.request_parser.add_argument('Nombre', type=str, location='json', required = True, help = 'Se debe proveer un nombre para la PC')
+		self.request_parser.add_argument('Salon', type=str, location='json')
 		super(Salon_PCAPI, self).__init__()
 	
 	def get(self, salon):
@@ -105,9 +105,21 @@ class PCAPI(Resource):
 	# decorators = [auth.login_required]
 
 	def __init__(self):
-		self.reqparse = reqparse.RequestParser()
-		self.reqparse.add_argument('Nombre', type=str, location='json', required = True, help = 'Se debe proveer un nombre para la PC')
-		self.reqparse.add_argument('Salon', type=str, location='json')
+		self.request_parser = reqparse.RequestParser()
+		self.request_parser.add_argument('Nombre', type=str, location='json', required = True, help = 'Se debe proveer un nombre para la PC')
+		self.request_parser.add_argument('Salon', type=str, location='json')
+		self.regparse = reqparse.RequestParser()
+		self.regparse.add_argument(cts.pc, type=str, location='json', required = True, help = 'Se debe proveer un nombre para la PC')
+		self.regparse.add_argument(cts.timestamp, type=str, location='json', required = True, help = 'Se debe introducir un timestamp')
+		self.regparse.add_argument(cts.state, type=str, location='json', required = True, help = 'se debe indicar el estado de la pc')
+		self.regparse.add_argument(cts.on_time, type=float, location='json', required = True, help = 'se debe indicar el tiempo que lleva encendida')
+		self.regparse.add_argument(cts.users, type=int, location='json', required = True, help = 'se debe indicar la cantidad de usuarios')
+		self.regparse.add_argument(cts.process, type=int, location='json', required = True, help = 'se debe indicar la cantidad total de procesos')
+		self.regparse.add_argument(cts.process_active, type=int, location='json', required = True, help = 'se debe indicar la cantidad de procesos activos')
+		self.regparse.add_argument(cts.process_sleep, type=int, location='json', required = True, help = 'se debe indicar la cantidad de procesos dormidos')
+		self.regparse.add_argument(cts.process_per_user, type=dict, location='json', required = False, help = 'se debe discriminar los procesos por usuario')
+		self.regparse.add_argument(cts.cpu_use, type=float, location='json', required = True, help = 'se debe indicar el uso de cpu')
+		self.regparse.add_argument(cts.memory_use, type=float, location='json', required = True, help = 'se debe indicar el uso de memoria')
 		super(PCAPI, self).__init__()
 
 	def get(self, id):
@@ -121,7 +133,7 @@ class PCAPI(Resource):
 		if len(pcs_selected) == 0:
 			abort(404)
 		pc = pcs_selected[0]
-		args = self.reqparse.parse_args()
+		args = self.request_parser.parse_args()
 		for k, v in args.items():
 			if v is not None:
 				pc[k] = v
@@ -139,7 +151,7 @@ class PCAPI(Resource):
 		if len(pcs_selected) == 0:
 			abort(404)
 		try:
-			j = request.get_json()
+			j = self.regparse.parse_args()
 			dataHandler.saveJson(j)
 		except:
 			print "Error ", sys.exc_info()
