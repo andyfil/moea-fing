@@ -29,3 +29,4 @@ CREATE TABLE `maquinas_pc` (
   KEY `Maquinas_pc_72ee9dc3` (`salon_id`),
   CONSTRAINT `Maquinas_pc_salon_id_45951068_fk_Maquinas_salon_id` FOREIGN KEY (`salon_id`) REFERENCES `maquinas_salon` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
