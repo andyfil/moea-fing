@@ -153,21 +153,38 @@ class PCAPI(Resource):
         return {'result': True}
 
     def post(self, ident):
-        pcs_selected = [pc for pc in pcs if pc['id'] == ident]
-        if not pcs_selected:
-            abort(404)
+        #encontrar id en bd de la pc
         try:
             j = self.regparse.parse_args()
             data.save_json(j)
         except Exception:
             print "Error ", sys.exc_info()
+            abort(500)
+
+class Pc_sola_API(Resource):
+    """API para el registro de pcs"""
 
 
+    def __init__(self):
+        self.request_parser = reqparse.RequestParser()
+        self.request_parser.add_argument('Nombre', type=str, location='json',
+                                         required=True,
+                                         help='')
+        self.request_parser.add_argument('Salon', type=str, location='json')
 
+    def post(self):
+        try:
+            j = self.regparse.parse_args()
+            ident = data.register_pc(j)
+            return {'result':True, 'id':ident}
+        except Exception:
+            print "Error ", sys.exc_info()
+            abort(500)
 
 api.add_resource(Salon_PCAPI, '/proy/api/v1/salones/<string:salon>', endpoint='salon_pc')
 api.add_resource(SalonAPI, '/proy/api/v1/salones', endpoint='salon')
 api.add_resource(PCAPI, '/proy/api/v1/pcs/<int:ident>', endpoint='pc')
+api.add_resource(Pc_sola_API, '/proy/api/v1/pcs', endpoint='pc_sola')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)

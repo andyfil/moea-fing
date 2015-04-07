@@ -18,6 +18,16 @@ process_per_user = 'process_per_user'
 cpu_use = 'cpu_use'
 memory_use = 'memory_use'
 
+#pc registro
+reg_nombre = 'nombre'
+reg_mac = 'mac'
+reg_so = 'so'
+reg_ram = 'ram'
+reg_cpu = 'cpu'
+reg_estado = 'estado'
+reg_users = 'cant_usuarios'
+reg_salon = 'salon_id'
+
 #dato salon
 ident = 'id'
 nombre = 'Nombre'

@@ -49,8 +49,8 @@ class BDHandler(DataHandler):
             self.db.rollback()
 
     def save_json(self, jdata):
-        query = """INSERT INTO %s (`pc`,`timestamp`,`state`,`on_time`,`users`,
-            `process`, `process_active`,`process_sleep`, `process_per_user`,
+        query = """INSERT INTO %s (`pc`,`timestamp`,`state`,`on_time`,`users`,\
+            `process`, `process_active`,`process_sleep`, `process_per_user`,\
             `cpu_use`,`memory_use`) """ %cts.tabla_registro
         query += "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
         datos_query = (jdata[cts.pc], jdata[cts.timestamp], jdata[cts.state],
@@ -63,20 +63,44 @@ class BDHandler(DataHandler):
 
     def save_salon(self, jdata):
         "Metodo que agrega un salon a la estructura de datos"
-        query = "INSERT INTO %s (`nombre`,`lugar`,`prioridad`) " %cts.tabla_salon
+        query = "INSERT INTO %s (`nombre`,`lugar`,`prioridad`) "\
+         %cts.tabla_salon
         query += "VALUES(%s,%s,%s);"
         jdata[cts.prioridad] = 0
         datos_query = (jdata[cts.nombre], jdata[cts.lugar], jdata[cts.prioridad])
         self.execute(query, datos_query)
 
     def register_pc(self, jdata):
-        "Metodo que registra una pc y devuelve el identificador de la misma"
-        pass
+        """Metodo que registra una pc
+        y devuelve el identificador de la misma"""
+        try:
+            ident = 0
+            query = "SELECT id FROM %s WHERE mac = %s "% cts.tabla_pc, "%s"
+            self.cursor.execute(query,(jdata["mac"]))
+            datos = self.cursor.fetchone()
+            if datos is None:
+                query = "INSERT INTO %s " % cts.tabla_pc
+                query += "(`nombre`,`mac`,`so`,`ram`,`cpu`,`estado`,\
+                    `cant_usuarios`,`salon_id`) VALUES "
+                query += "%s,%s,%s,%s,%s,%s,%s,%s"
+                data = (jdata[cts.reg_nombre], jdata[cts.reg_mac], \
+                    jdata[cts.reg_so], jdata[cts.reg_ram], jdata[cts.reg_cpu],\
+                     jdata[cts.reg_estado], jdata[cts.reg_users], \
+                     jdata[cts.reg_salon])
+                self.cursor.execute(query, data)
+                self.db.commit()
+                ident = self.db.insert_id()
+            else:
+                ident = datos[cts.ident]
+            return ident
+        except:
+            print "Error: no se pudo registrar la pc"
+            self.db.rollback()
 
     def get_salon(self, jdata):
         "Metodo para obtener informacion de un salon"
         try:
-            query = "SELECT id, nombre,lugar,prioridad FROM %s"% cts.tabla_salon
+            query = "SELECT id,nombre,lugar,prioridad FROM %s"% cts.tabla_salon
             if jdata is not None:
                 where = ""
                 if jdata[cts.ident] is not None:
