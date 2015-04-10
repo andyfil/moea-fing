@@ -75,26 +75,33 @@ class BDHandler(DataHandler):
         y devuelve el identificador de la misma"""
         try:
             ident = 0
-            query = "SELECT id FROM %s WHERE mac = %s "% cts.tabla_pc, "%s"
-            self.cursor.execute(query,(jdata["mac"]))
+            query = "SELECT id FROM %s " % cts.tabla_pc
+            query +="WHERE mac = %s"
+            self.cursor.execute(query,long(jdata["mac"]))
             datos = self.cursor.fetchone()
             if datos is None:
                 query = "INSERT INTO %s " % cts.tabla_pc
-                query += "(`nombre`,`mac`,`so`,`ram`,`cpu`,`estado`,\
-                    `cant_usuarios`,`salon_id`) VALUES "
-                query += "%s,%s,%s,%s,%s,%s,%s,%s"
+                query += "(`nombre`,`mac`,`so`,`ram`,`cpu`,`estado`,`cant_usuarios`,`salon_id`) VALUES %s,%s,%s,%s,%s,%s,%s,%s"
                 data = (jdata[cts.reg_nombre], jdata[cts.reg_mac], \
                     jdata[cts.reg_so], jdata[cts.reg_ram], jdata[cts.reg_cpu],\
-                     jdata[cts.reg_estado], jdata[cts.reg_users], \
-                     jdata[cts.reg_salon])
+                     jdata[cts.reg_estado], '0', \
+                     4)
+                #se ingresa un salón por defecto, numero 4
+                print "data ",data
+                print 'query ',query
                 self.cursor.execute(query, data)
                 self.db.commit()
                 ident = self.db.insert_id()
             else:
-                ident = datos[cts.ident]
+                ident = long(datos[0])
             return ident
+        except IndexError, e2:
+            print "MySQL Error: %s" % str(e2)
+        except AttributeError, e3:
+            print e3
         except:
             print "Error: no se pudo registrar la pc"
+            print "Unexpected error:", sys.exc_info()[0]
             self.db.rollback()
 
     def get_salon(self, jdata):

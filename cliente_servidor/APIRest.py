@@ -59,13 +59,13 @@ class SalonAPI(Resource):
     #decorators = [auth.login_required]
 
     def __init__(self):
-        self.request_parser = reqparse.RequestParser()
-        self.request_parser.add_argument('Nombre', type=str, required=True,
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('Nombre', type=str, required=True,
             help='Se debe introducir un nombre para el salon',
             location='json')
-        self.request_parser.add_argument('Ubicacion', type=str, default="",
+        self.reqparse.add_argument('Ubicacion', type=str, default="",
             location='json')
-        self.request_parser.add_argument('Cantidad', type=int, default=0,
+        self.reqparse.add_argument('Cantidad', type=int, default=0,
             location='json')
         super(SalonAPI, self).__init__()
 
@@ -75,7 +75,7 @@ class SalonAPI(Resource):
 
 
     def post(self):
-        args = self.request_parser.parse_args()
+        args = self.reqparse.parse_args()
         salon = {
             cts.nombre: args['Nombre'],
             cts.lugar: args['Ubicacion'],
@@ -89,11 +89,11 @@ class Salon_PCAPI(Resource):
     # decorators = [auth.login_required]
 
     def __init__(self):
-        self.request_parser = reqparse.RequestParser()
-        self.request_parser.add_argument('Nombre', type=str, location='json',
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('Nombre', type=str, location='json',
                                          required=True,
                                          help='La PC debe tener nombre')
-        self.request_parser.add_argument('Salon', type=str, location='json')
+        self.reqparse.add_argument('Salon', type=str, location='json')
         super(Salon_PCAPI, self).__init__()
 
     def get(self, salon):
@@ -111,9 +111,9 @@ class PCAPI(Resource):
     # decorators = [auth.login_required]
 
     def __init__(self):
-        self.request_parser = reqparse.RequestParser()
-        self.request_parser.add_argument('Nombre', type=str, location='json', required=True, help='Se debe proveer un nombre para la PC')
-        self.request_parser.add_argument('Salon', type=str, location='json')
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('Nombre', type=str, location='json', required=True, help='Se debe proveer un nombre para la PC')
+        self.reqparse.add_argument('Salon', type=str, location='json')
         self.regparse = reqparse.RequestParser()
         self.regparse.add_argument(cts.pc, type=str, location='json', required=True, help = 'Se debe proveer un nombre para la PC')
         self.regparse.add_argument(cts.timestamp, type=str, location='json', required=True, help='Se debe introducir un timestamp')
@@ -139,7 +139,7 @@ class PCAPI(Resource):
         if not pcs_selected:
             abort(404)
         pc = pcs_selected[0]
-        args = self.request_parser.parse_args()
+        args = self.reqparse.parse_args()
         for k, v in args.items():
             if v is not None:
                 pc[k] = v
@@ -161,20 +161,26 @@ class PCAPI(Resource):
             print "Error ", sys.exc_info()
             abort(500)
 
-class Pc_sola_API(Resource):
+class PC_sola_API(Resource):
     """API para el registro de pcs"""
 
 
     def __init__(self):
-        self.request_parser = reqparse.RequestParser()
-        self.request_parser.add_argument('Nombre', type=str, location='json',
-                                         required=True,
-                                         help='')
-        self.request_parser.add_argument('Salon', type=str, location='json')
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('nombre', type=str, location='json',
+                                         required=True)
+        self.reqparse.add_argument('mac', type=str, location='json')
+        self.reqparse.add_argument('so', type=str, location='json')
+        self.reqparse.add_argument('ram', type=str, location='json')
+        self.reqparse.add_argument('cpu', type=str, location='json')
+        self.reqparse.add_argument('estado', type=str, location='json')
+        super(PC_sola_API, self).__init__()
 
     def post(self):
         try:
-            j = self.regparse.parse_args()
+            print "LAMADA POST"
+            j = self.reqparse.parse_args()
+            print "LLAMADA ",j
             ident = data.register_pc(j)
             return {'result':True, 'id':ident}
         except Exception:
@@ -184,7 +190,7 @@ class Pc_sola_API(Resource):
 api.add_resource(Salon_PCAPI, '/proy/api/v1/salones/<string:salon>', endpoint='salon_pc')
 api.add_resource(SalonAPI, '/proy/api/v1/salones', endpoint='salon')
 api.add_resource(PCAPI, '/proy/api/v1/pcs/<int:ident>', endpoint='pc')
-api.add_resource(Pc_sola_API, '/proy/api/v1/pcs', endpoint='pc_sola')
+api.add_resource(PC_sola_API, '/proy/api/v1/pcs', endpoint='pc_sola')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)
