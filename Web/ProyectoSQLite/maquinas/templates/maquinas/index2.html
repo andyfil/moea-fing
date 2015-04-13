@@ -1,0 +1,12 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'maquinas/style.css' %}" />
+<h1>{{ "Pcs:" }}</h1>
+{% if latest_pc_list %}
+    <ul>
+    {% for pc in latest_pc_list %}
+        <li><a href="{% url 'maquinas:detail' pc.id %}">{{ pc.mac }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No existen Pcs.</p>
+{% endif %}

@@ -1,0 +1,6 @@
+<h1>{{ pc.mac }}</h1>
+<ul>
+{% for l in pc.lecturatop_set.all %}
+        <li><a href="{% url 'maquinas:lecturas' l.id %}">{{ l.tiempo_lectura }}</a></li>
+{% endfor %}
+</ul>

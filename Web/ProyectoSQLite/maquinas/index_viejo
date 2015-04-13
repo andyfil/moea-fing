@@ -1,0 +1,23 @@
+def index(request):
+	latest_salon_list = Salon.objects.order_by('prioridad')[:3]
+	#template = loader.get_template('maquinas/index.html')
+	#context = RequestContext(request, {
+	#	'latest_salon_list': latest_salon_list,	
+	#})
+	#output = ', '.join([p.nombre for p in latest_salon_index])	
+	#return HttpResponse(template.render(context))
+	context = {'latest_salon_list': latest_salon_list}
+	return render(request, 'maquinas/index.html', context)
+
+def detail(request, salon_id):
+	salon = get_object_or_404(Salon, pk=salon_id)	
+	return render(request, 'maquinas/detail.html', {'salon': salon})
+
+def lecturas(request, pc_id):
+	pc = get_object_or_404(Pc, pk=pc_id)	
+	return render(request, 'maquinas/lecturas.html', {'pc': pc})
+
+def results(request, salon_id):
+	salon = get_object_or_404(Salon, pk=salon_id)
+	return render(request, 'maquinas/results.html', {'salon': salon})
+

@@ -1,0 +1,27 @@
+{% load staticfiles %}
+<html>
+<head>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.0/dygraph-combined.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.0/dygraph-combined-dev.js"></script>
+</head>
+<body>
+<!--<h> Catidad de Usuarios: </h>
+<h1><t> {{ lecturatop.cant_usuarios }} </t></h1>-->
+<h1> PC: {{ pc.mac }}</h1>
+<div id="graphic"></div>
+<script>
+	g = new Dygraph(
+    				document.getElementById("graphic"),
+					data,
+	                 {
+						legend: 'always',
+						animatedZooms: true,
+						title: 'Cantidad de Usuarios por Tiempo',
+						showRoller: true,
+						rollPeriod: 12,
+						ylabel: 'Cantidad Usuarios',
+	                 });
+
+</script>
+</body>
+</html>
