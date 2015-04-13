@@ -1,20 +1,22 @@
+import sys
 import os
-if (os.name == "posix"):
+if os.name == "posix":
     print "SO: LINUX"
     from topLin_v1 import TopLin_v1
-    top = TopLin_v1()
+    TOP = TopLin_v1()
 else: #nt
     print "SO: WINDOWS"
     from topWin_v1 import TopWin_v1
-    top = TopWin_v1()
+    TOP = TopWin_v1()
 
-import sys
+from json import dumps
 import requests
 #import topLin_v1 as top
 
 IDENT = 1 #id de la pc por defecto
-REGISTER_URL = "http://fingproy.cloudapp.net:80/proy/api/v1/pcs"
-BASE_URL = "http://fingproy.cloudapp.net:80/proy/api/v1/pcs/"
+BASE_URL = "http://fingproy.cloudapp.net:80/proy/api/v1"
+REGISTER_URL = BASE_URL + "/pcs"
+DATA_URL = BASE_URL + "/pcs"
 #PROXY = "http://proxy.fing.edu.uy"
 PROXY = ""
 PROXY_PORT = 3128
@@ -23,9 +25,15 @@ MESSAGE = '{"pc": "pcunix114","timestamp": "2014-12-10 10:48:20",\
           "process_active": 5,"process_sleep": 93,"process_per_user":[10,2,4],\
           "cpu_use": 34.2,"memory_use": 45.0}'#Mensaje JSON de prueba
 
-
-def funcion_top():
-    return top.obtener_datos(top)
+def data_registro():
+    reg = {}
+    reg['nombre'] = TOP.obtenerPc()
+    reg['mac'] = '123456789123'
+    reg['so'] = os.name
+    reg['ram'] = '4000'
+    reg['cpu'] = '2'
+    reg['estado'] = TOP.obtenerState()
+    return reg
 
 def proxi():
     if PROXY:
@@ -33,11 +41,16 @@ def proxi():
     else:
         return {}
 try:
-    URL = BASE_URL + str(id)
     HEADERS = {'content-type': 'application/json'}
-    requests.post(REGISTER_URL, )
-    print requests.post(URL, data=funcion_top(),
-                        headers=HEADERS, proxies=proxi())
+    R = requests.post(REGISTER_URL, data=dumps(data_registro()),
+                      headers=HEADERS, proxies=proxi())
+    if R.status_code == 200 and R.json()['result']:
+        URL = DATA_URL+"/"+str(R.json()['ident'])
+        R2 = requests.post(URL, data=dumps(TOP.obtener_datos()),
+                           headers=HEADERS, proxies=proxi())
+    else:
+        print "Ocurrio un error al intentar registrar la pc "
+        print R.json()
 except:
     print "Error inesperado:", sys.exc_info()
 finally:

@@ -178,11 +178,9 @@ class PC_sola_API(Resource):
 
     def post(self):
         try:
-            print "LAMADA POST"
             j = self.reqparse.parse_args()
-            print "LLAMADA ",j
             ident = data.register_pc(j)
-            return {'result':True, 'id':ident}
+            return {'result':ident != 0, 'id':ident}
         except Exception:
             print "Error ", sys.exc_info()
             abort(500)
