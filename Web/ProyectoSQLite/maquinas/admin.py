@@ -15,7 +15,7 @@ class LecturaTopAdmin(admin.ModelAdmin):
 	search_fields = ['pc']
 
 class PcAdmin(admin.ModelAdmin):
-	list_display = ('salon', 'nombre', 'mac', 'so', 'ram', 'cpu', 'arq', 'cant_cores', 'estado')
+	list_display = ('salon', 'nombre', 'ip', 'mac', 'so', 'ram', 'cpu', 'arq', 'cant_cores', 'estado')
 	list_filter = ['estado']
 	search_fields = ['salon']
 	inlines = [LecturaTopInline]
