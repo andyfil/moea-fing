@@ -25,5 +25,19 @@ class ResultsView(generic.DetailView):
 
 def results(request, pc_id):
     pc = get_object_or_404(Pc, pk=pc_id)
-    data = "Cantidad,Lectura\n" + "1,5\n" + "2,2\n" + "3,4\n" + "4,7\n" + "5,3\n" + "6,8\n" + "7,5\n" + "8,6\n"
-    return render(request, 'maquinas/results.html', {'pc': pc, 'data': data})
+    # Obtengo todas las lecturas de la Pc
+    lecturas = pc.lecturatop_set.all()
+    #Armo los datos para graficar
+    dataCantidadUsuarios = "indice,Lecturas\n"
+    dataPorcentajeCpu = "indice,Lecturas\n"
+    dataPorcentajeMemoria = "indice,Lecturas\n"
+    for indice in range(len(lecturas)):
+    	datoCU = str(indice) + "," + str(lecturas[indice].cant_usuarios) + "\n"
+    	datoPCpu = str(indice) + "," + str(lecturas[indice].cpu_perc) + "\n"
+    	datoPM = str(indice) + "," + str(lecturas[indice].mem_perc) + "\n"
+    	dataCantidadUsuarios += datoCU
+    	dataPorcentajeCpu += datoPCpu
+    	dataPorcentajeMemoria += datoPM
+    
+    return render(request, 'maquinas/results.html', {'pc': pc, 'dataCantidadUsuarios': dataCantidadUsuarios, 'dataPorcentajeCpu':dataPorcentajeCpu, 
+    												'dataPorcentajeMemoria':dataPorcentajeMemoria})

@@ -43,7 +43,7 @@
 </style>
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="relojFecha()">
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -55,16 +55,32 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand page-scroll" href="#page-top">Proyecto</a>
-                <div class="fecha-actual" style="color: #ffffff; widht:200px; height:50px;" float="right">
-		    		<h> 
-		    			<script>
-							var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-							var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
-							var f=new Date();
-							document.write(diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear());
-						</script>
-		    		</h>
-		    	</div>
+                <p id="idReloj" style="color:#ffffff"; width:300px;/>
+                <script>
+
+    				function relojFecha(){
+					 	var mydate=new Date();var year=mydate.getYear();
+					 	if (year < 1000)year+=1900;
+					 	var day=mydate.getDay();
+					 	var month=mydate.getMonth();
+					 	var daym=mydate.getDate();
+					 	if (daym<10)daym="0"+daym;
+					 	var dayarray=new Array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado");
+					 	var montharray=new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto",
+					 	                                             "Septiembre","Octubre","Noviembre","Diciembre");
+					 	var horas = mydate.getHours();
+					 	horas = (horas<10)?"0"+horas:horas;
+					 	var minutos = mydate.getMinutes();
+					 	minutos = (minutos<10)?"0"+minutos:minutos;
+					 	var segundos = mydate.getSeconds();
+					 	segundos = (segundos<10)?"0"+segundos:segundos;
+					 	document.getElementById("idReloj").innerHTML = "<"+"small><"+"font color='000000' face='Verdana'>"+
+					 	                                                dayarray[day]+" "+daym+" de "+montharray[month]+" de "+
+					                                                        year+" "+horas+":"+minutos+":"+segundos+"<"+"/font><"+"/small>";
+					 	setTimeout('relojFecha()',1000);
+					}
+							
+				</script>	
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -101,6 +117,10 @@
     
     <!-- Custom Theme JavaScript -->
     <script src="{% static 'maquinas/js/creative.js' %}"></script>
+
+    <script src="{% static 'maquinas/js/creative.js' %}"></script>
+
+    <script src="{% static 'maquinas/main.js' %}"></script>
 
 </body>
 

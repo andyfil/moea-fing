@@ -58,6 +58,32 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand page-scroll" href="#page-top">Proyecto</a>
+                <p id="idReloj" style="color:#ffffff"; width:300px;/>
+                <script>
+
+    				function relojFecha(){
+					 	var mydate=new Date();var year=mydate.getYear();
+					 	if (year < 1000)year+=1900;
+					 	var day=mydate.getDay();
+					 	var month=mydate.getMonth();
+					 	var daym=mydate.getDate();
+					 	if (daym<10)daym="0"+daym;
+					 	var dayarray=new Array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado");
+					 	var montharray=new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto",
+					 	                                             "Septiembre","Octubre","Noviembre","Diciembre");
+					 	var horas = mydate.getHours();
+					 	horas = (horas<10)?"0"+horas:horas;
+					 	var minutos = mydate.getMinutes();
+					 	minutos = (minutos<10)?"0"+minutos:minutos;
+					 	var segundos = mydate.getSeconds();
+					 	segundos = (segundos<10)?"0"+segundos:segundos;
+					 	document.getElementById("idReloj").innerHTML = "<"+"small><"+"font color='000000' face='Verdana'>"+
+					 	                                                dayarray[day]+" "+daym+" de "+montharray[month]+" de "+
+					                                                        year+" "+horas+":"+minutos+":"+segundos+"<"+"/font><"+"/small>";
+					 	setTimeout('relojFecha()',1000);
+					}
+							
+				</script>	
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -66,22 +92,62 @@
     </nav>
 
     <header>
+    	<input type="hidden" name="dataCantUsers" id="dataCantidadUsuarios" value="{{dataCantidadUsuarios}}"/>
+    	<input type="hidden" name="dataPercCpu" id="dataPorcentajeCpu" value="{{dataPorcentajeCpu}}"/>
+    	<input type="hidden" name="dataPercMem" id="dataPorcentajeMemoria" value="{{dataPorcentajeMemoria}}"/>
         <div class="header-content">
             <div class="header-content-inner">         
-                <h1> PC: {{ pc.mac }}</h1>
+                <h1> PC: {{ pc.mac }} </h1>
                 <p></p>
-				<div style="height:500px; width:700px; margin:0 auto; " id="graphic"></div>
+                <table id="graphics" style="margin:0 auto;">
+                	<tr>
+                		<td>
+							<div style="height:500px; width:450px;" id="graphicCantUsers"></div>
+						</td>
+						<td>
+							<div style="height:500px; width:450px;" id="graphicCpuPerc"></div>
+						</td>
+						<td>
+							<div style="height:500px; width:450px;" id="graphicMemPerc"></div>	
+						</td>
+					</tr>
+				</table>
 				<script>
+					d = document.getElementById("dataCantidadUsuarios").value
 					g = new Dygraph(
-				    				document.getElementById("graphic"),
-									"Cantidad,Lectura\n" + "1,5\n" + "2,2\n" + "3,4\n" + "4,7\n" + "5,3\n" + "6,8\n" + "7,5\n" + "8,6\n",
+				    				document.getElementById("graphicCantUsers"),
+									d,
 					                 {
 										legend: 'always',
 										animatedZooms: true,
 										title: 'Cantidad de Usuarios por Tiempo',
 										showRoller: true,
-										rollPeriod: 12,
+										rollPeriod: 1,
 										ylabel: 'Cantidad Usuarios',
+					                 });
+					d = document.getElementById("dataPorcentajeCpu").value
+					g = new Dygraph(
+				    				document.getElementById("graphicCpuPerc"),
+									d,
+					                 {
+										legend: 'always',
+										animatedZooms: true,
+										title: 'Porcentaje Uso de CPU',
+										showRoller: true,
+										rollPeriod: 1,
+										ylabel: 'Porcentaje CPU',
+					                 });
+					d = document.getElementById("dataPorcentajeMemoria").value
+					g = new Dygraph(
+				    				document.getElementById("graphicMemPerc"),
+									d,
+					                 {
+										legend: 'always',
+										animatedZooms: true,
+										title: 'Porcentaje Uso de Memoria',
+										showRoller: true,
+										rollPeriod: 1,
+										ylabel: 'Porcentaje Memoria',
 					                 });
 
 				</script>
