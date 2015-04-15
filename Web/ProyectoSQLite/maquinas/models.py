@@ -11,6 +11,7 @@ class Salon(models.Model):
 class Pc(models.Model):
 	salon = models.ForeignKey(Salon)
 	nombre = models.CharField(max_length=200)
+	ip = models.CharField(max_length=150)
 	mac = models.CharField(max_length=200)
 	so = models.CharField(max_length=100)
 	ram = models.IntegerField()
