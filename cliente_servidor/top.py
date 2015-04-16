@@ -1,11 +1,13 @@
 from abc import ABCMeta, abstractmethod
+from platform import node, machine, processor
+import socket
 
 class Top():
     __metaclass__ = ABCMeta
 
     def obtener_datos(self):
         data = {}
-        data['pc'] = self.obtenerPc()
+        data['pc'] = self.get_pc_name()
         data['timestamp'] = self.obtenerTimestamp()
         data['state'] = self.obtenerState()
         data['on_time'] = self.obtenerOn_time()
@@ -18,10 +20,17 @@ class Top():
         data['memory_use'] = self.obtenerMemory_use()
         return data
 
-    @abstractmethod
+    def get_pc_name(self):
+        """Devuelve el nombre de la pc"""
+        return node()
+
+    def get_mac(self):
+        """Get the mac address of the pc"""
+        return
+
     def get_cpu_architecture(self):
         """Get the brand and model of the cpu"""
-        pass
+        return processor()
 
     @abstractmethod
     def get_cpu_cores(self):
@@ -35,11 +44,6 @@ class Top():
 
     @abstractmethod
     def __init__(self):
-        pass
-
-    @abstractmethod
-    def obtenerPc(self):
-        "Obtengo la pc"
         pass
 
     @abstractmethod

@@ -27,6 +27,7 @@ reg_cpu = 'cpu'
 reg_estado = 'estado'
 reg_users = 'cant_usuarios'
 reg_salon = 'salon_id'
+reg_arch = 'cpu_arch'
 
 #dato salon
 ident = 'id'

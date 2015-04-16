@@ -11,6 +11,7 @@ else: #nt
 
 from json import dumps
 import requests
+import constantes as cts
 #import topLin_v1 as top
 
 IDENT = 1 #id de la pc por defecto
@@ -27,12 +28,13 @@ MESSAGE = '{"pc": "pcunix114","timestamp": "2014-12-10 10:48:20",\
 
 def data_registro():
     reg = {}
-    reg['nombre'] = TOP.obtenerPc()
-    reg['mac'] = '123456789123'
-    reg['so'] = os.name
-    reg['ram'] = '4000'
-    reg['cpu'] = '2'
-    reg['estado'] = TOP.obtenerState()
+    reg[cts.reg_nombre] = TOP.get_pc_name()
+    reg[cts.reg_mac] = TOP.get_mac()
+    reg[cts.reg_so] = os.name
+    reg[cts.reg_ram] = TOP.get_total_memory()
+    reg[cts.reg_arch] = TOP.get_cpu_architecture()
+    reg[cts.reg_cpu] = TOP.get_cpu_cores()
+    reg[cts.reg_estado] = TOP.obtenerState()
     return reg
 
 def proxi():
@@ -40,19 +42,21 @@ def proxi():
         return {"http":PROXY +':'+ str(PROXY_PORT)}
     else:
         return {}
-try:
-    HEADERS = {'content-type': 'application/json'}
-    R = requests.post(REGISTER_URL, data=dumps(data_registro()),
-                      headers=HEADERS, proxies=proxi())
-    if R.status_code == 200 and R.json()['result']:
-        URL = DATA_URL+"/"+str(R.json()['ident'])
-        R2 = requests.post(URL, data=dumps(TOP.obtener_datos()),
-                           headers=HEADERS, proxies=proxi())
-    else:
-        print "Ocurrio un error al intentar registrar la pc "
-        print R.json()
-except:
-    print "Error inesperado:", sys.exc_info()
-finally:
-    print >>sys.stderr, 'Cerrando socket'
+
+if __name__ == '__main__':
+    try:
+        HEADERS = {'content-type': 'application/json'}
+        R = requests.post(REGISTER_URL, data=dumps(data_registro()),
+                          headers=HEADERS, proxies=proxi())
+        if R.status_code == 200 and R.json()['result']:
+            URL = DATA_URL+"/"+str(R.json()['ident'])
+            R2 = requests.post(URL, data=dumps(TOP.obtener_datos()),
+                               headers=HEADERS, proxies=proxi())
+        else:
+            print "Ocurrio un error al intentar registrar la pc "
+            print R.json()
+    except:
+        print "Error inesperado:", sys.exc_info()
+    finally:
+        print >>sys.stderr, 'Cerrando socket'
 
