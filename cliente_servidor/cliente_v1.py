@@ -30,7 +30,7 @@ def data_registro():
     reg = {}
     reg[cts.reg_nombre] = TOP.get_pc_name()
     reg[cts.reg_mac] = TOP.get_mac()
-    reg[cts.reg_so] = os.name
+    reg[cts.reg_so] = TOP.get_os()
     reg[cts.reg_ram] = TOP.get_total_memory()
     reg[cts.reg_arch] = TOP.get_cpu_architecture()
     reg[cts.reg_cpu] = TOP.get_cpu_cores()

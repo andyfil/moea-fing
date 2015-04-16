@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from platform import node, processor
+from platform import node, processor, system
 from uuid import getnode as get_mac
 from socket import gethostbyname, getfqdn
 from multiprocessing import cpu_count
@@ -21,6 +21,10 @@ class Top():
         data['cpu_use'] = self.obtenerCpu_use()
         data['memory_use'] = self.obtenerMemory_use()
         return data
+
+    def get_os(self):
+        "Get the host operative system family"
+        return system()
 
     def get_ip(self):
         """Get the ip assigned to external network interface"""
