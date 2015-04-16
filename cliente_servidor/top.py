@@ -1,6 +1,8 @@
 from abc import ABCMeta, abstractmethod
-from platform import node, machine, processor
-import socket
+from platform import node, processor
+from uuid import getnode as get_mac
+from socket import gethostbyname, getfqdn
+from multiprocessing import cpu_count
 
 class Top():
     __metaclass__ = ABCMeta
@@ -20,22 +22,25 @@ class Top():
         data['memory_use'] = self.obtenerMemory_use()
         return data
 
+    def get_ip(self):
+        """Get the ip assigned to external network interface"""
+        return gethostbyname(getfqdn())
+
     def get_pc_name(self):
         """Devuelve el nombre de la pc"""
         return node()
 
     def get_mac(self):
         """Get the mac address of the pc"""
-        return
+        return str(get_mac())
 
     def get_cpu_architecture(self):
         """Get the brand and model of the cpu"""
         return processor()
 
-    @abstractmethod
     def get_cpu_cores(self):
         """Get the number of cpu cores in the pc"""
-        pass
+        return cpu_count()
 
     @abstractmethod
     def get_total_memory(self):

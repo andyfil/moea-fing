@@ -35,6 +35,7 @@ def data_registro():
     reg[cts.reg_arch] = TOP.get_cpu_architecture()
     reg[cts.reg_cpu] = TOP.get_cpu_cores()
     reg[cts.reg_estado] = TOP.obtenerState()
+    reg[cts.reg_ip] = TOP.get_ip()
     return reg
 
 def proxi():

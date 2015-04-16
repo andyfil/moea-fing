@@ -23,10 +23,6 @@ class TopWin_v1(Top):
             if stateProcess == "Unknown":
                 self.cantProcessSleep += 1
 
-    def get_cpu_cores(self):
-        """Get the number of cpu cores in the pc"""
-        return psutil.cpu_count(True)
-
     def get_total_memory(self):
         """Get total amount of RAM memory installed in the pc measured in MB"""
         total = float(psutil.virtual_memory()[0]) /1024
