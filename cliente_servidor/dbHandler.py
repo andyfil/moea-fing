@@ -8,20 +8,20 @@ import constantes as cts
 
 def _armar_salon(fila):
     salon = {}
-    salon[cts.ident] = fila[0]
-    salon[cts.nombre] = fila[1]
-    salon[cts.lugar] = fila[2]
-    salon[cts.prioridad] = fila[3]
+    salon[cts.SAL_ID] = fila[0]
+    salon[cts.SAL_NOMBRE] = fila[1]
+    salon[cts.SAL_LUGAR] = fila[2]
+    salon[cts.SAL_PRIORITY] = fila[3]
     return salon
 
 class BDHandler(DataHandler):
     """Clase que implementa a dataHandler,
     permite almacenar la informacion obtenida en base de datos"""
 
-    host = cts.host
-    user = cts.user
-    password = cts.password
-    database = cts.database
+    host = cts.DB_HOST
+    user = cts.DB_USER
+    password = cts.DB_PASS
+    database = cts.DB_DATABASE
 
     def __init__(self):
         self.db = MySQLdb.connect(self.host, self.user, self.password,
@@ -51,23 +51,23 @@ class BDHandler(DataHandler):
     def save_json(self, jdata):
         query = """INSERT INTO %s (`pc`,`timestamp`,`state`,`on_time`,`users`,\
             `process`, `process_active`,`process_sleep`, `process_per_user`,\
-            `cpu_use`,`memory_use`) """ %cts.tabla_registro
+            `cpu_use`,`memory_use`) """ %cts.TABLE_REGISTRY
         query += "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
-        datos_query = (jdata[cts.pc], jdata[cts.timestamp], jdata[cts.state],
-                       jdata[cts.on_time], jdata[cts.users], jdata[cts.process],
-                       jdata[cts.process_active], jdata[cts.process_sleep],
-                       json.dumps(jdata[cts.process_per_user]),
-                       jdata[cts.cpu_use], jdata[cts.memory_use])
+        datos_query = (jdata[cts.PC], jdata[cts.TIMESTAMP], jdata[cts.STATE],
+                       jdata[cts.ON_TIME], jdata[cts.USERS], jdata[cts.PROC],
+                       jdata[cts.PROC_ACTIVE], jdata[cts.PROC_SLEEP],
+                       json.dumps(jdata[cts.PROC_PER_USER]),
+                       jdata[cts.CPU_USE], jdata[cts.MEM_USE])
         self.execute(query, datos_query)
 
 
     def save_salon(self, jdata):
         "Metodo que agrega un salon a la estructura de datos"
         query = "INSERT INTO %s (`nombre`,`lugar`,`prioridad`) "\
-         %cts.tabla_salon
+         %cts.TABLE_SALON
         query += "VALUES(%s,%s,%s);"
-        jdata[cts.prioridad] = 0
-        datos_query = (jdata[cts.nombre], jdata[cts.lugar], jdata[cts.prioridad])
+        jdata[cts.SAL_PRIORITY] = 0
+        datos_query = (jdata[cts.SAL_NOMBRE], jdata[cts.SAL_LUGAR], jdata[cts.SAL_PRIORITY])
         self.execute(query, datos_query)
 
     def register_pc(self, jdata):
@@ -75,16 +75,16 @@ class BDHandler(DataHandler):
         y devuelve el identificador de la misma"""
         try:
             ident = 0
-            query = "SELECT id FROM %s " % cts.tabla_pc
+            query = "SELECT id FROM %s " % cts.TABLE_PC
             query += "WHERE mac = %s"
             self.cursor.execute(query, long(jdata["mac"]))
             datos = self.cursor.fetchone()
             if datos is None:
-                query = "INSERT INTO %s " % cts.tabla_pc
+                query = "INSERT INTO %s " % cts.TABLE_PC
                 query += "(`nombre`,`mac`,`so`,`ram`,`cpu`,`estado`,`cant_usuarios`,`salon_id`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
-                data = (jdata[cts.reg_nombre], jdata[cts.reg_mac],
-                        jdata[cts.reg_so], jdata[cts.reg_ram],
-                        jdata[cts.reg_cpu], jdata[cts.reg_estado], 0, 4)
+                data = (jdata[cts.REG_NOMBRE], jdata[cts.REG_MAC],
+                        jdata[cts.REG_SO], jdata[cts.REG_RAM],
+                        jdata[cts.REG_CPU], jdata[cts.REG_STATE], 0, 4)
                 #se ingresa un salon por defecto, numero 4
                 print "data ", data
                 print 'query ', query
@@ -108,17 +108,17 @@ class BDHandler(DataHandler):
     def get_salon(self, jdata):
         "Metodo para obtener informacion de un salon"
         try:
-            query = "SELECT id,nombre,lugar,prioridad FROM %s"% cts.tabla_salon
+            query = "SELECT id,nombre,lugar,prioridad FROM %s"% cts.TABLE_SALON
             if jdata is not None:
                 where = ""
-                if jdata[cts.ident] is not None:
-                    where += "WHERE id = %s"% jdata[cts.ident]
-                if jdata[cts.nombre] is not None:
+                if jdata[cts.SAL_ID] is not None:
+                    where += "WHERE id = %s"% jdata[cts.SAL_ID]
+                if jdata[cts.SAL_NOMBRE] is not None:
                     if where == "":
                         where = "WHERE"
                     else:
                         where += " and "
-                    where += "id = %s"% jdata[cts.ident]
+                    where += "id = %s"% jdata[cts.SAL_ID]
             query += where
             self.cursor.execute(query)
             datos = self.cursor.fetchall()

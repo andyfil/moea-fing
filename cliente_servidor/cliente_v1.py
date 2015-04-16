@@ -28,14 +28,14 @@ MESSAGE = '{"pc": "pcunix114","timestamp": "2014-12-10 10:48:20",\
 
 def data_registro():
     reg = {}
-    reg[cts.reg_nombre] = TOP.get_pc_name()
-    reg[cts.reg_mac] = TOP.get_mac()
-    reg[cts.reg_so] = TOP.get_os()
-    reg[cts.reg_ram] = TOP.get_total_memory()
-    reg[cts.reg_arch] = TOP.get_cpu_architecture()
-    reg[cts.reg_cpu] = TOP.get_cpu_cores()
-    reg[cts.reg_estado] = TOP.obtenerState()
-    reg[cts.reg_ip] = TOP.get_ip()
+    reg[cts.REG_NOMBRE] = TOP.get_pc_name()
+    reg[cts.REG_MAC] = TOP.get_mac()
+    reg[cts.REG_SO] = TOP.get_os()
+    reg[cts.REG_RAM] = TOP.get_total_memory()
+    reg[cts.REG_ARCH] = TOP.get_cpu_architecture()
+    reg[cts.REG_CPU] = TOP.get_cpu_cores()
+    reg[cts.REG_STATE] = TOP.get_state()
+    reg[cts.REG_IP] = TOP.get_ip()
     return reg
 
 def proxi():

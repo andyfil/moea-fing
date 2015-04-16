@@ -1,47 +1,47 @@
-#datos conexion BD
-host = '127.0.0.1'
-user = 'user'
-password = 'user'
-database = 'fing'
+# datos conexion BD
+DB_HOST = '127.0.0.1'
+DB_USER = 'user'
+DB_PASS = 'user'
+DB_DATABASE = 'fing'
 
 #constantes de nombre json
 #dato PC
-pc = 'pc'
-timestamp = 'timestamp'
-state = 'state'
-on_time = 'on_time'
-users = 'users'
-process = 'process'
-process_active = 'process_active'
-process_sleep = 'process_sleep'
-process_per_user = 'process_per_user'
-cpu_use = 'cpu_use'
-memory_use = 'memory_use'
+PC = 'pc'
+TIMESTAMP = 'timestamp'
+STATE = 'state'
+ON_TIME = 'on_time'
+USERS = 'users'
+PROC = 'process'
+PROC_ACTIVE = 'process_active'
+PROC_SLEEP = 'process_sleep'
+PROC_PER_USER = 'process_per_user'
+CPU_USE = 'cpu_use'
+MEM_USE = 'memory_use'
 
 #pc registro
-reg_nombre = 'nombre'
-reg_mac = 'mac'
-reg_so = 'so'
-reg_ram = 'ram'
-reg_cpu = 'cpu'
-reg_ip = 'ip'
-reg_estado = 'estado'
-reg_users = 'cant_usuarios'
-reg_salon = 'salon_id'
-reg_arch = 'cpu_arch'
+REG_NOMBRE = 'nombre'
+REG_MAC = 'mac'
+REG_SO = 'so'
+REG_RAM = 'ram'
+REG_CPU = 'cpu'
+REG_IP = 'ip'
+REG_STATE = 'estado'
+REG_USERS = 'cant_usuarios'
+REG_SALON = 'salon_id'
+REG_ARCH = 'cpu_arch'
 
 #dato salon
-ident = 'id'
-nombre = 'Nombre'
-lugar = 'Ubicacion'
-prioridad = 'Prioridad'
-cantidad = 'Cantidad'
+SAL_ID = 'id'
+SAL_NOMBRE = 'Nombre'
+SAL_LUGAR = 'Ubicacion'
+SAL_PRIORITY = 'Prioridad'
+SAL_CANT = 'Cantidad'
 
 
 #constantes de columnas tablas BD
 
 
 #constantes de nombre de tabla BD
-tabla_salon = 'maquinas_salon'
-tabla_pc = 'maquinas_pc'
-tabla_registro = 'datos'
+TABLE_SALON = 'maquinas_salon'
+TABLE_PC = 'maquinas_pc'
+TABLE_REGISTRY = 'datos'

@@ -3,23 +3,24 @@ from platform import node, processor, system
 from uuid import getnode as get_mac
 from socket import gethostbyname, getfqdn
 from multiprocessing import cpu_count
+import constantes as cs
 
 class Top():
     __metaclass__ = ABCMeta
 
     def obtener_datos(self):
         data = {}
-        data['pc'] = self.get_pc_name()
-        data['timestamp'] = self.obtenerTimestamp()
-        data['state'] = self.obtenerState()
-        data['on_time'] = self.obtenerOn_time()
-        data['users'] = self.obtenerUsers()
-        data['process'] = self.obtenerProcess()
-        data['process_active'] = self.obtenerProcess_active()
-        data['process_sleep'] = self.obtenerProcess_sleep()
-        data['process_per_user'] = self.obtenerProcess_per_user()
-        data['cpu_use'] = self.obtenerCpu_use()
-        data['memory_use'] = self.obtenerMemory_use()
+        data[cs.PC] = self.get_pc_name()
+        data[cs.TIMESTAMP] = self.get_timestamp()
+        data[cs.STATE] = self.get_state()
+        data[cs.ON_TIME] = self.get_on_time()
+        data[cs.DB_USER] = self.get_users()
+        data[cs.PROC] = self.get_proc()
+        data[cs.PROC_ACTIVE] = self.get_proc_active()
+        data[cs.PROC_SLEEP] = self.get_proc_sleep()
+        data[cs.PROC_PER_USER] = self.get_proc_per_user()
+        data[cs.CPU_USE] = self.get_cpu_use()
+        data[cs.MEM_USE] = self.get_mem_use()
         return data
 
     def get_os(self):
@@ -56,51 +57,51 @@ class Top():
         pass
 
     @abstractmethod
-    def obtenerTimestamp(self):
+    def get_timestamp(self):
         "Obtengo fecha y hora"
         pass
 
     @abstractmethod
-    def obtenerState(self):
+    def get_state(self):
         "Obtengo el estado de la pc"
         pass
 
     @abstractmethod
-    def obtenerOn_time(self):
+    def get_on_time(self):
         "Obtengo tiempo iniciada"
         pass
 
     @abstractmethod
-    def obtenerUsers(self):
+    def get_users(self):
         "Obtengo cantidad de usuarios"
         pass
 
     @abstractmethod
-    def obtenerProcess(self):
+    def get_proc(self):
         "Obtengo cantidad de procesos"
         pass
 
     @abstractmethod
-    def obtenerProcess_active(self):
+    def get_proc_active(self):
         "Obtengo cantidad de procesos activos"
         pass
 
     @abstractmethod
-    def obtenerProcess_sleep(self):
+    def get_proc_sleep(self):
         "Obtengo cantidad de procesos dormidos"
         pass
 
     @abstractmethod
-    def obtenerProcess_per_user(self):
+    def get_proc_per_user(self):
         "Obtengo procesos por usuario"
         pass
 
     @abstractmethod
-    def obtenerCpu_use(self):
+    def get_cpu_use(self):
         "Obtengo porcentaje de uso cpu"
         pass
 
     @abstractmethod
-    def obtenerMemory_use(self):
+    def get_mem_use(self):
         "Obtengo porcentaje de uso de memoria"
         pass

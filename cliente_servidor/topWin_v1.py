@@ -29,11 +29,11 @@ class TopWin_v1(Top):
         total /= 1024
         return total
 
-    def obtenerTimestamp(self):
+    def get_timestamp(self):
         fechaHoy = time.strftime("%Y/%m/%d %H:%M:%S")
         return fechaHoy
 
-    def obtenerState(self):
+    def get_state(self):
         users = psutil.users()
         if (len(users) == 0):
             state = "SLEEP"
@@ -41,12 +41,12 @@ class TopWin_v1(Top):
             state = "RUNNING"
         return state
 
-    def obtenerOn_time(self):
+    def get_on_time(self):
         tiempos = psutil.cpu_times()
         onTime = int(tiempos[2]/60/60)
         return onTime
 
-    def obtenerUsers(self):
+    def get_users(self):
         users = []
         for indice in range(3,len(self.tareas)-1):
                 strTarea = self.tareas[indice].split()
@@ -58,18 +58,18 @@ class TopWin_v1(Top):
         cantUsers = len(list(set(users)))
         return cantUsers
 
-    def obtenerProcess(self):
+    def get_proc(self):
         print "Largo de tareas: " + str(len(self.tareas))
         cantProcess = len(self.tareas) - 5
         return cantProcess
 
-    def obtenerProcess_active(self):
+    def get_proc_active(self):
         return self.cantProcessActive
 
-    def obtenerProcess_sleep(self):
+    def get_proc_sleep(self):
         return self.cantProcessSleep
 
-    def obtenerProcess_per_user(self):
+    def get_proc_per_user(self):
         diccionario = {}
         #p = re.compile('\d+\s(\w+)')
         for indice in range(4, len(self.tareas)-1):
@@ -85,11 +85,11 @@ class TopWin_v1(Top):
                 diccionario[user] = 1
         return diccionario
 
-    def obtenerCpu_use(self):
+    def get_cpu_use(self):
         cpu_use = round(psutil.cpu_percent(),1)
         print "USO CPU: " + str(cpu_use)
         return cpu_use
 
-    def obtenerMemory_use(self):
+    def get_mem_use(self):
         percentMem = psutil.virtual_memory()[2]
         return percentMem
