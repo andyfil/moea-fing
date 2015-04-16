@@ -48,7 +48,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
 )
 
 ROOT_URLCONF = 'ProyectoSQLite.urls'
@@ -77,8 +76,12 @@ WSGI_APPLICATION = 'ProyectoSQLite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'web',
+        'USER': 'user',
+        'PASSWORD': 'user',
+        'HOST': 'fingproy.cloudapp.net',
+        'PORT': '3306'
     }
 }
 

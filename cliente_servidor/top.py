@@ -9,18 +9,11 @@ class Top():
     __metaclass__ = ABCMeta
 
     def obtener_datos(self):
-        data = {}
-        data[cs.PC] = self.get_pc_name()
-        data[cs.TIMESTAMP] = self.get_timestamp()
-        data[cs.STATE] = self.get_state()
-        data[cs.ON_TIME] = self.get_on_time()
-        data[cs.DB_USER] = self.get_users()
-        data[cs.PROC] = self.get_proc()
-        data[cs.PROC_ACTIVE] = self.get_proc_active()
-        data[cs.PROC_SLEEP] = self.get_proc_sleep()
-        data[cs.PROC_PER_USER] = self.get_proc_per_user()
-        data[cs.CPU_USE] = self.get_cpu_use()
-        data[cs.MEM_USE] = self.get_mem_use()
+        data = {cs.PC: self.get_pc_name(), cs.TIMESTAMP: self.get_timestamp(), cs.STATE: self.get_state(),
+                cs.ON_TIME: self.get_on_time(), cs.DB_USER: self.get_users(), cs.PROC: self.get_proc(),
+                cs.PROC_ACTIVE: self.get_proc_active(), cs.PROC_SLEEP: self.get_proc_sleep(),
+                cs.PROC_PER_USER: self.get_proc_per_user(), cs.CPU_USE: self.get_cpu_use(),
+                cs.MEM_USE: self.get_mem_use()}
         return data
 
     def get_os(self):
