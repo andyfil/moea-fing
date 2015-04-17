@@ -5,7 +5,7 @@ from flask.ext.restful import Api, Resource, reqparse, fields, marshal
 
 import dataHandler
 from dbHandler import BDHandler
-import constantes as cts
+import constantes as ct
 
 
 app = Flask(__name__, static_url_path="")
@@ -29,9 +29,9 @@ pcs = [
 ]
 
 campos_salon = {
-    cts.SAL_NOMBRE: fields.String,
-    cts.SAL_LUGAR: fields.String,
-    cts.SAL_CANT: fields.Integer,
+    ct.SAL_NOMBRE: fields.String,
+    ct.SAL_LUGAR: fields.String,
+    ct.SAL_CANT: fields.Integer,
     'uri': fields.Url('salon')
 }
 
@@ -42,17 +42,17 @@ campos_pc = {
 }
 
 campos_registro = {
-    cts.PC: fields.String,
-    cts.TIMESTAMP : fields.DateTime(dt_format = 'iso8601'),
-    cts.STATE : fields.String,
-    cts.ON_TIME : fields.Float,
-    cts.USERS : fields.Integer,
-    cts.PROC : fields.Integer,
-    cts.PROC_ACTIVE : fields.Integer,
-    cts.PROC_SLEEP : fields.Integer,
-    cts.PROC_PER_USER : fields.String,
-    cts.CPU_USE : fields.Float,
-    cts.MEM_USE : fields.Float
+    ct.PC: fields.String,
+    ct.TIMESTAMP : fields.DateTime(dt_format = 'iso8601'),
+    ct.STATE : fields.String,
+    ct.ON_TIME : fields.Float,
+    ct.USERS : fields.Integer,
+    ct.PROC : fields.Integer,
+    ct.PROC_ACTIVE : fields.Integer,
+    ct.PROC_SLEEP : fields.Integer,
+    ct.PROC_PER_USER : fields.String,
+    ct.CPU_USE : fields.Float,
+    ct.MEM_USE : fields.Float
 }
 
 class SalonAPI(Resource):
@@ -77,12 +77,12 @@ class SalonAPI(Resource):
     def post(self):
         args = self.reqparse.parse_args()
         salon = {
-            cts.SAL_NOMBRE: args['Nombre'],
-            cts.SAL_LUGAR: args['Ubicacion'],
-            cts.SAL_CANT: 0
+            ct.SAL_NOMBRE: args['Nombre'],
+            ct.SAL_LUGAR: args['Ubicacion'],
+            ct.SAL_CANT: 0
         }
         data.save_salon(salon)
-        salon[cts.SAL_ID] = 3
+        salon[ct.SAL_ID] = 3
         return {'salon': marshal(salon, campos_salon)}, 201
 
 class Salon_PCAPI(Resource):
@@ -115,17 +115,17 @@ class PCAPI(Resource):
         self.reqparse.add_argument('Nombre', type=str, location='json', required=True, help='Se debe proveer un nombre para la PC')
         self.reqparse.add_argument('Salon', type=str, location='json')
         self.regparse = reqparse.RequestParser()
-        self.regparse.add_argument(cts.PC, type=str, location='json', required=True, help = 'Se debe proveer un nombre para la PC')
-        self.regparse.add_argument(cts.TIMESTAMP, type=str, location='json', required=True, help='Se debe introducir un timestamp')
-        self.regparse.add_argument(cts.STATE, type=str, location='json', required=True, help='se debe indicar el estado de la pc')
-        self.regparse.add_argument(cts.ON_TIME, type=float, location='json', required=True, help='se debe indicar el tiempo que lleva encendida')
-        self.regparse.add_argument(cts.USERS, type=int, location='json', required=True, help='se debe indicar la cantidad de usuarios')
-        self.regparse.add_argument(cts.PROC, type=int, location='json', required=True, help='se debe indicar la cantidad total de procesos')
-        self.regparse.add_argument(cts.PROC_ACTIVE, type=int, location='json', required=True, help='se debe indicar la cantidad de procesos activos')
-        self.regparse.add_argument(cts.PROC_SLEEP, type=int, location='json', required=True, help='se debe indicar la cantidad de procesos dormidos')
-        self.regparse.add_argument(cts.PROC_PER_USER, type=dict, location='json', required=False, help='se debe discriminar los procesos por usuario')
-        self.regparse.add_argument(cts.CPU_USE, type=float, location='json', required=True, help='se debe indicar el uso de cpu')
-        self.regparse.add_argument(cts.MEM_USE, type=float, location='json', required=True, help='se debe indicar el uso de memoria')
+        self.regparse.add_argument(ct.PC, type=str, location='json', required=True, help = 'Se debe proveer un nombre para la PC')
+        self.regparse.add_argument(ct.TIMESTAMP, type=str, location='json', required=True, help='Se debe introducir un timestamp')
+        self.regparse.add_argument(ct.STATE, type=str, location='json', required=True, help='se debe indicar el estado de la pc')
+        self.regparse.add_argument(ct.ON_TIME, type=float, location='json', required=True, help='se debe indicar el tiempo que lleva encendida')
+        self.regparse.add_argument(ct.USERS, type=int, location='json', required=True, help='se debe indicar la cantidad de usuarios')
+        self.regparse.add_argument(ct.PROC, type=int, location='json', required=True, help='se debe indicar la cantidad total de procesos')
+        self.regparse.add_argument(ct.PROC_ACTIVE, type=int, location='json', required=True, help='se debe indicar la cantidad de procesos activos')
+        self.regparse.add_argument(ct.PROC_SLEEP, type=int, location='json', required=True, help='se debe indicar la cantidad de procesos dormidos')
+        self.regparse.add_argument(ct.PROC_PER_USER, type=dict, location='json', required=False, help='se debe discriminar los procesos por usuario')
+        self.regparse.add_argument(ct.CPU_USE, type=float, location='json', required=True, help='se debe indicar el uso de cpu')
+        self.regparse.add_argument(ct.MEM_USE, type=float, location='json', required=True, help='se debe indicar el uso de memoria')
         super(PCAPI, self).__init__()
 
     def get(self, ident):
@@ -167,13 +167,16 @@ class PC_sola_API(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('nombre', type=str, location='json',
+        self.reqparse.add_argument( type=str, location='json',
                                          required=True)
-        self.reqparse.add_argument('mac', type=str, location='json')
-        self.reqparse.add_argument('so', type=str, location='json')
-        self.reqparse.add_argument('ram', type=str, location='json')
-        self.reqparse.add_argument('cpu', type=str, location='json')
-        self.reqparse.add_argument('estado', type=str, location='json')
+        self.reqparse.add_argument(ct.REG_NOMBRE, type=str, location='json')
+        self.reqparse.add_argument(ct.REG_MAC, type=str, location='json')
+        self.reqparse.add_argument(ct.REG_SO, type=str, location='json')
+        self.reqparse.add_argument(ct.REG_RAM, type=int, location='json')
+        self.reqparse.add_argument(ct.REG_ARCH, type=str, location='json')
+        self.reqparse.add_argument(ct.REG_CPU, type=int, location='json')
+        self.reqparse.add_argument(ct.REG_STATE, type=str, location='json')
+        self.reqparse.add_argument(ct.ct.REG_IP, type=str, location='json')
         super(PC_sola_API, self).__init__()
 
     def post(self):

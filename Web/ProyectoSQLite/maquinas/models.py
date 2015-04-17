@@ -17,7 +17,6 @@ class Pc(models.Model):
 	ram = models.IntegerField()
 	cpu = models.DecimalField(max_digits=3, decimal_places=1)
 	arq = models.CharField(max_length=50)
-	cant_cores = models.IntegerField()
 	estado = models.CharField(max_length=50)
 	def __str__(self):
 		return self.nombre

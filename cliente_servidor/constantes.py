@@ -1,5 +1,5 @@
 # datos conexion BD
-DB_HOST = '127.0.0.1'
+DB_HOST = 'fingproy.cloudapp.net'
 DB_USER = 'user'
 DB_PASS = 'user'
 DB_DATABASE = 'fing'
