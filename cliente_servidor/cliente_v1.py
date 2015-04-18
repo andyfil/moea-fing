@@ -49,10 +49,12 @@ if __name__ == '__main__':
         HEADERS = {'content-type': 'application/json'}
         R = requests.post(REGISTER_URL, data=dumps(data_registro()),
                           headers=HEADERS, proxies=proxi())
-        if R.status_code == 200 and R.json()['result']:
-            URL = DATA_URL+"/"+str(R.json()['ident'])
-            R2 = requests.post(URL, data=dumps(TOP.obtener_datos()),
+        if R.status_code == 200 and bool(R.json()[cts.API_RESULT]):
+            URL = DATA_URL+"/"+str(R.json()[cts.API_ID])
+            j = TOP.obtener_datos()
+            R2 = requests.post(URL, data=dumps(j),
                                headers=HEADERS, proxies=proxi())
+            print "Exito"
         else:
             print "Ocurrio un error al intentar registrar la pc "
             print R.json()

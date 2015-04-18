@@ -77,16 +77,16 @@ class BDHandler(DataHandler):
             ident = 0
             query = "SELECT id FROM %s " % cts.TABLE_PC
             query += "WHERE mac = %s"
-            self.cursor.execute(query, long(jdata["mac"]))
+            self.cursor.execute(query, jdata["mac"])
             datos = self.cursor.fetchone()
             if datos is None:
                 query = "INSERT INTO %s " % cts.TABLE_PC
                 query += "(`nombre`,`mac`,`so`,`ram`,`cpu`,`estado`,\
-                           `cant_usuarios`,`salon_id`,`ip`,`arq`)\
-                           VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                           `ip`,`arq`)\
+                           VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
                 data = (jdata[cts.REG_NOMBRE], jdata[cts.REG_MAC],
                         jdata[cts.REG_SO], jdata[cts.REG_RAM],
-                        jdata[cts.REG_CPU], jdata[cts.REG_STATE], 0, 4,
+                        jdata[cts.REG_CPU], jdata[cts.REG_STATE],
                         jdata[cts.REG_IP],jdata[cts.REG_ARCH])
                 #se ingresa un salon por defecto, numero 4
                 print "data ", data

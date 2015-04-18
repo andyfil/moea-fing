@@ -167,8 +167,6 @@ class PC_sola_API(Resource):
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument( type=str, location='json',
-                                         required=True)
         self.reqparse.add_argument(ct.REG_NOMBRE, type=str, location='json')
         self.reqparse.add_argument(ct.REG_MAC, type=str, location='json')
         self.reqparse.add_argument(ct.REG_SO, type=str, location='json')
@@ -176,14 +174,14 @@ class PC_sola_API(Resource):
         self.reqparse.add_argument(ct.REG_ARCH, type=str, location='json')
         self.reqparse.add_argument(ct.REG_CPU, type=int, location='json')
         self.reqparse.add_argument(ct.REG_STATE, type=str, location='json')
-        self.reqparse.add_argument(ct.ct.REG_IP, type=str, location='json')
+        self.reqparse.add_argument(ct.REG_IP, type=str, location='json')
         super(PC_sola_API, self).__init__()
 
     def post(self):
         try:
             j = self.reqparse.parse_args()
             ident = data.register_pc(j)
-            return {'result':ident != 0, 'id':ident}
+            return {ct.API_RESULT:ident != 0, ct.API_ID:ident}
         except Exception:
             print "Error ", sys.exc_info()
             abort(500)

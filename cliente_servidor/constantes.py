@@ -2,7 +2,11 @@
 DB_HOST = 'fingproy.cloudapp.net'
 DB_USER = 'user'
 DB_PASS = 'user'
-DB_DATABASE = 'fing'
+DB_DATABASE = 'web'
+
+#respuestas api rest
+API_RESULT = 'result'
+API_ID = 'id'
 
 #constantes de nombre json
 #dato PC

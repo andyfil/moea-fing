@@ -1,4 +1,3 @@
-import time
 import subprocess
 import psutil
 
@@ -29,10 +28,6 @@ class TopWin_v1(Top):
         total /= 1024
         return total
 
-    def get_timestamp(self):
-        fechaHoy = time.strftime("%Y/%m/%d %H:%M:%S")
-        return fechaHoy
-
     def get_state(self):
         users = psutil.users()
         if (len(users) == 0):
@@ -59,7 +54,6 @@ class TopWin_v1(Top):
         return cantUsers
 
     def get_proc(self):
-        print "Largo de tareas: " + str(len(self.tareas))
         cantProcess = len(self.tareas) - 5
         return cantProcess
 
@@ -87,7 +81,6 @@ class TopWin_v1(Top):
 
     def get_cpu_use(self):
         cpu_use = round(psutil.cpu_percent(),1)
-        print "USO CPU: " + str(cpu_use)
         return cpu_use
 
     def get_mem_use(self):

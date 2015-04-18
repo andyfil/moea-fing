@@ -26,10 +26,6 @@ class TopLin_v1(top.Top):
         mem_total = float(tokens[3][:-1])
         return mem_total
 
-    def get_timestamp(self):
-        fecha = time.strftime("%Y/%m/%d %H:%M:%S")
-        return fecha
-
     def get_state(self):
         state = self.tokens[3]
         return state

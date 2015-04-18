@@ -3,22 +3,34 @@ from platform import node, processor, system
 from uuid import getnode as get_mac
 from socket import gethostbyname, getfqdn
 from multiprocessing import cpu_count
+from time import strftime
+
 import constantes as cs
 
 class Top():
     __metaclass__ = ABCMeta
 
     def obtener_datos(self):
-        data = {cs.PC: self.get_pc_name(), cs.TIMESTAMP: self.get_timestamp(), cs.STATE: self.get_state(),
-                cs.ON_TIME: self.get_on_time(), cs.DB_USER: self.get_users(), cs.PROC: self.get_proc(),
-                cs.PROC_ACTIVE: self.get_proc_active(), cs.PROC_SLEEP: self.get_proc_sleep(),
-                cs.PROC_PER_USER: self.get_proc_per_user(), cs.CPU_USE: self.get_cpu_use(),
+        data = {cs.PC: self.get_pc_name(),
+                cs.TIMESTAMP: self.get_timestamp(),
+                cs.STATE: self.get_state(),
+                cs.ON_TIME: self.get_on_time(),
+                cs.USERS: self.get_users(),
+                cs.PROC: self.get_proc(),
+                cs.PROC_ACTIVE: self.get_proc_active(),
+                cs.PROC_SLEEP: self.get_proc_sleep(),
+                cs.PROC_PER_USER: self.get_proc_per_user(),
+                cs.CPU_USE: self.get_cpu_use(),
                 cs.MEM_USE: self.get_mem_use()}
         return data
 
     def get_os(self):
         "Get the host operative system family"
         return system()
+
+    def get_timestamp(self):
+        "Obtengo fecha y hora"
+        return strftime("%Y-%m-%d %H:%M:%S")
 
     def get_ip(self):
         """Get the ip assigned to external network interface"""
@@ -47,11 +59,6 @@ class Top():
 
     @abstractmethod
     def __init__(self):
-        pass
-
-    @abstractmethod
-    def get_timestamp(self):
-        "Obtengo fecha y hora"
         pass
 
     @abstractmethod
