@@ -170,7 +170,7 @@ class PC_sola_API(Resource):
         self.reqparse.add_argument(ct.REG_NOMBRE, type=str, location='json')
         self.reqparse.add_argument(ct.REG_MAC, type=str, location='json')
         self.reqparse.add_argument(ct.REG_SO, type=str, location='json')
-        self.reqparse.add_argument(ct.REG_RAM, type=int, location='json')
+        self.reqparse.add_argument(ct.REG_RAM, type=float, location='json')
         self.reqparse.add_argument(ct.REG_ARCH, type=str, location='json')
         self.reqparse.add_argument(ct.REG_CPU, type=int, location='json')
         self.reqparse.add_argument(ct.REG_STATE, type=str, location='json')
