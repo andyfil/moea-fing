@@ -49,3 +49,11 @@ SAL_CANT = 'Cantidad'
 TABLE_SALON = 'maquinas_salon'
 TABLE_PC = 'maquinas_pc'
 TABLE_REGISTRY = 'datos'
+
+#errors
+ERR_REG_PC = 1
+
+#config
+CFG_FILE = 'config.cfg'
+CFG_SECT = 'main' #config section
+CFG_ID = 'id' #id of the pc on the system

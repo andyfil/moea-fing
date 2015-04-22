@@ -88,12 +88,9 @@ class BDHandler(DataHandler):
                         jdata[cts.REG_SO], jdata[cts.REG_RAM],
                         jdata[cts.REG_CPU], jdata[cts.REG_STATE],
                         jdata[cts.REG_IP],jdata[cts.REG_ARCH])
-                #se ingresa un salon por defecto, numero 4
-                print "data ", data
-                print 'query ', query
                 self.cursor.execute(query, data)
                 self.db.commit()
-                ident = self.db.insert_id()
+                ident = self.cursor.lastrowid
             else:
                 ident = long(datos[0])
         except IndexError, ex_2:
