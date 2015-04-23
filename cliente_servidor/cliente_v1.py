@@ -1,3 +1,6 @@
+#Revision number $Revision$
+#Date $Date$
+
 import sys
 import os
 from json import dumps
