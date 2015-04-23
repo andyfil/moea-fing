@@ -1,3 +1,6 @@
+#Revision number $Revision$
+#Date $Date$
+
 import os
 import re
 import time

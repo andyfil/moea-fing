@@ -1,3 +1,6 @@
+#Revision number $Revision$
+#Date $Date$
+
 import sys
 
 from flask import Flask, jsonify, abort, make_response, request

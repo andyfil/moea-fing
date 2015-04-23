@@ -1,3 +1,7 @@
+#Revision number $Revision$
+#Date $Date$
+
+
 from abc import ABCMeta, abstractmethod
 from platform import node, processor, system
 from uuid import getnode as get_mac

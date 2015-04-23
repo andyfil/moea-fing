@@ -1,3 +1,6 @@
+#Revision number $Revision$
+#Date $Date$
+
 from abc import ABCMeta, abstractmethod
 
 class DataHandler():
