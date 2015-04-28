@@ -7,13 +7,11 @@ import top
 class TopLin_v1(top.Top):
 
     def __init__(self):
-	print "Inciciando Top de linux"
-	self.lineas = os.popen("/usr/bin/top -icbd.1 -n 1").readlines()
-	f.write(self.lineas[0])
-	f.write(self.lineas[1])
-	self.firstLine = self.lineas[0].split(",")
-	self.tokens = self.firstLine[0].split()
-	self.secondLine = self.lineas[1].split(",")
+        print "Inciciando Top de linux"
+        self.lineas = os.popen("/usr/bin/top -icbd.1 -n 1").readlines()
+		self.firstLine = self.lineas[0].split(",")
+        self.tokens = self.firstLine[0].split()
+        self.secondLine = self.lineas[1].split(",")
 
     def _parse_memory(self):
         line = re.sub(r'\x1b[^m]*m', '', self.lineas[3])

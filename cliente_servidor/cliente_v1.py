@@ -69,7 +69,6 @@ if __name__ == '__main__':
             ident = cfg.get(cts.CFG_SECT,cts.CFG_ID)
         URL = DATA_URL+"/"+ ident
         j = TOP.obtener_datos()
-        f.write(dumps(j))
 	R2 = rq.post(URL, data=dumps(j),
                      headers=HEADERS, proxies=_proxi())
         print "Exito"
