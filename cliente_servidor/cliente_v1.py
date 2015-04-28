@@ -1,6 +1,3 @@
-#Revision number $Revision$
-#Date $Date$
-
 import sys
 import os
 from json import dumps
@@ -8,11 +5,13 @@ import requests as rq
 import ConfigParser as config
 
 import constantes as cts
-
+f = open('debug_cliente', 'w')
+f.write("Entre al cliente \n")
 if os.name == "posix":
     print "SO: LINUX"
     from topLin_v1 import TopLin_v1
     TOP = TopLin_v1()
+	f.write("Cree al topLinux\n")
 else: #nt
     print "SO: WINDOWS"
     from topWin_v1 import TopWin_v1
