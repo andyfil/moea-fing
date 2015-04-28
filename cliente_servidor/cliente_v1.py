@@ -5,25 +5,21 @@ import requests as rq
 import ConfigParser as config
 
 import constantes as cts
-f = open('debug_cliente', 'w')
-f.write("Entre al cliente \n")
 if os.name == "posix":
     print "SO: LINUX"
     from topLin_v1 import TopLin_v1
     TOP = TopLin_v1()
-	f.write("Cree al topLinux\n")
 else: #nt
     print "SO: WINDOWS"
     from topWin_v1 import TopWin_v1
     TOP = TopWin_v1()
-
 IDENT = 1 #id de la pc por defecto
 BASE_URL = "http://fingproy.cloudapp.net:80/proy/api/v1"
 REGISTER_URL = BASE_URL + "/pcs"
 DATA_URL = BASE_URL + "/pcs"
 HEADERS = {'content-type': 'application/json'}
-#PROXY = "http://proxy.fing.edu.uy"
-PROXY = ""
+PROXY = "http://proxy.fing.edu.uy"
+#PROXY = ""
 PROXY_PORT = 3128
 MESSAGE = '{"pc": "pcunix114","timestamp": "2014-12-10 10:48:20",\
           "state": "working","on_time": 1238.3,"users": 3,"process": 98,\
@@ -73,7 +69,8 @@ if __name__ == '__main__':
             ident = cfg.get(cts.CFG_SECT,cts.CFG_ID)
         URL = DATA_URL+"/"+ ident
         j = TOP.obtener_datos()
-        R2 = rq.post(URL, data=dumps(j),
+        f.write(dumps(j))
+	R2 = rq.post(URL, data=dumps(j),
                      headers=HEADERS, proxies=_proxi())
         print "Exito"
     except:

@@ -7,15 +7,13 @@ import top
 class TopLin_v1(top.Top):
 
     def __init__(self):
-        print "Inciciando Top de linux"
-		f = open('debug_cliente', 'w')
-		f.write("Entre al topLinux" + "\n")
-        self.lineas = os.popen("/usr/bin/top icbd.1 -n 1").readlines()
-        f.write("Se llamo el top " + "\n")
-		f.write(self.lineas[0])
-		self.firstLine = self.lineas[0].split(",")
-        self.tokens = self.firstLine[0].split()
-        self.secondLine = self.lineas[1].split(",")
+	print "Inciciando Top de linux"
+	self.lineas = os.popen("/usr/bin/top -icbd.1 -n 1").readlines()
+	f.write(self.lineas[0])
+	f.write(self.lineas[1])
+	self.firstLine = self.lineas[0].split(",")
+	self.tokens = self.firstLine[0].split()
+	self.secondLine = self.lineas[1].split(",")
 
     def _parse_memory(self):
         line = re.sub(r'\x1b[^m]*m', '', self.lineas[3])
@@ -51,12 +49,12 @@ class TopLin_v1(top.Top):
 
     def get_proc_active(self):
         tokens = self.secondLine[1].split()
-        cant_process_active = tokens[1]
+        cant_process_active = tokens[0]
         return cant_process_active
 
     def get_proc_sleep(self):
         tokens = self.secondLine[2].split()
-        cant_process_sleep = tokens[1]
+        cant_process_sleep = tokens[0]
         return cant_process_sleep
 
     def get_proc_per_user(self):
