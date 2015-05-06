@@ -60,3 +60,4 @@ ERR_REG_PC = 1
 CFG_FILE = 'config.cfg'
 CFG_SECT = 'main' #config section
 CFG_ID = 'id' #id of the pc on the system
+CFG_DIR = 'configs/'

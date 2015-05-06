@@ -1,3 +1,6 @@
+#Revision number $Revision$
+#Date $Date$
+
 import os
 import re
 import time
@@ -7,9 +10,9 @@ import top
 class TopLin_v1(top.Top):
 
     def __init__(self):
-        print "Inciciando Top de linux"
+        #print "Inciciando Top de linux"
         self.lineas = os.popen("/usr/bin/top -icbd.1 -n 1").readlines()
-		self.firstLine = self.lineas[0].split(",")
+        self.firstLine = self.lineas[0].split(",")
         self.tokens = self.firstLine[0].split()
         self.secondLine = self.lineas[1].split(",")
 

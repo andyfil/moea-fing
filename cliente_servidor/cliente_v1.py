@@ -1,3 +1,6 @@
+#Revision number $Revision$
+#Date $Date$
+
 import sys
 import os
 from json import dumps
@@ -6,11 +9,11 @@ import ConfigParser as config
 
 import constantes as cts
 if os.name == "posix":
-    print "SO: LINUX"
+    #print "SO: LINUX"
     from topLin_v1 import TopLin_v1
     TOP = TopLin_v1()
 else: #nt
-    print "SO: WINDOWS"
+    #print "SO: WINDOWS"
     from topWin_v1 import TopWin_v1
     TOP = TopWin_v1()
 IDENT = 1 #id de la pc por defecto
@@ -27,7 +30,9 @@ MESSAGE = '{"pc": "pcunix114","timestamp": "2014-12-10 10:48:20",\
           "cpu_use": 34.2,"memory_use": 45.0}'#Mensaje JSON de prueba
 
 def _save_id(p_ident):
-    with open(cts.CFG_FILE, 'wb') as config_file:
+    if not os.path.exists(cts.CFG_DIR):
+        os.makedirs(cts.CFG_DIR)
+    with open(cts.CFG_DIR+TOP.get_pc_name()+'.cfg', 'wb') as config_file:
         _cfg = config.RawConfigParser()
         _cfg.add_section(cts.CFG_SECT)
         _cfg.set(cts.CFG_SECT, cts.CFG_ID, p_ident)
@@ -54,7 +59,7 @@ def _proxi():
 if __name__ == '__main__':
     try:
         cfg = config.RawConfigParser()
-        cfg_file = cfg.read(cts.CFG_FILE)
+        cfg_file = cfg.read(cts.CFG_DIR+TOP.get_pc_name()+'.cfg')
         ident = ''
         if cfg_file == []:
             r = rq.post(REGISTER_URL, data=dumps(data_registro()),
@@ -63,14 +68,14 @@ if __name__ == '__main__':
                 ident = str(r.json()[cts.API_ID])
                 _save_id(ident)
             else:
-                print "Error registering pc ", r.json()
+                print "Error registrando pc ", r.json()
                 sys.exit(cts.ERR_REG_PC)
         else:
             ident = cfg.get(cts.CFG_SECT,cts.CFG_ID)
         URL = DATA_URL+"/"+ ident
         j = TOP.obtener_datos()
-	R2 = rq.post(URL, data=dumps(j),
+        R2 = rq.post(URL, data=dumps(j),
                      headers=HEADERS, proxies=_proxi())
-        print "Exito"
+        #print "Exito"
     except:
         print "Error inesperado:", sys.exc_info()
