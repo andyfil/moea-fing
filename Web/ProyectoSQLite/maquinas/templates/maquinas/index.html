@@ -79,6 +79,10 @@
 					                                                        year+" "+horas+":"+minutos+":"+segundos+"<"+"/font><"+"/small>";
 					 	setTimeout('relojFecha()',1000);
 					}
+
+                    $(document).ready(function(){
+                        $('[data-toggle="tooltip"]').tooltip();   
+                    });
 							
 				</script>	
             </div>
@@ -95,7 +99,8 @@
                     {% if latest_pc_list %}
                         <ul>
                         {% for pc in latest_pc_list %}
-                            <li><a class="listitem" href="{% url 'maquinas:detail' pc.id %}">{{ pc.mac }}</a></li>
+                            <li><a class="listitem" href="{% url 'maquinas:detail' pc.id %}" data-toggle="tooltip" data-placement="right" title="Salon {{pc.salon}}">{{ pc.mac }}</a>
+                            </li>
                         {% endfor %}
                         </ul>
                     {% else %}

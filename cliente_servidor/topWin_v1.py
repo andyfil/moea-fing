@@ -1,6 +1,3 @@
-#Revision number $Revision$
-#Date $Date$
-
 import subprocess
 import psutil
 

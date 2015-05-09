@@ -1,6 +1,3 @@
-#Revision number $Revision$
-#Date $Date$
-
 # datos conexion BD
 DB_HOST = 'fingproy.cloudapp.net'
 DB_USER = 'user'

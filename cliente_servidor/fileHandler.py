@@ -1,6 +1,3 @@
-#Revision number $Revision$
-#Date $Date$
-
 import dataHandler
 import os
 import json
