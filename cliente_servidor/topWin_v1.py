@@ -1,7 +1,14 @@
+#Revision number $Revision$
+#Date $Date$
+
 import subprocess
 import psutil
+from calendar import timegm
+from time import gmtime
 
 from top import Top
+from modelo import Usuario, Proceso
+
 
 class TopWin_v1(Top):
 
@@ -21,6 +28,26 @@ class TopWin_v1(Top):
                 self.cantProcessActive += 1
             if stateProcess == "Unknown":
                 self.cantProcessSleep += 1
+        super(TopWin_v1, self).__init__()
+
+    def get_users_data(self):
+        """Get the logged users data"""
+        users = psutil.get_users()
+        now = timegm(gmtime())
+        return [Usuario(u.name, now - u.started) for u in users]
+
+    def get_process_data(self):
+        "Get the process data"
+        process = []
+        now = timegm(gmtime())
+        for proc in psutil.process_iter():
+            try:
+                process.append(Proceso(proc.pid, proc.name,
+                                       now - proc.create_time(), proc.cmdline))
+            except psutil.NoSuchProcess:
+                pass
+        return process
+
 
     def get_total_memory(self):
         """Get total amount of RAM memory installed in the pc measured in MB"""
@@ -42,16 +69,7 @@ class TopWin_v1(Top):
         return onTime
 
     def get_users(self):
-        users = []
-        for indice in range(3,len(self.tareas)-1):
-                strTarea = self.tareas[indice].split()
-                i = 1
-                while (not strTarea[i].isdigit()):
-                        i+=1
-                user = int(strTarea[i- 1 + 3])
-                users.append(user)
-        cantUsers = len(list(set(users)))
-        return cantUsers
+        return len(psutil.get_users())
 
     def get_proc(self):
         cantProcess = len(self.tareas) - 5

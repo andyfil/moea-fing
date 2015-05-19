@@ -56,6 +56,16 @@ class Top():
         return cpu_count()
 
     @abstractmethod
+    def get_users_data(self):
+        """Get the logged users data"""
+        pass
+
+    @abstractmethod
+    def get_process_data(self):
+        """Get the process data"""
+        pass
+
+    @abstractmethod
     def get_total_memory(self):
         """Get total amount of RAM memory installed in the pc measured in MB"""
         pass

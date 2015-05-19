@@ -1,13 +1,19 @@
 #Revision number $Revision$
 #Date $Date$
 
+#Revision number $Revision$
+#Date $Date$
+
 import os
 import re
 import time
+from subprocess import check_output
 
-import top
+from top import Top
+from modelo import Usuario
+from ps_parser import get_proc_list
 
-class TopLin_v1(top.Top):
+class TopLin_v1(Top):
 
     def __init__(self):
         #print "Inciciando Top de linux"
@@ -15,6 +21,20 @@ class TopLin_v1(top.Top):
         self.firstLine = self.lineas[0].split(",")
         self.tokens = self.firstLine[0].split()
         self.secondLine = self.lineas[1].split(",")
+        super(TopLin_v1, self).__init__()
+
+    def get_users_data(self):
+        """Get the logged users data"""
+        formato = '%Y-%m-%d %H:%M'
+        _who = check_output("who").split('\n')
+        return [Usuario(_who[i].split()[0], time.strptime(_who[i].split()[2] +
+                ' ' + _who[i].split()[3], formato)) for i in
+                range(0, len(_who) - 1)]
+
+    def get_process_data(self):
+        "Get the process data"
+        p_list = get_proc_list()
+        return [p.get_proceso() for p in p_list if p.user != 'root']
 
     def _parse_memory(self):
         line = re.sub(r'\x1b[^m]*m', '', self.lineas[3])
