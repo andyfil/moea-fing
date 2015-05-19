@@ -4,8 +4,6 @@
 import time
 
 from modelo import Usuario, Proceso
-import topWin_v1
-import topLin_v1
 import os
 
 
