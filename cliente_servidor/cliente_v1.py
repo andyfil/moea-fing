@@ -39,15 +39,9 @@ def _save_id(p_ident):
         _cfg.write(config_file)
 
 def data_registro():
-    reg = {}
-    reg[cts.REG_NOMBRE] = TOP.get_pc_name()
-    reg[cts.REG_MAC] = TOP.get_mac()
-    reg[cts.REG_SO] = TOP.get_os()
-    reg[cts.REG_RAM] = TOP.get_total_memory()
-    reg[cts.REG_ARCH] = TOP.get_cpu_architecture()
-    reg[cts.REG_CPU] = TOP.get_cpu_cores()
-    reg[cts.REG_STATE] = TOP.get_state()
-    reg[cts.REG_IP] = TOP.get_ip()
+    reg = {cts.REG_NOMBRE: TOP.get_pc_name(), cts.REG_MAC: TOP.get_mac(), cts.REG_SO: TOP.get_os(),
+           cts.REG_RAM: TOP.get_total_memory(), cts.REG_ARCH: TOP.get_cpu_architecture(),
+           cts.REG_CPU: TOP.get_cpu_cores(), cts.REG_STATE: TOP.get_state(), cts.REG_IP: TOP.get_ip()}
     return reg
 
 def _proxi():
@@ -59,9 +53,9 @@ def _proxi():
 if __name__ == '__main__':
     try:
         cfg = config.RawConfigParser()
-        cfg_file = cfg.read(cts.CFG_DIR+TOP.get_pc_name()+'.cfg')
+        result = cfg.read(cts.CFG_DIR+TOP.get_pc_name()+'.cfg')
         ident = ''
-        if cfg_file == []:
+        if not result:
             r = rq.post(REGISTER_URL, data=dumps(data_registro()),
                         headers=HEADERS, proxies=_proxi())
             if r.status_code == 200 and bool(r.json()[cts.API_RESULT]):

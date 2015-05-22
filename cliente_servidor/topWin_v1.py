@@ -21,7 +21,7 @@ class TopWin_v1(Top):
             strTarea = self.tareas[indice].split()
             # Busco comienzo del PID
             i = 1
-            while (not strTarea[i].isdigit()):
+            while not strTarea[i].isdigit():
                     i+= 1
             stateProcess = strTarea[i-1+6]
             if stateProcess == "Running":
@@ -42,9 +42,12 @@ class TopWin_v1(Top):
         now = timegm(gmtime())
         for proc in psutil.process_iter():
             try:
-                process.append(Proceso(proc.pid, proc.name,
-                                       now - proc.create_time(), proc.cmdline))
+                cmd = '' if proc.cmdline() == [] else proc.cmdline()[0]
+                process.append(Proceso(proc.pid, proc.name(), proc.username(),
+                                       now - proc.create_time(), cmd))
             except psutil.NoSuchProcess:
+                pass
+            except psutil.AccessDenied:
                 pass
         return process
 
@@ -57,7 +60,7 @@ class TopWin_v1(Top):
 
     def get_state(self):
         users = psutil.users()
-        if (len(users) == 0):
+        if len(users) == 0:
             state = "SLEEP"
         else:
             state = "RUNNING"
@@ -88,10 +91,10 @@ class TopWin_v1(Top):
             strTarea = self.tareas[indice].split()
             # Busco comienzo del PID
             i = 1
-            while (not strTarea[i].isdigit()):
+            while not strTarea[i].isdigit():
                     i+=1
             user = (self.tareas[indice].split())[i-1+3]
-            if (user in diccionario):
+            if user in diccionario:
                 diccionario[user] += 1
             else:
                 diccionario[user] = 1

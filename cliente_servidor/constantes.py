@@ -56,5 +56,7 @@ ERR_REG_PC = 1
 #config
 CFG_FILE = 'config.cfg'
 CFG_SECT = 'main' #config section
+CFG_SECT_USER = 'user'
+CFG_SECT_PROC = 'proc'
 CFG_ID = 'id' #id of the pc on the system
 CFG_DIR = 'configs/'

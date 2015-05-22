@@ -10,11 +10,7 @@ from  dataHandler import DataHandler
 import constantes as cts
 
 def _armar_salon(fila):
-    salon = {}
-    salon[cts.SAL_ID] = fila[0]
-    salon[cts.SAL_NOMBRE] = fila[1]
-    salon[cts.SAL_LUGAR] = fila[2]
-    salon[cts.SAL_PRIORITY] = fila[3]
+    salon = {cts.SAL_ID: fila[0], cts.SAL_NOMBRE: fila[1], cts.SAL_LUGAR: fila[2], cts.SAL_PRIORITY: fila[3]}
     return salon
 
 class BDHandler(DataHandler):
@@ -27,6 +23,7 @@ class BDHandler(DataHandler):
     database = cts.DB_DATABASE
 
     def __init__(self):
+        super(BDHandler, self).__init__()
         self.db = MySQLdb.connect(self.host, self.user, self.password,
                                   self.database)
         self.cursor = self.db.cursor()
@@ -76,8 +73,8 @@ class BDHandler(DataHandler):
     def register_pc(self, jdata):
         """Metodo que registra una pc
         y devuelve el identificador de la misma"""
+        ident = 0
         try:
-            ident = 0
             query = "SELECT id FROM %s " % cts.TABLE_PC
             query += "WHERE mac = %s"
             self.cursor.execute(query, jdata["mac"])
@@ -112,8 +109,8 @@ class BDHandler(DataHandler):
         "Metodo para obtener informacion de un salon"
         try:
             query = "SELECT id,nombre,lugar,prioridad FROM %s"% cts.TABLE_SALON
+            where = ""
             if jdata is not None:
-                where = ""
                 if jdata[cts.SAL_ID] is not None:
                     where += "WHERE id = %s"% jdata[cts.SAL_ID]
                 if jdata[cts.SAL_NOMBRE] is not None:
