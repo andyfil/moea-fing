@@ -35,3 +35,33 @@ class LecturaTop(models.Model):
 	def __str__(self):
 		return "Lectura"
 
+class Usuario(models.Model):
+	nombre = models.CharField(max_length=200)
+	tiempo_ini = models.DateTimeField('Tiempo de inicio')
+	tiempo = models.DateTimeField('Tiempo')
+	memoria = models.IntegerField()
+	cpu = models.DecimalField(max_digits=3, decimal_places=1)
+
+class Proceso(models.Model):
+	pid = models.IntegerField()
+	user = models.ForeignKey(Usuario)
+	name =  models.CharField(max_length=200)
+	tiempo_ini = models.DateTimeField('Tiempo de inicio')
+	tiempo = models.DateTimeField('Tiempo')
+	comando = models.CharField(max_length=200)
+	memoria = models.IntegerField()
+	cpu = models.DecimalField(max_digits=3, decimal_places=1)
+
+class Proc(models.Model):
+	user = models.ForeignKey(Usuario)
+	pid = models.ForeignKey(Proceso)
+	cpu = models.DecimalField(max_digits=3, decimal_places=1)
+	mem = models.IntegerField()
+	vsz = models.CharField(max_length=200)
+	rss = models.CharField(max_length=200)
+	tty = models.CharField(max_length=200)
+	stat = models.CharField(max_length=200)
+	start = models.CharField(max_length=200)
+	time = models.DateTimeField('Tiempo')
+	cmd = models.CharField(max_length=200)
+
