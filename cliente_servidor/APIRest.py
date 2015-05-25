@@ -159,7 +159,7 @@ class PCAPI(Resource):
         #encontrar id en bd de la pc
         try:
             j = self.regparse.parse_args()
-            data.save_json(j)
+            data.save_json(ident,j)
         except Exception:
             print "Error ", sys.exc_info()
             abort(500)

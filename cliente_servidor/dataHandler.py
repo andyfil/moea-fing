@@ -19,7 +19,7 @@ class DataHandler():
 
 #begin Salon
     @abstractmethod
-    def save_salon(self, jdata):
+    def save_salon(self, ident, jdata):
         "Metodo que agrega un salon a la estructura de datos"
         pass
 

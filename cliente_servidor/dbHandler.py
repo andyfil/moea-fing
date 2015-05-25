@@ -48,12 +48,12 @@ class BDHandler(DataHandler):
             print "Unexpected error:", sys.exc_info()[0]
             self.db.rollback()
 
-    def save_json(self, jdata):
-        query = """INSERT INTO %s (`pc`,`timestamp`,`state`,`on_time`,`users`,\
+    def save_json(self, ident, jdata):
+        query = """INSERT INTO %s (`id_pc`,`pc`,`timestamp`,`state`,`on_time`,`users`,\
             `process`, `process_active`,`process_sleep`, `process_per_user`,\
             `cpu_use`,`memory_use`) """ %cts.TABLE_REGISTRY
-        query += "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
-        datos_query = (jdata[cts.PC], jdata[cts.TIMESTAMP], jdata[cts.STATE],
+        query += "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+        datos_query = (ident, jdata[cts.PC], jdata[cts.TIMESTAMP], jdata[cts.STATE],
                        jdata[cts.ON_TIME], jdata[cts.USERS], jdata[cts.PROC],
                        jdata[cts.PROC_ACTIVE], jdata[cts.PROC_SLEEP],
                        json.dumps(jdata[cts.PROC_PER_USER]),
