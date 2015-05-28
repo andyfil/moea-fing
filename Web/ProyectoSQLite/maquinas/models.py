@@ -35,12 +35,29 @@ class LecturaTop(models.Model):
 	def __str__(self):
 		return "Lectura"
 
+class Datos_Lecturas(models.Model):
+	pc = models.CharField(max_length=200)
+	timestamp = models.DateTimeField('Timestamp')
+	state = models.CharField(max_length=200)
+	on_time = models.IntegerField()
+	users = models.IntegerField()
+	process = models.IntegerField()
+	process_active = models.IntegerField()
+	process_sleep = models.IntegerField()
+	process_per_user = models.CharField(max_length=500)
+	cpu_use = models.DecimalField(max_digits=10, decimal_places=2)
+	memory_use = models.DecimalField(max_digits=10, decimal_places=2)
+
 class Usuario(models.Model):
 	nombre = models.CharField(max_length=200)
 	tiempo_ini = models.DateTimeField('Tiempo de inicio')
 	tiempo = models.DateTimeField('Tiempo')
-	memoria = models.IntegerField()
-	cpu = models.DecimalField(max_digits=3, decimal_places=1)
+	memoria_minimo = models.IntegerField()
+	memoria_promedio = models.IntegerField()
+	memoria_maximo = models.IntegerField()
+	cpu_minimo = models.DecimalField(max_digits=3, decimal_places=1)
+	cpu_promedio = models.DecimalField(max_digits=3, decimal_places=1)
+	cpu_maximo = models.DecimalField(max_digits=3, decimal_places=1)
 
 class Proceso(models.Model):
 	pid = models.IntegerField()
@@ -49,19 +66,28 @@ class Proceso(models.Model):
 	tiempo_ini = models.DateTimeField('Tiempo de inicio')
 	tiempo = models.DateTimeField('Tiempo')
 	comando = models.CharField(max_length=200)
-	memoria = models.IntegerField()
-	cpu = models.DecimalField(max_digits=3, decimal_places=1)
+	memoria_minimo = models.IntegerField()
+	memoria_promedio = models.IntegerField()
+	memoria_maximo = models.IntegerField()
+	cpu_minimo = models.DecimalField(max_digits=3, decimal_places=1)
+	cpu_promedio = models.DecimalField(max_digits=3, decimal_places=1)
+	cpu_maximo = models.DecimalField(max_digits=3, decimal_places=1)
 
-class Proc(models.Model):
-	user = models.ForeignKey(Usuario)
-	pid = models.ForeignKey(Proceso)
-	cpu = models.DecimalField(max_digits=3, decimal_places=1)
-	mem = models.IntegerField()
-	vsz = models.CharField(max_length=200)
-	rss = models.CharField(max_length=200)
-	tty = models.CharField(max_length=200)
-	stat = models.CharField(max_length=200)
-	start = models.CharField(max_length=200)
-	time = models.DateTimeField('Tiempo')
-	cmd = models.CharField(max_length=200)
+class Datos(models.Model):
+	id = models.IntegerField(primary_key=True)  # AutoField?
+	id_pc = models.ForeignKey('Pc', db_column='id_pc', blank=True, null=True)
+	pc = models.CharField(max_length=45)
+	timestamp = models.DateTimeField(blank=True, null=True)
+	state = models.CharField(max_length=45, blank=True)
+	on_time = models.IntegerField(blank=True, null=True)
+	users = models.IntegerField(blank=True, null=True)
+	process = models.IntegerField(blank=True, null=True)
+	process_active = models.IntegerField(blank=True, null=True)
+	process_sleep = models.IntegerField(blank=True, null=True)
+	process_per_user = models.CharField(max_length=500, blank=True)
+	cpu_use = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+	memory_use = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
+	class Meta:
+		managed = True
+		db_table = 'clone_datos'
