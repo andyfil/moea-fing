@@ -31,6 +31,33 @@ pcs = [
     }
 ]
 
+campos_proc = {
+    ct.P_ID: fields.Integer,
+    ct.P_NAME: fields.String,
+    ct.P_USER: fields.String,
+    ct.P_CMD: fields.String,
+    ct.P_TIME_INI: fields.Float,
+    ct.P_TIME: fields.Float,
+    ct.P_MEM_MIN: fields.Float,
+    ct.P_MEM_AVG: fields.Float,
+    ct.P_MEM_MAX: fields.Float,
+    ct.P_PROC_MIN: fields.Float,
+    ct.P_PROC_AVG: fields.Float,
+    ct.P_PROC_MAX: fields.Float,
+}
+
+campos_user = {
+    ct.U_NAME: fields.String,
+    ct.U_TIME_INI: fields.Float,
+    ct.U_TIME: fields.Float,
+    ct.U_MEM_MIN: fields.Float,
+    ct.U_MEM_AVG: fields.Float,
+    ct.U_MEM_MAX: fields.Float,
+    ct.U_PROC_MIN: fields.Float,
+    ct.U_PROC_AVG: fields.Float,
+    ct.U_PROC_MAX: fields.Float,
+}
+
 campos_salon = {
     ct.SAL_NOMBRE: fields.String,
     ct.SAL_LUGAR: fields.String,
@@ -167,7 +194,6 @@ class PCAPI(Resource):
 class PC_sola_API(Resource):
     """API para el registro de pcs"""
 
-
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument(ct.REG_NOMBRE, type=str, location='json')
@@ -189,10 +215,65 @@ class PC_sola_API(Resource):
             print "Error ", sys.exc_info()
             abort(500)
 
+class Proc_API(Resource):
+    """API para el registro de pcs"""
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument(ct.P_ID, type=int, location='json')
+        self.reqparse.add_argument(ct.P_NAME, type=str, location='json')
+        self.reqparse.add_argument(ct.P_USER, type=str, location='json')
+        self.reqparse.add_argument(ct.P_TIME, type=float, location='json')
+        self.reqparse.add_argument(ct.P_TIME_INI, type=float, location='json')
+        self.reqparse.add_argument(ct.P_CMD, type=str, location='json')
+        self.reqparse.add_argument(ct.P_MEM_MIN, type=float, location='json')
+        self.reqparse.add_argument(ct.P_MEM_AVG, type=float, location='json')
+        self.reqparse.add_argument(ct.P_MEM_MAX, type=float, location='json')
+        self.reqparse.add_argument(ct.P_PROC_MIN, type=float, location='json')
+        self.reqparse.add_argument(ct.P_PROC_AVG, type=float, location='json')
+        self.reqparse.add_argument(ct.P_PROC_MAX, type=float, location='json')
+        super(Proc_API, self).__init__()
+
+    def post(self):
+        try:
+            j = self.reqparse.parse_args()
+            ident = data.save_proc(j)
+            return {ct.API_RESULT:ident != 0, ct.API_ID:ident}
+        except Exception:
+            print "Error ", sys.exc_info()
+            abort(500)
+
+class User_API(Resource):
+    """API para el registro de pcs"""
+
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument(ct.U_NAME, type=str, location='json')
+        self.reqparse.add_argument(ct.U_TIME, type=float, location='json')
+        self.reqparse.add_argument(ct.U_TIME_INI, type=float, location='json')
+        self.reqparse.add_argument(ct.U_MEM_MIN, type=float, location='json')
+        self.reqparse.add_argument(ct.U_MEM_AVG, type=float, location='json')
+        self.reqparse.add_argument(ct.U_MEM_MAX, type=float, location='json')
+        self.reqparse.add_argument(ct.U_PROC_MIN, type=float, location='json')
+        self.reqparse.add_argument(ct.U_PROC_AVG, type=float, location='json')
+        self.reqparse.add_argument(ct.U_PROC_MAX, type=float, location='json')
+        super(User_API, self).__init__()
+
+    def post(self):
+        try:
+            j = self.reqparse.parse_args()
+            ident = data.save_user(j)
+            return {ct.API_RESULT:ident != 0, ct.API_ID:ident}
+        except Exception:
+            print "Error ", sys.exc_info()
+            abort(500)
+
 api.add_resource(Salon_PCAPI, '/proy/api/v1/salones/<string:salon>', endpoint='salon_pc')
 api.add_resource(SalonAPI, '/proy/api/v1/salones', endpoint='salon')
 api.add_resource(PCAPI, '/proy/api/v1/pcs/<int:ident>', endpoint='pc')
 api.add_resource(PC_sola_API, '/proy/api/v1/pcs', endpoint='pc_sola')
+api.add_resource(User_API, '/proy/api/v1/users', endpoint='user')
+api.add_resource(Proc_API, '/proy/api/v1/procs', endpoint='proc')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)

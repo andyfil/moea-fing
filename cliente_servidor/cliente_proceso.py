@@ -4,6 +4,8 @@
 import time
 import ConfigParser as Config
 import os
+import requests as rq
+from json import dumps
 
 from modelo import Usuario, Proceso
 import constantes as cts
@@ -21,6 +23,11 @@ else:  #nt
     _top = TopWin_v1()
 
 CFG_NAME = cts.CFG_DIR + _top.get_pc_name() + '.cfg'
+#PROXY = "http://proxy.fing.edu.uy"
+PROXY = ""
+PROXY_PORT = 3128
+BASE_URL = "http://fingproy.cloudapp.net:80/proy/api/v1"
+HEADERS = {'content-type': 'application/json'}
 
 cfg = Config.RawConfigParser()
 _user_bd = []
@@ -48,40 +55,66 @@ def init():
         _proc_bd = [Proceso.from_json(i) for i in
                     read_from_file(cts.CFG_SECT_PROC)]
 
+def _proxi():
+    if PROXY:
+        return {"http":PROXY +':'+ str(PROXY_PORT)}
+    else:
+        return {}
 
 def close():
     """Actualiza la informacion en el archivo,
         asume que el archivo de config y la lista estan sincronizadas"""
-    for user in _user_bd:
-        cfg.set(cts.CFG_SECT_USER, user.nombre, user.to_json())
-    for proc in _proc_bd:
-        cfg.set(cts.CFG_SECT_PROC, str(proc.pid), proc.to_json())
+    for u_iter in _user_bd:
+        cfg.set(cts.CFG_SECT_USER, u_iter.nombre, u_iter.to_str())
+    for p_iter in _proc_bd:
+        cfg.set(cts.CFG_SECT_PROC, str(p_iter.pid), p_iter.to_str())
     with open(CFG_NAME, 'wb') as config_file:
         cfg.write(config_file)
 
 
-def report_proc(proc):
+def report_proc(p_proc):
     """Proceso que registra en la API rest el proceso una vez que terminio,
         y luego borra de la bd local"""
-    print proc.pid, proc.comando
-    cfg.remove_option(cts.CFG_SECT_PROC, str(proc.pid))
+    print p_proc.pid, p_proc.comando
+    cfg.remove_option(cts.CFG_SECT_PROC, str(p_proc.pid))
+    url = BASE_URL + '/procs'
+    print p_proc.to_json()
+    data = p_proc.to_json()
+    data[cts.U_PROC_MIN] = p_proc.cpu_min
+    data[cts.U_PROC_MAX] = p_proc.cpu_max
+    data[cts.U_PROC_AVG] = p_proc.cpu_avg
+    data[cts.U_MEM_MIN] = p_proc.memoria_min
+    data[cts.U_MEM_MAX] = p_proc.memoria_max
+    data[cts.U_MEM_AVG] = p_proc.memoria_avg
+    result = rq.post(url, data=dumps(data), headers=HEADERS, proxies=_proxi())
+    print result
 
 
-def report_user(user):
+def report_user(p_user):
     """Proceso que registra en la API rest el usuario
         una vez que cierra sesion, y luego borra de la bd local"""
     print user.nombre
     cfg.remove_option(cts.CFG_SECT_USER, user.nombre)
+    url = BASE_URL + '/users'
+    data = p_user.to_json()
+    data[cts.U_PROC_MIN] = p_user.cpu_min
+    data[cts.U_PROC_MAX] = p_user.cpu_max
+    data[cts.U_PROC_AVG] = p_user.cpu_avg
+    data[cts.U_MEM_MIN] = p_user.memoria_min
+    data[cts.U_MEM_MAX] = p_user.memoria_max
+    data[cts.U_MEM_AVG] = p_user.memoria_avg
+    result = rq.post(url, data=dumps(data), headers=HEADERS, proxies=_proxi())
+    print result
 
 
-def add_user(user):
-    cfg.set(cts.CFG_SECT_USER, user.nombre, user.to_json())
-    _user_bd.append(user)
+def add_user(p_user):
+    cfg.set(cts.CFG_SECT_USER, p_user.nombre, p_user.to_str())
+    _user_bd.append(p_user)
 
 
-def add_proc(proc):
-    cfg.set(cts.CFG_SECT_PROC, str(proc.pid), proc.to_json())
-    _proc_bd.append(proc)
+def add_proc(p_proc):
+    cfg.set(cts.CFG_SECT_PROC, str(p_proc.pid), p_proc.to_str())
+    _proc_bd.append(p_proc)
 
 
 if __name__ == '__main__':

@@ -68,15 +68,14 @@ class TopWin_v1(Top):
 
     def get_on_time(self):
         tiempos = psutil.cpu_times()
-        onTime = int(tiempos[2]/60/60)
-        return onTime
+        return int(tiempos[2]/60/60)
 
     def get_users(self):
         return len(psutil.get_users())
 
     def get_proc(self):
-        cantProcess = len(self.tareas) - 5
-        return cantProcess
+        proc_cant = len(self.tareas) - 5
+        return proc_cant
 
     def get_proc_active(self):
         return self.cantProcessActive
@@ -88,11 +87,11 @@ class TopWin_v1(Top):
         diccionario = {}
         #p = re.compile('\d+\s(\w+)')
         for indice in range(4, len(self.tareas)-1):
-            strTarea = self.tareas[indice].split()
+            task_str = self.tareas[indice].split()
             # Busco comienzo del PID
             i = 1
-            while not strTarea[i].isdigit():
-                    i+=1
+            while not task_str[i].isdigit():
+                i += 1
             user = (self.tareas[indice].split())[i-1+3]
             if user in diccionario:
                 diccionario[user] += 1
@@ -101,9 +100,9 @@ class TopWin_v1(Top):
         return diccionario
 
     def get_cpu_use(self):
-        cpu_use = round(psutil.cpu_percent(),1)
+        cpu_use = round(psutil.cpu_percent(), 1)
         return cpu_use
 
     def get_mem_use(self):
-        percentMem = psutil.virtual_memory()[2]
-        return percentMem
+        mem_percent = psutil.virtual_memory()[2]
+        return mem_percent

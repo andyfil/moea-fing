@@ -41,6 +41,34 @@ SAL_LUGAR = 'Ubicacion'
 SAL_PRIORITY = 'Prioridad'
 SAL_CANT = 'Cantidad'
 
+#datos usuario
+U_NAME = 'name'
+U_TIME_INI = 'tiempo_ini'
+U_TIME = 'tiempo'
+U_MEM = 'memoria'
+U_MEM_MIN = 'mem_min'
+U_MEM_AVG = 'mem_avg'
+U_MEM_MAX = 'mem_max'
+U_PROC = 'cpu'
+U_PROC_MIN = 'proc_min'
+U_PROC_AVG = 'proc_avg'
+U_PROC_MAX = 'proc_max'
+
+#datos procesos
+P_ID = 'pid'
+P_NAME = 'name'
+P_USER = 'user'
+P_TIME_INI = 'tiempo_ini'
+P_TIME = 'tiempo'
+P_CMD = 'cmd'
+P_MEM = 'memoria'
+P_MEM_MIN = 'mem_min'
+P_MEM_AVG = 'mem_avg'
+P_MEM_MAX = 'mem_max'
+P_CPU = 'cpu'
+P_PROC_MIN = 'proc_min'
+P_PROC_AVG = 'proc_avg'
+P_PROC_MAX = 'proc_max'
 
 #constantes de columnas tablas BD
 
@@ -49,6 +77,8 @@ SAL_CANT = 'Cantidad'
 TABLE_SALON = 'maquinas_salon'
 TABLE_PC = 'maquinas_pc'
 TABLE_REGISTRY = 'datos'
+TABLE_PROC = 'maquinas_proceso'
+TABLE_USER = 'maquinas_usuario'
 
 #errors
 ERR_REG_PC = 1

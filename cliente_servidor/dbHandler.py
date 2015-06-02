@@ -10,7 +10,10 @@ from  dataHandler import DataHandler
 import constantes as cts
 
 def _armar_salon(fila):
-    salon = {cts.SAL_ID: fila[0], cts.SAL_NOMBRE: fila[1], cts.SAL_LUGAR: fila[2], cts.SAL_PRIORITY: fila[3]}
+    salon = {cts.SAL_ID: fila[0],
+             cts.SAL_NOMBRE: fila[1],
+             cts.SAL_LUGAR: fila[2],
+             cts.SAL_PRIORITY: fila[3]}
     return salon
 
 class BDHandler(DataHandler):
@@ -49,26 +52,31 @@ class BDHandler(DataHandler):
             self.db.rollback()
 
     def save_json(self, ident, jdata):
-        query = """INSERT INTO %s (`id_pc`,`pc`,`timestamp`,`state`,`on_time`,`users`,\
-            `process`, `process_active`,`process_sleep`, `process_per_user`,\
-            `cpu_use`,`memory_use`) """ %cts.TABLE_REGISTRY
+        query = """INSERT INTO %s (`id_pc`,`pc`,`timestamp`,`state`,`on_time`,\
+            `users`,`process`, `process_active`,`process_sleep`, \
+            `process_per_user`,`cpu_use`,`memory_use`) """ %cts.TABLE_REGISTRY
         query += "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
-        datos_query = (ident, jdata[cts.PC], jdata[cts.TIMESTAMP], jdata[cts.STATE],
-                       jdata[cts.ON_TIME], jdata[cts.USERS], jdata[cts.PROC],
-                       jdata[cts.PROC_ACTIVE], jdata[cts.PROC_SLEEP],
-                       json.dumps(jdata[cts.PROC_PER_USER]),
+        datos_query = (ident, jdata[cts.PC], jdata[cts.TIMESTAMP],
+                       jdata[cts.STATE], jdata[cts.ON_TIME], jdata[cts.USERS],
+                       jdata[cts.PROC], jdata[cts.PROC_ACTIVE],
+                       jdata[cts.PROC_SLEEP], json.dumps(jdata[cts.PROC_PER_USER]),
                        jdata[cts.CPU_USE], jdata[cts.MEM_USE])
         self.execute(query, datos_query)
 
 
     def save_salon(self, jdata):
         "Metodo que agrega un salon a la estructura de datos"
-        query = "INSERT INTO %s (`nombre`,`lugar`,`prioridad`) "\
-         %cts.TABLE_SALON
-        query += "VALUES(%s,%s,%s);"
-        jdata[cts.SAL_PRIORITY] = 0
-        datos_query = (jdata[cts.SAL_NOMBRE], jdata[cts.SAL_LUGAR], jdata[cts.SAL_PRIORITY])
-        self.execute(query, datos_query)
+        try:
+            query = "INSERT INTO %s (`nombre`,`lugar`,`prioridad`) "\
+            %cts.TABLE_SALON
+            query += "VALUES(%s,%s,%s);"
+            jdata[cts.SAL_PRIORITY] = 0
+            datos_query = (jdata[cts.SAL_NOMBRE], jdata[cts.SAL_LUGAR],
+                            jdata[cts.SAL_PRIORITY])
+            self.execute(query, datos_query)
+        except:
+            print "Unexpected error:", sys.exc_info()[0]
+            self.db.rollback()
 
     def register_pc(self, jdata):
         """Metodo que registra una pc
@@ -87,7 +95,7 @@ class BDHandler(DataHandler):
                 data = (jdata[cts.REG_NOMBRE], jdata[cts.REG_MAC],
                         jdata[cts.REG_SO], jdata[cts.REG_RAM],
                         jdata[cts.REG_CPU], jdata[cts.REG_STATE],
-                        jdata[cts.REG_IP],jdata[cts.REG_ARCH])
+                        jdata[cts.REG_IP], jdata[cts.REG_ARCH])
                 self.cursor.execute(query, data)
                 self.db.commit()
                 ident = self.cursor.lastrowid
@@ -130,3 +138,29 @@ class BDHandler(DataHandler):
     def update_salon(self, jdata):
         "Metodo para actualizar la informacion de un salon"
         pass
+
+    def save_user(self, jdata):
+        "Metodo que registra los datos de una sesion de usuario en la bd"
+        query = """INSERT INTO %s (`nombre`,`tiempo_ini`,`tiempo`,\
+                        `memoria_minimo`,`memoria_promedio`,`memoria_maximo`,\
+                        `cpu_minimo`,`cpu_promedio`,
+                        `cpu_maximo`) """ % cts.TABLE_USER
+        query += "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s);"
+        datos_query = (jdata[cts.U_NAME], jdata[cts.U_TIME_INI],
+                       jdata[cts.U_TIME], jdata[cts.U_MEM_MIN],
+                       jdata[cts.U_MEM_AVG], jdata[cts.U_MEM_MAX],
+                       jdata[cts.U_PROC_MIN], jdata[cts.U_PROC_AVG],
+                       jdata[cts.U_PROC_MAX])
+        self.execute(query, datos_query)
+
+    def save_proc(self, jdata):
+        query = """INSERT INTO %s (`pid`,`user_id`,`name`,`tiempo_ini`,\
+                    `tiempo`,`comando`,`memoria_minimo`,`memoria_promedio`,\
+                    `memoria_maximo`,`cpu_minimo`,`cpu_promedio`,\
+                    `cpu_maximo`) """ % cts.TABLE_PROC
+        query += "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+        datos_query = (jdata[cts.P_ID], jdata[cts.P_USER], jdata[cts.P_NAME],
+                       jdata[cts.P_TIME_INI], jdata[cts.P_TIME], jdata[cts.P_CMD],
+                       jdata[cts.P_MEM_MIN], jdata[cts.P_MEM_AVG], jdata[cts.P_MEM_MAX],
+                       jdata[cts.P_PROC_MIN], jdata[cts.P_PROC_AVG], jdata[cts.P_PROC_MAX])
+        self.execute(query, datos_query)

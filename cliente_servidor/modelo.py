@@ -2,6 +2,7 @@
 # Date $Date: 2015-05-06 20:28:50 -0300 (Wed, 06 May 2015) $
 
 import json
+import constantes as ct
 
 
 class Usuario(object):
@@ -25,17 +26,19 @@ class Usuario(object):
         self.cpu.extend(user.cpu)
 
     def to_json(self):
-        j = {'nombre': self.nombre, 'tiempo_ini': self.tiempo_ini, 'tiempo': self.tiempo, 'memoria': self.memoria,
-             'cpu': self.cpu}
-        return json.dumps(j)
+        return {ct.U_NAME: self.nombre, ct.U_TIME_INI: self.tiempo_ini,
+                ct.U_TIME: self.tiempo, ct.U_MEM: self.memoria, ct.U_PROC: self.cpu}
+
+    def to_str(self):
+        return json.dumps(self.to_json())
 
     @staticmethod
     def from_json(data):
         j_data = json.loads(data)
-        name = j_data['nombre']
-        tiempo = j_data['tiempo_ini']
+        name = j_data[ct.U_NAME]
+        tiempo = j_data[ct.U_TIME_INI]
         user = Usuario(name, tiempo)
-        user.tiempo = j_data['tiempo']
+        user.tiempo = j_data[ct.U_TIME]
         user.memoria = j_data['memoria']
         user.cpu = j_data['cpu']
         return user
@@ -43,12 +46,50 @@ class Usuario(object):
     @property
     def memoria_max(self):
         """Devuelve el maximo valor de memoria"""
-        return max(self.memoria)
+        if not self.memoria:
+            return 0
+        else:
+            return max(self.memoria)
+
+    @property
+    def memoria_min(self):
+        """Devuelve el minimo valor de memoria"""
+        if not self.memoria:
+            return 0
+        else:
+            return min(self.memoria)
+
+    @property
+    def memoria_avg(self):
+        "Devuelve el valor promedio de memoria"
+        if not self.memoria:
+            return 0
+        else:
+            return sum(self.memoria)/float(len(self.memoria))
 
     @property
     def cpu_max(self):
         """Devuelve el maximo valor de cpu"""
-        return max(self.cpu)
+        if not self.cpu:
+            return 0
+        else:
+            return max(self.cpu)
+
+    @property
+    def cpu_min(self):
+        """Devuelve el minimo valor de cpu"""
+        if not self.cpu:
+            return 0
+        else:
+            return min(self.cpu)
+
+    @property
+    def cpu_avg(self):
+        """Devuelve el valor promedio de cpu"""
+        if not self.cpu:
+            return 0
+        else:
+            return sum(self.cpu/float(len(self.cpu)))
 
     def __str__(self):
         return self.nombre
@@ -78,29 +119,70 @@ class Proceso(object):
         self.cpu.extend(process.cpu)
 
     def to_json(self):
-        j = {'pid': self.pid, 'name': self.name, 'user': self.user, 'tiempo_ini': self.tiempo_ini,
-             'tiempo': self.tiempo, 'memoria': self.memoria, 'cpu': self.cpu, 'comando': self.comando}
-        return json.dumps(j)
+        return {ct.P_ID: self.pid, ct.P_NAME: self.name, ct.P_USER: self.user,
+                ct.P_TIME_INI: self.tiempo_ini, ct.P_TIME: self.tiempo,
+                ct.P_MEM: self.memoria, ct.P_CPU: self.cpu, ct.P_CMD: self.comando}
+
+    def to_str(self):
+        return json.dumps(self.to_json())
 
     @staticmethod
     def from_json(data):
         j_data = json.loads(data)
-        proc = Proceso(j_data['pid'], j_data['name'], j_data['user'], j_data['tiempo_ini'],
-                       j_data['comando'])
-        proc.tiempo = j_data['tiempo']
-        proc.memoria = j_data['memoria']
-        proc.cpu = j_data['cpu']
+        proc = Proceso(j_data[ct.P_ID], j_data[ct.P_NAME], j_data[ct.P_USER],
+                       j_data[ct.P_TIME_INI], j_data[ct.P_CMD])
+        proc.tiempo = j_data[ct.P_TIME]
+        proc.memoria = j_data[ct.P_MEM]
+        proc.cpu = j_data[ct.P_CPU]
         return proc
 
     @property
     def memoria_max(self):
         """Devuelve el maximo valor de memoria"""
-        return max(self.memoria)
+        if not self.memoria:
+            return 0
+        else:
+            return max(self.memoria)
+
+    @property
+    def memoria_min(self):
+        """Devuelve el minimo valor de memoria"""
+        if not self.memoria:
+            return 0
+        else:
+            return min(self.memoria)
+
+    @property
+    def memoria_avg(self):
+        "Devuelve el valor promedio de memoria"
+        if not self.memoria:
+            return 0
+        else:
+            return sum(self.memoria)/float(len(self.memoria))
 
     @property
     def cpu_max(self):
         """Devuelve el maximo valor de cpu"""
-        return max(self.cpu)
+        if not self.cpu:
+            return 0
+        else:
+            return max(self.cpu)
+
+    @property
+    def cpu_min(self):
+        """Devuelve el minimo valor de cpu"""
+        if not self.cpu:
+            return 0
+        else:
+            return min(self.cpu)
+
+    @property
+    def cpu_avg(self):
+        """Devuelve el valor promedio de cpu"""
+        if not self.cpu:
+            return 0
+        else:
+            return sum(self.cpu/float(len(self.cpu)))
 
     def __str__(self):
         return self.comando

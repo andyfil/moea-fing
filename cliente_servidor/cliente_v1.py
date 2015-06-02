@@ -16,6 +16,7 @@ else: #nt
     #print "SO: WINDOWS"
     from topWin_v1 import TopWin_v1
     TOP = TopWin_v1()
+
 IDENT = 1 #id de la pc por defecto
 BASE_URL = "http://fingproy.cloudapp.net:80/proy/api/v1"
 REGISTER_URL = BASE_URL + "/pcs"

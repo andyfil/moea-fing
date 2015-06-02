@@ -17,6 +17,16 @@ class DataHandler():
         "Metodo que procesa un registro en formato json y lo almacena"
         pass
 
+    @abstractmethod
+    def save_user(self, jdata):
+        "Metodo que registra los datos de una sesion de usuario en la bd"
+        pass
+
+    @abstractmethod
+    def save_proc(self, jdata):
+        "Metodo que registra los datos de la ejecucion de un proceso en la bd"
+        pass
+
 #begin Salon
     @abstractmethod
     def save_salon(self, ident, jdata):
