@@ -90,4 +90,4 @@ class Datos(models.Model):
 
 	class Meta:
 		managed = True
-		db_table = 'clone_datos'
+		db_table = 'datos'

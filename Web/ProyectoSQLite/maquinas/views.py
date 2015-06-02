@@ -97,33 +97,32 @@ def results(request, pc_id):
     cantU_1=cantM_1=cantC_1=cantU_2=cantM_2=cantC_2=cantU_3=cantM_3=cantC_3=cantU_4=cantM_4=cantC_4 = 0
 
     # Obtengo las ultimas 4*periodoVisualizacion lecturas (4 periodos) de la Pc con id=pc_id
-    lecturas = pc.datos_set.all().reverse()[:periodoVisualizacion*4]
+    lecturas = pc.datos_set.all().order_by('-id')[:periodoVisualizacion*4]
     
     for dato in lecturas:
-        print "Recorro datos para la primera hora" + "\n"
-        if (indice in range(primera, segunda)):
+        if (indice in range(cuarta, quinta)):
             cantU_1 = cantU_1 + dato.users
             cantM_1 = cantM_1 + dato.memory_use
             cantC_1 = cantC_1 + dato.cpu_use
-            print "Dato " + str(indice) + ": " + str(cantU_1) + " usuarios, " + str(cantM_1) + " memoria, " + str(cantC_1) + " cpu" + "\n"
-        if (indice in range(segunda, tercera)):
+            print "Dato " + str(indice) + ": " + str(dato.users) + " usuarios, " + str(dato.memory_use) + " memoria, " + str(dato.cpu_use) + " cpu" + "\n"
+        if (indice in range(tercera, cuarta)):
             cantU_2 = cantU_2 + dato.users
             cantM_2 = cantM_2 + dato.memory_use
             cantC_2 = cantC_2 + dato.cpu_use
-            print "Dato " + str(indice) + ": " + str(cantU_2) + " usuarios, " + str(cantM_2) + " memoria, " + str(cantC_2) + " cpu" + "\n"
-        if (indice in range(tercera, cuarta)):
+            print "Dato " + str(indice) + ": " + str(dato.users) + " usuarios, " + str(dato.memory_use) + " memoria, " + str(dato.cpu_use) + " cpu" + "\n"
+        if (indice in range(segunda, tercera)):
             cantU_3 = cantU_3 + dato.users
             cantM_3 = cantM_3 + dato.memory_use
             cantC_3 = cantC_3 + dato.cpu_use
-            print "Dato " + str(indice) + ": " + str(cantU_3) + " usuarios, " + str(cantM_3) + " memoria, " + str(cantC_3) + " cpu" + "\n"
-        if (indice in range(cuarta, quinta)):
+            print "Dato " + str(indice) + ": " + str(dato.users) + " usuarios, " + str(dato.memory_use) + " memoria, " + str(dato.cpu_use) + " cpu" + "\n"
+        if (indice in range(primera, segunda)):
             cantU_4 = cantU_4 + dato.users
             cantM_4 = cantM_4 + dato.memory_use
             cantC_4 = cantC_4 + dato.cpu_use
-            print "Dato " + str(indice) + ": " + str(cantU_4) + " usuarios, " + str(cantM_4) + " memoria, " + str(cantC_4) + " cpu" + "\n"
+            print "Dato " + str(indice) + ": " + str(dato.users) + " usuarios, " + str(dato.memory_use) + " memoria, " + str(dato.cpu_use) + " cpu" + "\n"
 
         indice = indice + 1
-            
+
 	# Calculo los promedios por horas
     promU_1 = cantU_1 / periodoVisualizacion
     promM_1 = cantM_1 / periodoVisualizacion
