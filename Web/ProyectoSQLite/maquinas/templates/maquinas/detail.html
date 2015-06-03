@@ -12,6 +12,9 @@
 
     <title></title>
 
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="{% static 'maquinas/css/bootstrap.min.css' %}" type="text/css">
 
@@ -41,20 +44,14 @@
     list-style-type: none;
     }
 </style>
+
 </head>
 
 <body id="page-top" onload="relojFecha()">
-
+    
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
                 <a class="navbar-brand page-scroll" href="#page-top">Proyecto</a>
                 <p id="idReloj" style="color:#ffffff"; width:300px;/>
                 <script>
@@ -100,11 +97,45 @@
                 <p></p>
                 <a style="font-size:2.0em;" href="{% url 'maquinas:results' pc.id %}"> Ver Graficas </a>
             </div>
-            
+            <br><br/>
+            <br><br/>
+            <div class="container">
+              <form class="form-horizontal" role="form">
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="email">Usuario:</label>
+                  <div class="col-sm-10">
+                    <input type="email" class="form-control" style="width:300px;" id="email" placeholder="Ingrese Usario">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="pwd">Password:</label>
+                  <div class="col-sm-10">          
+                    <input type="password" class="form-control" style="width:300px;" id="pwd" placeholder="Ingrese Password">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-10">Comando:</label>
+                  <div>          
+                    <input type="text" style="width:500px;" id="comando" placeholder="Ingrese Comando">
+                  </div>
+                </div>
+                <div class="form-group">        
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                      <label><input type="checkbox"> Recordarme</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">        
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Enviar Comando</button>
+                  </div>
+                </div>
+              </form>
+            </div>
         </div>
-        
     </header>
-
+    
     <!-- jQuery -->
     <script src="{% static 'maquinas/js/jquery.js' %}"></script>
 
