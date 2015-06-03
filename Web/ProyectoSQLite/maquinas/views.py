@@ -62,23 +62,6 @@ def results_original(request, pc_id):
     												'dataPorcentajeMemoria':dataPorcentajeMemoria, 'mac':mac})
 
 
-def obtenerGraficas(request):
-    pc = get_object_or_404(Pc, pk=pc_id)
-    # Obtengo todas las lecturas de la Pc
-    lecturas = pc.lecturatop_set.all()
-    #Armo los datos para graficar
-    dataCantidadUsuarios = "indice,Lecturas\n"
-    dataPorcentajeCpu = "indice,Lecturas\n"
-    dataPorcentajeMemoria = "indice,Lecturas\n"
-    for indice in range(len(lecturas)):
-        datoCU = str(indice) + "," + str(lecturas[indice].cant_usuarios) + "\n"
-        datoPCpu = str(indice) + "," + str(lecturas[indice].cpu_perc) + "\n"
-        datoPM = str(indice) + "," + str(lecturas[indice].mem_perc) + "\n"
-        dataCantidadUsuarios += datoCU
-        dataPorcentajeCpu += datoPCpu
-        dataPorcentajeMemoria += datoPM
-    return 
-
 def results(request, pc_id):
 	#for dato in LecturaTop.objects.raw('SELECT * FROM maquinas_lecturatop WHERE pc_id = %s LIMIT 240', [pc_id]):
 	#cursor = connection.cursor()

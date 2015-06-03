@@ -94,15 +94,9 @@
             <div class="header-content-inner">         
                 <h1> PC: {{ pc.mac }} </h1>
                 <br><br/>
-                <ul>
-                    <h style="color:red;font-size:1.8em;"> Lecturas </h>
-                    <br><br/>
-                    {% for l in pc.lecturatop_set.all %}
-                        <li> {{ l.tiempo_lectura }}, Cantidad de Usuarios: {{l.cant_usuarios}} </li>
-                    {% empty %}
-                        <u1><t> Sin lecturas </t></u1>
-                    {% endfor %}<br/>
-                </ul>
+                <h style="color:red;font-size:1.8em;"> Estado: </h>
+                <br><br/>
+                <t> <h style="font-size:2.2em;"> {{pc.estado}} </h></t>
                 <p></p>
                 <a style="font-size:2.0em;" href="{% url 'maquinas:results' pc.id %}"> Ver Graficas </a>
             </div>

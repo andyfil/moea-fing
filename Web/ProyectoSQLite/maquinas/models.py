@@ -50,8 +50,8 @@ class Datos_Lecturas(models.Model):
 
 class Usuario(models.Model):
 	nombre = models.CharField(max_length=200)
-	tiempo_ini = models.DateTimeField('Tiempo de inicio')
-	tiempo = models.DateTimeField('Tiempo')
+	tiempo_ini = models.FloatField()
+	tiempo = models.FloatField()
 	memoria_minimo = models.IntegerField()
 	memoria_promedio = models.IntegerField()
 	memoria_maximo = models.IntegerField()
@@ -61,10 +61,10 @@ class Usuario(models.Model):
 
 class Proceso(models.Model):
 	pid = models.IntegerField()
-	user = models.ForeignKey(Usuario)
+	user_id = models.CharField(max_length=50)
 	name =  models.CharField(max_length=200)
-	tiempo_ini = models.DateTimeField('Tiempo de inicio')
-	tiempo = models.DateTimeField('Tiempo')
+	tiempo_ini = models.FloatField()
+	tiempo = models.FloatField()
 	comando = models.CharField(max_length=200)
 	memoria_minimo = models.IntegerField()
 	memoria_promedio = models.IntegerField()
