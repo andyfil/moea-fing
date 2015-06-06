@@ -9,6 +9,12 @@ from multiprocessing import cpu_count
 from time import strftime
 
 import constantes as cs
+from modelo import Proceso, Usuario
+
+def user(nombre, tiempo, memoria, cpu):
+    u = Usuario(nombre, tiempo)
+    u.reg_data(tiempo, memoria, cpu)
+    return u
 
 class Top():
     __metaclass__ = ABCMeta

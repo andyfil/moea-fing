@@ -6,9 +6,13 @@ import psutil
 from calendar import timegm
 from time import gmtime
 
-from top import Top
+from top import Top, user
 from modelo import Usuario, Proceso
 
+def proces(pid, name, user, tiempo, comando, memoria, cpu):
+    p = Proceso(pid, name, user, tiempo, comando)
+    p.reg_data(tiempo, memoria, cpu)
+    return p
 
 class TopWin_v1(Top):
 
@@ -34,7 +38,7 @@ class TopWin_v1(Top):
         """Get the logged users data"""
         users = psutil.get_users()
         now = timegm(gmtime())
-        return [Usuario(u.name, now - u.started) for u in users]
+        return [user(u.name, now - u.started, 0, 0) for u in users]
 
     def get_process_data(self):
         "Get the process data"
@@ -43,8 +47,9 @@ class TopWin_v1(Top):
         for proc in psutil.process_iter():
             try:
                 cmd = '' if proc.cmdline() == [] else proc.cmdline()[0]
-                process.append(Proceso(proc.pid, proc.name(), proc.username(),
-                                       now - proc.create_time(), cmd))
+                process.append(proces(proc.pid, proc.name(), proc.username(),
+                                      now - proc.create_time(), cmd,
+                                      proc.cpu_percent(), proc.memory_percent()))
             except psutil.NoSuchProcess:
                 pass
             except psutil.AccessDenied:

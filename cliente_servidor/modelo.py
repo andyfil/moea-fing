@@ -110,8 +110,8 @@ class Proceso(object):
 
     def reg_data(self, tiempo, memoria, cpu):
         self.tiempo = tiempo
-        self.memoria.append(memoria)
-        self.cpu.append(cpu)
+        self.memoria.append(float(memoria))
+        self.cpu.append(float(cpu))
 
     def update(self, process):
         self.tiempo = process.tiempo
@@ -182,10 +182,10 @@ class Proceso(object):
         if not self.cpu:
             return 0
         else:
-            return sum(self.cpu/float(len(self.cpu)))
+            return sum(self.cpu)/float(len(self.cpu))
 
     def __str__(self):
-        return self.comando
+        return self.pid, self.name
 
 
 class Proc(object):
@@ -216,4 +216,6 @@ class Proc(object):
     def get_proceso(self):
         max_len = 8 if len(self.cmd) > 8 else len(self.cmd)
         name = self.cmd[0:max_len]
-        return Proceso(self.pid, name, self.user, self.time, self.cmd)
+        p = Proceso(self.pid, name, self.user, self.time, self.cmd)
+        p.reg_data(self.time, self.mem, self.cpu)
+        return p

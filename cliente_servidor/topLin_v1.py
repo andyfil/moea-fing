@@ -8,10 +8,16 @@ import os
 import re
 import time
 from subprocess import check_output
+from calendar import timegm
 
-from top import Top
+from top import Top, user
 from modelo import Usuario
 from ps_parser import get_proc_list
+
+def _to_seconds(tiempo):
+    time_ini = timegm(tiempo)
+    time_fin = time.time()
+    return time_fin - time_ini
 
 class TopLin_v1(Top):
 
@@ -27,8 +33,8 @@ class TopLin_v1(Top):
         """Get the logged users data"""
         formato = '%Y-%m-%d %H:%M'
         _who = check_output("who").split('\n')
-        return [Usuario(_who[i].split()[0], time.strptime(_who[i].split()[2] +
-                ' ' + _who[i].split()[3], formato)) for i in
+        return [user(_who[i].split()[0], _to_seconds(time.strptime(_who[i].split()[2] +
+                ' ' + _who[i].split()[3], formato)), 0, 0) for i in
                 range(0, len(_who) - 1)]
 
     def get_process_data(self):

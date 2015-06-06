@@ -23,8 +23,8 @@ else:  #nt
     _top = TopWin_v1()
 
 CFG_NAME = cts.CFG_DIR + _top.get_pc_name() + '.cfg'
-#PROXY = "http://proxy.fing.edu.uy"
-PROXY = ""
+PROXY = "http://proxy.fing.edu.uy"
+#PROXY = ""
 PROXY_PORT = 3128
 BASE_URL = "http://fingproy.cloudapp.net:80/proy/api/v1"
 HEADERS = {'content-type': 'application/json'}
@@ -50,6 +50,10 @@ def init():
             cfg.add_section(cts.CFG_SECT_PROC)
             cfg.write(config_file)
     else:
+        if not cfg.has_section(cts.CFG_SECT_PROC):
+            cfg.add_section(cts.CFG_SECT_PROC)
+        if not cfg.has_section(cts.CFG_SECT_USER):
+            cfg.add_section(cts.CFG_SECT_USER)
         _user_bd = [Usuario.from_json(i) for i in
                     read_from_file(cts.CFG_SECT_USER)]
         _proc_bd = [Proceso.from_json(i) for i in
