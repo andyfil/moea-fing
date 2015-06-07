@@ -3,6 +3,7 @@
 
 import json
 import constantes as ct
+import time
 
 
 class Usuario(object):
@@ -216,6 +217,6 @@ class Proc(object):
     def get_proceso(self):
         max_len = 8 if len(self.cmd) > 8 else len(self.cmd)
         name = self.cmd[0:max_len]
-        p = Proceso(self.pid, name, self.user, self.time, self.cmd)
-        p.reg_data(self.time, self.mem, self.cpu)
-        return p
+        proc = Proceso(self.pid, name, self.user, time.time(), self.cmd)
+        proc.reg_data(time.time(), self.mem, self.cpu)
+        return proc

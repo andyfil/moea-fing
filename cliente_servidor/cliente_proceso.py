@@ -82,7 +82,6 @@ def report_proc(p_proc):
     print p_proc.pid, p_proc.comando
     cfg.remove_option(cts.CFG_SECT_PROC, str(p_proc.pid))
     url = BASE_URL + '/procs'
-    print p_proc.to_json()
     data = p_proc.to_json()
     data[cts.U_PROC_MIN] = p_proc.cpu_min
     data[cts.U_PROC_MAX] = p_proc.cpu_max
@@ -90,6 +89,9 @@ def report_proc(p_proc):
     data[cts.U_MEM_MIN] = p_proc.memoria_min
     data[cts.U_MEM_MAX] = p_proc.memoria_max
     data[cts.U_MEM_AVG] = p_proc.memoria_avg
+    del data[cts.P_CPU]
+    del data[cts.P_MEM]
+    print data
     result = rq.post(url, data=dumps(data), headers=HEADERS, proxies=_proxi())
     print result
 
@@ -107,6 +109,8 @@ def report_user(p_user):
     data[cts.U_MEM_MIN] = p_user.memoria_min
     data[cts.U_MEM_MAX] = p_user.memoria_max
     data[cts.U_MEM_AVG] = p_user.memoria_avg
+    del data[cts.P_CPU]
+    del data[cts.P_MEM]
     result = rq.post(url, data=dumps(data), headers=HEADERS, proxies=_proxi())
     print result
 
