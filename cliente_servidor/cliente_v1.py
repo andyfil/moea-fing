@@ -35,7 +35,8 @@ def _save_id(p_ident):
         os.makedirs(cts.CFG_DIR)
     with open(cts.CFG_DIR+TOP.get_pc_name()+'.cfg', 'wb') as config_file:
         _cfg = config.RawConfigParser()
-        _cfg.add_section(cts.CFG_SECT)
+        if not _cfg.has_section(cts.CFG_SECT):
+            _cfg.add_section(cts.CFG_SECT)
         _cfg.set(cts.CFG_SECT, cts.CFG_ID, p_ident)
         _cfg.write(config_file)
 
@@ -56,7 +57,7 @@ if __name__ == '__main__':
         cfg = config.RawConfigParser()
         result = cfg.read(cts.CFG_DIR+TOP.get_pc_name()+'.cfg')
         ident = ''
-        if not result:
+        if not result or not cfg.has_section(cts.CFG_SECT):
             r = rq.post(REGISTER_URL, data=dumps(data_registro()),
                         headers=HEADERS, proxies=_proxi())
             if r.status_code == 200 and bool(r.json()[cts.API_RESULT]):

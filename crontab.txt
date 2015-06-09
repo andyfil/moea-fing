@@ -1,0 +1,3 @@
+MAILTO=martindafonte@gmail.com
+*/1 * * * * /usr/bin/python cliente_v1.py
+*/1 * * * * /usr/bin/python cliente_proceso.py

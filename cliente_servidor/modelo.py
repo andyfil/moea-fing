@@ -92,6 +92,11 @@ class Usuario(object):
         else:
             return sum(self.cpu/float(len(self.cpu)))
 
+    @property
+    def tiempo_total(self):
+        """Devuelve el tiempo transucrido entre tiempo_ini y tiempo"""
+        return self.tiempo - self.tiempo_ini
+
     def __str__(self):
         return self.nombre
 
@@ -184,6 +189,11 @@ class Proceso(object):
             return 0
         else:
             return sum(self.cpu)/float(len(self.cpu))
+
+    @property
+    def tiempo_total(self):
+        """Devuelve el tiempo transucrido entre tiempo_ini y tiempo"""
+        return self.tiempo - self.tiempo_ini
 
     def __str__(self):
         return self.pid, self.name

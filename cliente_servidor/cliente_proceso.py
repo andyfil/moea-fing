@@ -28,6 +28,7 @@ PROXY = "http://proxy.fing.edu.uy"
 PROXY_PORT = 3128
 BASE_URL = "http://fingproy.cloudapp.net:80/proy/api/v1"
 HEADERS = {'content-type': 'application/json'}
+MIN_TIEMPO_EJECUCION = 1
 
 cfg = Config.RawConfigParser()
 _user_bd = []
@@ -79,7 +80,6 @@ def close():
 def report_proc(p_proc):
     """Proceso que registra en la API rest el proceso una vez que terminio,
         y luego borra de la bd local"""
-    print p_proc.pid, p_proc.comando
     cfg.remove_option(cts.CFG_SECT_PROC, str(p_proc.pid))
     url = BASE_URL + '/procs'
     data = p_proc.to_json()
@@ -91,15 +91,14 @@ def report_proc(p_proc):
     data[cts.U_MEM_AVG] = p_proc.memoria_avg
     del data[cts.P_CPU]
     del data[cts.P_MEM]
-    print data
     result = rq.post(url, data=dumps(data), headers=HEADERS, proxies=_proxi())
-    print result
+    if result.status_code != 200:
+        print result
 
 
 def report_user(p_user):
     """Proceso que registra en la API rest el usuario
         una vez que cierra sesion, y luego borra de la bd local"""
-    print user.nombre
     cfg.remove_option(cts.CFG_SECT_USER, user.nombre)
     url = BASE_URL + '/users'
     data = p_user.to_json()
@@ -112,7 +111,8 @@ def report_user(p_user):
     del data[cts.P_CPU]
     del data[cts.P_MEM]
     result = rq.post(url, data=dumps(data), headers=HEADERS, proxies=_proxi())
-    print result
+    if result.status_code != 200:
+        print result
 
 
 def add_user(p_user):
@@ -130,7 +130,7 @@ if __name__ == '__main__':
     init()
     user_list = []
     proc_list = []
-    while contador < 5:
+    while contador < 3:
         user_list = _top.get_users_data()
         proc_list = _top.get_process_data()
         # TODO falta actualizar la info de cpu y memoria
@@ -144,7 +144,9 @@ if __name__ == '__main__':
                 proc.update(p)
                 proc_list.remove(p)
         for proc in proc_list:  #Los procesos nuevos
-            add_proc(proc)
+            if(proc.user is not 'root' and proc.user is not 'martin.+' and
+               proc.tiempo_total >= MIN_TIEMPO_EJECUCION):
+                add_proc(proc)
         #usuarios
         for user in _user_bd:
             u = next((x for x in user_list if x.nombre == user.nombre), None)
@@ -155,7 +157,9 @@ if __name__ == '__main__':
                 user.update(u)
                 user_list.remove(u)
         for user in user_list:  #Los usuarios nuevos
-            add_user(user)
-        time.sleep(2)
+            if(user.nombre is not 'root' and user.nombre is not 'martin.+' and
+               user.tiempo_total >= MIN_TIEMPO_EJECUCION):
+                add_user(user)
+        time.sleep(15)
         contador += 1
     close()
