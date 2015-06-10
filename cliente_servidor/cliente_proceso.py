@@ -144,7 +144,8 @@ if __name__ == '__main__':
                 proc.update(p)
                 proc_list.remove(p)
         for proc in proc_list:  #Los procesos nuevos
-            if(proc.user != 'root' and proc.user != 'martin.+'):
+            if(proc.user != 'root' and proc.user != 'martin.+' and
+               proc.user != 'daniel.+'):
                 add_proc(proc)
         #usuarios
         for user in _user_bd:
@@ -156,7 +157,7 @@ if __name__ == '__main__':
                 user.update(u)
                 user_list.remove(u)
         for user in user_list:  #Los usuarios nuevos
-            if(user.nombre != 'root' and user.nombre != 'martin.+'):
+            if user.nombre != 'root':
                 add_user(user)
         time.sleep(15)
         contador += 1
