@@ -28,7 +28,7 @@ PROXY = "http://proxy.fing.edu.uy"
 PROXY_PORT = 3128
 BASE_URL = "http://fingproy.cloudapp.net:80/proy/api/v1"
 HEADERS = {'content-type': 'application/json'}
-MIN_TIEMPO_EJECUCION = 1
+MIN_TIEMPO_EJECUCION = 0
 
 cfg = Config.RawConfigParser()
 _user_bd = []
@@ -144,8 +144,7 @@ if __name__ == '__main__':
                 proc.update(p)
                 proc_list.remove(p)
         for proc in proc_list:  #Los procesos nuevos
-            if(proc.user is not 'root' and proc.user is not 'martin.+' and
-               proc.tiempo_total >= MIN_TIEMPO_EJECUCION):
+            if(proc.user != 'root' and proc.user != 'martin.+'):
                 add_proc(proc)
         #usuarios
         for user in _user_bd:
@@ -157,8 +156,7 @@ if __name__ == '__main__':
                 user.update(u)
                 user_list.remove(u)
         for user in user_list:  #Los usuarios nuevos
-            if(user.nombre is not 'root' and user.nombre is not 'martin.+' and
-               user.tiempo_total >= MIN_TIEMPO_EJECUCION):
+            if(user.nombre != 'root' and user.nombre != 'martin.+'):
                 add_user(user)
         time.sleep(15)
         contador += 1
