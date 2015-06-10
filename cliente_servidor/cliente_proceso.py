@@ -31,9 +31,12 @@ HEADERS = {'content-type': 'application/json'}
 MIN_TIEMPO_EJECUCION = 0
 
 cfg = Config.RawConfigParser()
-_user_bd = []
-_proc_bd = []
 
+class Datos:
+    user_bd = []
+    proc_bd = []
+
+datos = Datos()
 
 def read_from_file(section):
     """Funcion que lee de un archivo de configuracion una seccion y devuelve
@@ -55,9 +58,9 @@ def init():
             cfg.add_section(cts.CFG_SECT_PROC)
         if not cfg.has_section(cts.CFG_SECT_USER):
             cfg.add_section(cts.CFG_SECT_USER)
-        _user_bd = [Usuario.from_json(i) for i in
+        datos.user_bd = [Usuario.from_json(i) for i in
                     read_from_file(cts.CFG_SECT_USER)]
-        _proc_bd = [Proceso.from_json(i) for i in
+        datos.proc_bd = [Proceso.from_json(i) for i in
                     read_from_file(cts.CFG_SECT_PROC)]
 
 def _proxi():
@@ -69,9 +72,9 @@ def _proxi():
 def close():
     """Actualiza la informacion en el archivo,
         asume que el archivo de config y la lista estan sincronizadas"""
-    for u_iter in _user_bd:
+    for u_iter in datos.user_bd:
         cfg.set(cts.CFG_SECT_USER, u_iter.nombre, u_iter.to_str())
-    for p_iter in _proc_bd:
+    for p_iter in datos.proc_bd:
         cfg.set(cts.CFG_SECT_PROC, str(p_iter.pid), p_iter.to_str())
     with open(CFG_NAME, 'wb') as config_file:
         cfg.write(config_file)
@@ -115,14 +118,15 @@ def report_user(p_user):
         print result
 
 
+
 def add_user(p_user):
     cfg.set(cts.CFG_SECT_USER, p_user.nombre, p_user.to_str())
-    _user_bd.append(p_user)
+    datos.user_bd.append(p_user)
 
 
 def add_proc(p_proc):
     cfg.set(cts.CFG_SECT_PROC, str(p_proc.pid), p_proc.to_str())
-    _proc_bd.append(p_proc)
+    datos.proc_bd.append(p_proc)
 
 
 if __name__ == '__main__':
@@ -135,11 +139,11 @@ if __name__ == '__main__':
         proc_list = _top.get_process_data()
         # TODO falta actualizar la info de cpu y memoria
         #prcesos
-        for proc in _proc_bd:
+        for proc in datos.proc_bd:
             p = next((x for x in proc_list if x.pid == proc.pid), None)
             if p is None:  #El proceso proc termino su ejecucion
                 report_proc(proc)
-                _proc_bd.remove(proc)
+                datos.proc_bd.remove(proc)
             else:  #El proceso sigue ejecutando
                 proc.update(p)
                 proc_list.remove(p)
@@ -148,11 +152,11 @@ if __name__ == '__main__':
                proc.user != 'daniel.+'):
                 add_proc(proc)
         #usuarios
-        for user in _user_bd:
+        for user in datos.user_bd:
             u = next((x for x in user_list if x.nombre == user.nombre), None)
             if u is None:  #El usuario user termino su sesion
                 report_user(user)
-                _user_bd.remove(user)
+                datos.user_bd.remove(user)
             else:  #El usuario sigue logeado
                 user.update(u)
                 user_list.remove(u)

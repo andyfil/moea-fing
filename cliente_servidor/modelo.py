@@ -90,7 +90,7 @@ class Usuario(object):
         if not self.cpu:
             return 0
         else:
-            return sum(self.cpu/float(len(self.cpu)))
+            return sum(self.cpu)/float(len(self.cpu))
 
     @property
     def tiempo_total(self):
