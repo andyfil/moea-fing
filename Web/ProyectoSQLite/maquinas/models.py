@@ -49,6 +49,7 @@ class Datos_Lecturas(models.Model):
 	memory_use = models.DecimalField(max_digits=10, decimal_places=2)
 
 class Usuario(models.Model):
+	id_pc = models.ForeignKey('Pc', db_column='id_pc', blank=True, null=True)
 	nombre = models.CharField(max_length=200)
 	tiempo_ini = models.FloatField()
 	tiempo = models.FloatField()
@@ -60,9 +61,10 @@ class Usuario(models.Model):
 	cpu_maximo = models.DecimalField(max_digits=3, decimal_places=1)
 
 class Proceso(models.Model):
+	id_pc = models.ForeignKey('Pc', db_column='id_pc', blank=True, null=True)
 	pid = models.IntegerField()
 	user_id = models.CharField(max_length=50)
-	name =  models.CharField(max_length=200)
+	name =	models.CharField(max_length=200)
 	tiempo_ini = models.FloatField()
 	tiempo = models.FloatField()
 	comando = models.CharField(max_length=200)
@@ -74,7 +76,7 @@ class Proceso(models.Model):
 	cpu_maximo = models.DecimalField(max_digits=3, decimal_places=1)
 
 class Datos(models.Model):
-	id = models.IntegerField(primary_key=True)  # AutoField?
+	id = models.IntegerField(primary_key=True)	# AutoField?
 	id_pc = models.ForeignKey('Pc', db_column='id_pc', blank=True, null=True)
 	pc = models.CharField(max_length=45)
 	timestamp = models.DateTimeField(blank=True, null=True)
