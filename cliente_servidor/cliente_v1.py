@@ -52,22 +52,26 @@ def _proxi():
     else:
         return {}
 
+def register():
+    cfg = config.RawConfigParser()
+    result = cfg.read(cts.CFG_DIR+TOP.get_pc_name()+'.cfg')
+    _ident = ''
+    if not result or not cfg.has_section(cts.CFG_SECT):
+        r = rq.post(REGISTER_URL, data=dumps(data_registro()),
+                    headers=HEADERS, proxies=_proxi())
+        if r.status_code == 200 and bool(r.json()[cts.API_RESULT]):
+            _ident = str(r.json()[cts.API_ID])
+            _save_id(_ident)
+        else:
+            print "Error registrando pc ", r.json()
+            sys.exit(cts.ERR_REG_PC)
+    else:
+        _ident = cfg.get(cts.CFG_SECT, cts.CFG_ID)
+    return _ident
+
 if __name__ == '__main__':
     try:
-        cfg = config.RawConfigParser()
-        result = cfg.read(cts.CFG_DIR+TOP.get_pc_name()+'.cfg')
-        ident = ''
-        if not result or not cfg.has_section(cts.CFG_SECT):
-            r = rq.post(REGISTER_URL, data=dumps(data_registro()),
-                        headers=HEADERS, proxies=_proxi())
-            if r.status_code == 200 and bool(r.json()[cts.API_RESULT]):
-                ident = str(r.json()[cts.API_ID])
-                _save_id(ident)
-            else:
-                print "Error registrando pc ", r.json()
-                sys.exit(cts.ERR_REG_PC)
-        else:
-            ident = cfg.get(cts.CFG_SECT,cts.CFG_ID)
+        ident = register()
         URL = DATA_URL+"/"+ ident
         j = TOP.obtener_datos()
         R2 = rq.post(URL, data=dumps(j),

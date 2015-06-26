@@ -6,8 +6,10 @@ import ConfigParser as Config
 import os
 import requests as rq
 from json import dumps
+import sys
 
 from modelo import Usuario, Proceso
+from cliente_v1 import register
 import constantes as cts
 
 
@@ -29,6 +31,7 @@ PROXY_PORT = 3128
 BASE_URL = "http://fingproy.cloudapp.net:80/proy/api/v1"
 HEADERS = {'content-type': 'application/json'}
 MIN_TIEMPO_EJECUCION = 0
+IDENT = ''
 
 cfg = Config.RawConfigParser()
 
@@ -47,6 +50,7 @@ def read_from_file(section):
 def init():
     if not os.path.exists(cts.CFG_DIR):
         os.makedirs(cts.CFG_DIR)
+    IDENT = register()
     result = cfg.read(CFG_NAME)
     if not result:
         with open(CFG_NAME, 'wb') as config_file:
@@ -84,7 +88,7 @@ def report_proc(p_proc):
     """Proceso que registra en la API rest el proceso una vez que terminio,
         y luego borra de la bd local"""
     cfg.remove_option(cts.CFG_SECT_PROC, str(p_proc.pid))
-    url = BASE_URL + '/procs'
+    url = BASE_URL + '/procs/' + IDENT
     data = p_proc.to_json()
     data[cts.U_PROC_MIN] = p_proc.cpu_min
     data[cts.U_PROC_MAX] = p_proc.cpu_max
@@ -103,7 +107,7 @@ def report_user(p_user):
     """Proceso que registra en la API rest el usuario
         una vez que cierra sesion, y luego borra de la bd local"""
     cfg.remove_option(cts.CFG_SECT_USER, user.nombre)
-    url = BASE_URL + '/users'
+    url = BASE_URL + '/users/' + IDENT
     data = p_user.to_json()
     data[cts.U_PROC_MIN] = p_user.cpu_min
     data[cts.U_PROC_MAX] = p_user.cpu_max
@@ -130,39 +134,42 @@ def add_proc(p_proc):
 
 
 if __name__ == '__main__':
-    contador = 0
-    init()
-    user_list = []
-    proc_list = []
-    while contador < 3:
-        user_list = _top.get_users_data()
-        proc_list = _top.get_process_data()
-        # TODO falta actualizar la info de cpu y memoria
-        #prcesos
-        for proc in datos.proc_bd:
-            p = next((x for x in proc_list if x.pid == proc.pid), None)
-            if p is None:  #El proceso proc termino su ejecucion
-                report_proc(proc)
-                datos.proc_bd.remove(proc)
-            else:  #El proceso sigue ejecutando
-                proc.update(p)
-                proc_list.remove(p)
-        for proc in proc_list:  #Los procesos nuevos
-            if(proc.user != 'root' and proc.user != 'martin.+' and
-               proc.user != 'daniel.+'):
-                add_proc(proc)
-        #usuarios
-        for user in datos.user_bd:
-            u = next((x for x in user_list if x.nombre == user.nombre), None)
-            if u is None:  #El usuario user termino su sesion
-                report_user(user)
-                datos.user_bd.remove(user)
-            else:  #El usuario sigue logeado
-                user.update(u)
-                user_list.remove(u)
-        for user in user_list:  #Los usuarios nuevos
-            if user.nombre != 'root':
-                add_user(user)
-        time.sleep(15)
-        contador += 1
-    close()
+    try:
+        contador = 0
+        init()
+        user_list = []
+        proc_list = []
+        while contador < 3:
+            user_list = _top.get_users_data()
+            proc_list = _top.get_process_data()
+            # TODO falta actualizar la info de cpu y memoria
+            #prcesos
+            for proc in datos.proc_bd:
+                p = next((x for x in proc_list if x.pid == proc.pid), None)
+                if p is None:  #El proceso proc termino su ejecucion
+                    report_proc(proc)
+                    datos.proc_bd.remove(proc)
+                else:  #El proceso sigue ejecutando
+                    proc.update(p)
+                    proc_list.remove(p)
+            for proc in proc_list:  #Los procesos nuevos
+                if(proc.user != 'root' and proc.user != 'martin.+' and
+                   proc.user != 'daniel.+'):
+                    add_proc(proc)
+            #usuarios
+            for user in datos.user_bd:
+                u = next((x for x in user_list if x.nombre == user.nombre), None)
+                if u is None:  #El usuario user termino su sesion
+                    report_user(user)
+                    datos.user_bd.remove(user)
+                else:  #El usuario sigue logeado
+                    user.update(u)
+                    user_list.remove(u)
+            for user in user_list:  #Los usuarios nuevos
+                if user.nombre != 'root':
+                    add_user(user)
+            time.sleep(15)
+            contador += 1
+        close()
+    except:
+        print IDENT, " Excepcion " + sys.exc_info()

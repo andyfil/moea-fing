@@ -18,12 +18,12 @@ class DataHandler():
         pass
 
     @abstractmethod
-    def save_user(self, jdata):
+    def save_user(self, jdata, ident):
         "Metodo que registra los datos de una sesion de usuario en la bd"
         pass
 
     @abstractmethod
-    def save_proc(self, jdata):
+    def save_proc(self, jdata, ident):
         "Metodo que registra los datos de la ejecucion de un proceso en la bd"
         pass
 

@@ -216,7 +216,7 @@ class PC_sola_API(Resource):
             abort(500)
 
 class Proc_API(Resource):
-    """API para el registro de pcs"""
+    """API para el registro de procesos"""
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -234,17 +234,17 @@ class Proc_API(Resource):
         self.reqparse.add_argument(ct.P_PROC_MAX, type=float, location='json')
         super(Proc_API, self).__init__()
 
-    def post(self):
+    def post(self, ident):
         try:
             j = self.reqparse.parse_args()
-            ident = data.save_proc(j)
-            return {ct.API_RESULT:ident != 0, ct.API_ID:ident}
+            result = data.save_proc(j, ident)
+            return {ct.API_RESULT:result != 0, ct.API_ID:result}
         except Exception:
             print "Error ", sys.exc_info()
             abort(500)
 
 class User_API(Resource):
-    """API para el registro de pcs"""
+    """API para el registro de datos de usuario"""
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
@@ -259,11 +259,11 @@ class User_API(Resource):
         self.reqparse.add_argument(ct.U_PROC_MAX, type=float, location='json')
         super(User_API, self).__init__()
 
-    def post(self):
+    def post(self, ident):
         try:
             j = self.reqparse.parse_args()
-            ident = data.save_user(j)
-            return {ct.API_RESULT:ident != 0, ct.API_ID:ident}
+            result = data.save_user(j, ident)
+            return {ct.API_RESULT:result != 0, ct.API_ID:result}
         except Exception:
             print "Error ", sys.exc_info()
             abort(500)
@@ -272,8 +272,8 @@ api.add_resource(Salon_PCAPI, '/proy/api/v1/salones/<string:salon>', endpoint='s
 api.add_resource(SalonAPI, '/proy/api/v1/salones', endpoint='salon')
 api.add_resource(PCAPI, '/proy/api/v1/pcs/<int:ident>', endpoint='pc')
 api.add_resource(PC_sola_API, '/proy/api/v1/pcs', endpoint='pc_sola')
-api.add_resource(User_API, '/proy/api/v1/users', endpoint='user')
-api.add_resource(Proc_API, '/proy/api/v1/procs', endpoint='proc')
+api.add_resource(User_API, '/proy/api/v1/users/<int:ident>', endpoint='user')
+api.add_resource(Proc_API, '/proy/api/v1/procs/<int:ident>', endpoint='proc')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)

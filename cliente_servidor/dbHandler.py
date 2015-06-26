@@ -139,27 +139,27 @@ class BDHandler(DataHandler):
         "Metodo para actualizar la informacion de un salon"
         pass
 
-    def save_user(self, jdata):
+    def save_user(self, jdata, ident):
         "Metodo que registra los datos de una sesion de usuario en la bd"
-        query = """INSERT INTO %s (`nombre`,`tiempo_ini`,`tiempo`,\
+        query = """INSERT INTO %s (`pc_id`,`nombre`,`tiempo_ini`,`tiempo`,\
                         `memoria_minimo`,`memoria_promedio`,`memoria_maximo`,\
                         `cpu_minimo`,`cpu_promedio`,
                         `cpu_maximo`) """ % cts.TABLE_USER
         query += "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-        datos_query = (jdata[cts.U_NAME], jdata[cts.U_TIME_INI],
+        datos_query = (ident, jdata[cts.U_NAME], jdata[cts.U_TIME_INI],
                        jdata[cts.U_TIME], jdata[cts.U_MEM_MIN],
                        jdata[cts.U_MEM_AVG], jdata[cts.U_MEM_MAX],
                        jdata[cts.U_PROC_MIN], jdata[cts.U_PROC_AVG],
                        jdata[cts.U_PROC_MAX])
         self.execute(query, datos_query)
 
-    def save_proc(self, jdata):
-        query = """INSERT INTO %s (`pid`,`user_id`,`name`,`tiempo_ini`,\
+    def save_proc(self, jdata, ident):
+        query = """INSERT INTO %s (`pc_id`,`pid`,`user_id`,`name`,`tiempo_ini`,\
                     `tiempo`,`comando`,`memoria_minimo`,`memoria_promedio`,\
                     `memoria_maximo`,`cpu_minimo`,`cpu_promedio`,\
                     `cpu_maximo`) """ % cts.TABLE_PROC
         query += "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
-        datos_query = (jdata[cts.P_ID], jdata[cts.P_USER], jdata[cts.P_NAME],
+        datos_query = (ident, jdata[cts.P_ID], jdata[cts.P_USER], jdata[cts.P_NAME],
                        jdata[cts.P_TIME_INI], jdata[cts.P_TIME], jdata[cts.P_CMD],
                        jdata[cts.P_MEM_MIN], jdata[cts.P_MEM_AVG], jdata[cts.P_MEM_MAX],
                        jdata[cts.P_PROC_MIN], jdata[cts.P_PROC_AVG], jdata[cts.P_PROC_MAX])
