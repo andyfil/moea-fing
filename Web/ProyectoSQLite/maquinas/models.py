@@ -7,7 +7,7 @@ class Salon(models.Model):
 	prioridad = models.IntegerField()
 	def __str__(self):
 		return self.nombre
-		
+
 class Pc(models.Model):
 	salon = models.ForeignKey(Salon)
 	nombre = models.CharField(max_length=200)
@@ -20,7 +20,7 @@ class Pc(models.Model):
 	estado = models.CharField(max_length=50)
 	def __str__(self):
 		return self.nombre
-		
+
 class RegistroPc(models.Model):
 	pc = models.ForeignKey(Pc)
 	fecha_alta = models.DateTimeField('Fecha de alta')
