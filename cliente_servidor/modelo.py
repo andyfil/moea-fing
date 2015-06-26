@@ -1,5 +1,4 @@
-# Revision number $Revision: 164 $
-# Date $Date: 2015-05-06 20:28:50 -0300 (Wed, 06 May 2015) $
+#Revision number $Revision$
 
 import json
 import constantes as ct

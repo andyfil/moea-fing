@@ -1,5 +1,4 @@
 #Revision number $Revision$
-#Date $Date$
 
 import json
 import sys

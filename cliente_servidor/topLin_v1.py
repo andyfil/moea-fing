@@ -1,8 +1,4 @@
 #Revision number $Revision$
-#Date $Date$
-
-#Revision number $Revision$
-#Date $Date$
 
 import os
 import re

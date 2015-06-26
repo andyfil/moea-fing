@@ -1,5 +1,4 @@
 #Revision number $Revision$
-#Date $Date$
 
 from abc import ABCMeta, abstractmethod
 from platform import node, processor, system
