@@ -24,7 +24,6 @@ SECRET_KEY = '$le^x^51snrcdg$=3-j+z3$=y&dx0^igp0j@mlc_01o#m^3@o+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = []
 
@@ -38,10 +37,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ProyectoSQLite',
 	'maquinas',
 )
-
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -55,26 +52,21 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'ProyectoSQLite.urls'
 
-TEMPLATE_DIRS = (
-    'templates',
-    'templates\maquinas',
-)
-
-# TEMPLATES = [
-#     {
-#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-# 		'DIRS': [os.path.join(BASE_DIR, 'templates\maquinas'),],
-#         'APP_DIRS': True,
-#         'OPTIONS': {
-#             'context_processors': [
-#                 'django.template.context_processors.debug',
-#                 'django.template.context_processors.request',
-#                 'django.contrib.auth.context_processors.auth',
-#                 'django.contrib.messages.context_processors.messages',
-#             ],
-#         },
-#     },
-# ]
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 WSGI_APPLICATION = 'ProyectoSQLite.wsgi.application'
 
@@ -112,8 +104,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-
-
-LOGIN_URL = '/maquinas/'
-LOGIN_REDIRECT_URL = '/maquinas/'
-LOGOUT_URL = '/maquinas/'

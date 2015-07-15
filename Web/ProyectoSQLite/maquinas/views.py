@@ -1,48 +1,13 @@
 from django.http import HttpResponseRedirect, HttpResponse
 #from django.template import RequestContext, loader
-from django.shortcuts import get_object_or_404, render, render_to_response
-from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
-#from maquinas.forms import UsuarioTareaForm
+from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
 from django.views import generic
 from .models import Salon, Pc, LecturaTop
 from django.db import connection
-from maquinas.forms import BigForm
-
-
-@login_required
-def bigform(request):
-
-    #form = UsuarioTareaForm()
-    form = BigForm()
-    field1 = ""
-    field2 = ""
-    field3 = None
-    if request.method == 'POST':
-        #form = UsuarioTareaForm(request.POST, request.FILES)
-        form = BigForm(request.POST, request.FILES)
-        if form.is_valid():
-            field1 = form.cleaned_data.get('field1')
-            field2 = form.cleaned_data.get('field2')
-            field3 = form.cleaned_data.get('field3') 
-            #form.save()
-
-    else:
-        #form = UsuarioTareaForm()
-        form = BigForm()
-
-    context = {
-        'form': form,
-        'field1': field1,
-        'field2': field2,
-        'field3': field3,
-    }
-
-    return render_to_response('bigform.html', context, context_instance=RequestContext(request))
 
 class IndexView(generic.ListView):
-    template_name = 'maquinas\index.html'
+    template_name = 'maquinas/index.html'
     context_object_name = 'latest_pc_list'
 
     def get_queryset(self):
@@ -58,43 +23,43 @@ class ResultsView(generic.DetailView):
     #model = LecturaTop
     template_name = 'maquinas/results.html'
 
-# def results_original(request, pc_id):
-#     pc = get_object_or_404(Pc, pk=pc_id)
-#     # Prueba de stored procedures
-#     ultimosDatos = ""
-#     id = 12
-#     result_set = []
-#     args = [id, ultimosDatos]
-#     cursor = connection.cursor()
-#     try:
-#         cursor.callproc('obtenerUltimosDatos', args)
-#         ultimosDatos = cursor.fetchall()
-#         print result_set
-#         print mac
-#     finally:
-#         cursor.close()
+def results_original(request, pc_id):
+    pc = get_object_or_404(Pc, pk=pc_id)
+    # Prueba de stored procedures
+    ultimosDatos = ""
+    id = 12
+    result_set = []
+    args = [id, ultimosDatos]
+    cursor = connection.cursor()
+    try:
+        cursor.callproc('obtenerUltimosDatos', args)
+        ultimosDatos = cursor.fetchall()
+        print result_set
+        print mac
+    finally:
+        cursor.close()
 
-#     # TODO: Parsear ultimosDatos
+    # TODO: Parsear ultimosDatos
 
-#     # Obtengo todas las lecturas de la Pc
-#     lecturas = pc.lecturatop_set.all()[:5]
-#     #Armo los datos para graficar
-#     dataCantidadUsuarios = "indice,Lecturas\n"
-#     dataPorcentajeCpu = "indice,Lecturas\n"
-#     dataPorcentajeMemoria = "indice,Lecturas\n"
-#     for indice in range(len(lecturas)):
-#     	datoCU = str(indice) + "," + str(lecturas[indice].cant_usuarios) + "\n"
-#     	datoPCpu = str(indice) + "," + str(lecturas[indice].cpu_perc) + "\n"
-#     	datoPM = str(indice) + "," + str(lecturas[indice].mem_perc) + "\n"
-#     	dataCantidadUsuarios += datoCU
-#     	dataPorcentajeCpu += datoPCpu
-#     	dataPorcentajeMemoria += datoPM
-#     if request.is_ajax():
-#         template = 'maquinas/partial-results.html'
-#     else:
-#         template = 'maquinas/results.html'
-#     return render(request, template, {'pc': pc, 'dataCantidadUsuarios': dataCantidadUsuarios, 'dataPorcentajeCpu':dataPorcentajeCpu, 
-#     												'dataPorcentajeMemoria':dataPorcentajeMemoria, 'mac':mac})
+    # Obtengo todas las lecturas de la Pc
+    lecturas = pc.lecturatop_set.all()[:5]
+    #Armo los datos para graficar
+    dataCantidadUsuarios = "indice,Lecturas\n"
+    dataPorcentajeCpu = "indice,Lecturas\n"
+    dataPorcentajeMemoria = "indice,Lecturas\n"
+    for indice in range(len(lecturas)):
+    	datoCU = str(indice) + "," + str(lecturas[indice].cant_usuarios) + "\n"
+    	datoPCpu = str(indice) + "," + str(lecturas[indice].cpu_perc) + "\n"
+    	datoPM = str(indice) + "," + str(lecturas[indice].mem_perc) + "\n"
+    	dataCantidadUsuarios += datoCU
+    	dataPorcentajeCpu += datoPCpu
+    	dataPorcentajeMemoria += datoPM
+    if request.is_ajax():
+        template = 'maquinas/partial-results.html'
+    else:
+        template = 'maquinas/results.html'
+    return render(request, template, {'pc': pc, 'dataCantidadUsuarios': dataCantidadUsuarios, 'dataPorcentajeCpu':dataPorcentajeCpu, 
+    												'dataPorcentajeMemoria':dataPorcentajeMemoria, 'mac':mac})
 
 
 def results(request, pc_id):
