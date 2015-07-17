@@ -3,6 +3,11 @@
 from django.db import models
 import datetime
 
+class UsuarioTarea(models.Model):
+	usuario = models.CharField(max_length=200)
+	password = models.CharField(max_length=200)
+	archivo = models.FileField(upload_to='archivos/%Y/%m/%d')
+
 class Salon(models.Model):
 	nombre = models.CharField(max_length=200)
 	lugar = models.CharField(max_length=200)

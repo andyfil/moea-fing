@@ -26,7 +26,7 @@
 
     <!-- Custom CSS -->
  	<link rel="stylesheet" href="{% static 'maquinas/css/creative.css' %}" type="text/css">
-
+ 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work isf you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -94,21 +94,67 @@
 
     <header>
         <div class="header-content">
-            <div class="header-content-inner">
-                    <h1>{{ "Pcs:" }}</h1><br/>
-                    {% if latest_pc_list %}
-                        <ul>
-                        {% for pc in latest_pc_list %}
-                            <li><a class="listitem" href="{% url 'maquinas:detail' pc.id %}" data-toggle="tooltip" data-placement="right" title="Salon {{pc.salon}}">{{ pc.mac }}</a>
-                            </li>
-                        {% endfor %}
-                        </ul>
+            {% if user.is_authenticated %}
+                <div class="header-content-inner">
+                        <h1>{{ "Pcs:" }}</h1><br/>
+                        {% if latest_pc_list %}
+                            <ul>
+                            {% for pc in latest_pc_list %}
+                                va unaaaa
+                                <li><a class="listitem" href="{% url 'maquinas:detail' pc.id %}" data-toggle="tooltip" data-placement="right" title="Salon {{pc.salon}}">{{ pc.mac }}</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No existen Pcs.</p>
+                        {% endif %}
+                    </h1>
+                    <p></p>
+                </div>
+            {% endif %}
+        <div class="row-fluid ">
+            <div class="span5">
+                <div class="row-fluid">
+                  <div class="span2"></div>
+                  <div class="span8 registrar">
+                    {% if user.is_authenticated %}
+                      Bienvenido {{user.username|capfirst}}
+                      <p></p>
+                      <a href="{% url 'maquinas:logout' %}">Salir</a>
+                      <!--<a href="/cerrar/">Salir</a>-->
                     {% else %}
-                        <p>No existen Pcs.</p>
-                    {% endif %}
-                </h1>
-                <p></p>
+                    <form class="form-horizontal alinear" action="{% url 'maquinas:login' %}" method="POST">{% csrf_token %}
+                      <div class="control-group">
+                        <label class="control-label" for="inputEmail" >Usuario</label>
+                        <div class="controls">
+                          <input name="username" type="text" id="inputEmail" placeholder="Usuario">
+                        </div>
+                      </div>
+
+                      <div class="control-group">
+                        <label class="control-label" for="inputPassword">Contraseña</label>
+                        <div class="controls">
+                          <input name="password" type="password" id="inputPassword" placeholder="Contraseña">
+                        </div>
+                      </div>
+
+                      <div class="control-group">
+                        <div class="controls">
+                          <label class="checkbox">
+                          <input type="checkbox">Recordar</label>
+                          <p></p>
+                          <button type="submit" class="btn btn-info">Ingresar</button>
+                          <a href="/registrarse/" class="reg">Registrarse</a>
+                        </div>
+                      </div>
+                    </form>
+                    {% endif %}  
+                  </div>  
+                  <div class="span2"></div>
+                </div>
             </div>
+        </div>
+
         </div>
     </header>
 
