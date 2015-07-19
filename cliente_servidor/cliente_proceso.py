@@ -31,13 +31,13 @@ PROXY_PORT = 3128
 BASE_URL = "http://fingproy.cloudapp.net:80/proy/api/v1"
 HEADERS = {'content-type': 'application/json'}
 MIN_TIEMPO_EJECUCION = 0
-IDENT = ''
 
 cfg = Config.RawConfigParser()
 
 class Datos:
     user_bd = []
     proc_bd = []
+    IDENT = ''
 
 datos = Datos()
 
@@ -50,7 +50,7 @@ def read_from_file(section):
 def init():
     if not os.path.exists(cts.CFG_DIR):
         os.makedirs(cts.CFG_DIR)
-    IDENT = register()
+    datos.IDENT = register()
     result = cfg.read(CFG_NAME)
     if not result:
         with open(CFG_NAME, 'wb') as config_file:
@@ -88,7 +88,8 @@ def report_proc(p_proc):
     """Proceso que registra en la API rest el proceso una vez que terminio,
         y luego borra de la bd local"""
     cfg.remove_option(cts.CFG_SECT_PROC, str(p_proc.pid))
-    url = BASE_URL + '/procs/' + IDENT
+    url = BASE_URL + '/procs/' + datos.IDENT
+    print url
     data = p_proc.to_json()
     data[cts.P_PROC_MIN] = p_proc.cpu_min
     data[cts.P_PROC_MAX] = p_proc.cpu_max
@@ -105,7 +106,7 @@ def report_user(p_user):
     """Proceso que registra en la API rest el usuario
         una vez que cierra sesion, y luego borra de la bd local"""
     cfg.remove_option(cts.CFG_SECT_USER, user.nombre)
-    url = BASE_URL + '/users/' + IDENT
+    url = BASE_URL + '/users/' + datos.IDENT
     data = p_user.to_json()
     data[cts.U_PROC_MIN] = p_user.cpu_min
     data[cts.U_PROC_MAX] = p_user.cpu_max
@@ -170,4 +171,4 @@ if __name__ == '__main__':
         close()
     except:
         print traceback.format_exc()
-        print IDENT, " Excepcion " , sys.exc_info()
+        print datos.IDENT, " Excepcion " , sys.exc_info()

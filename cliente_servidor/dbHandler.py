@@ -2,6 +2,7 @@
 
 import json
 import sys
+import traceback
 
 import MySQLdb
 
@@ -35,7 +36,7 @@ class BDHandler(DataHandler):
 
     def execute(self, query, datos_query):
         try:
-            self.cursor.execute(query,datos_query)
+            self.cursor.execute(query, datos_query)
             self.db.commit()
         except MySQLdb.Error, exep:
             try:
@@ -47,6 +48,7 @@ class BDHandler(DataHandler):
             finally:
                 self.db.rollback()
         except:
+            print traceback.format_exc()
             print "Unexpected error:", sys.exc_info()[0]
             self.db.rollback()
 
@@ -140,12 +142,12 @@ class BDHandler(DataHandler):
 
     def save_user(self, jdata, ident):
         "Metodo que registra los datos de una sesion de usuario en la bd"
-        query = """INSERT INTO %s (`pc_id`,`nombre`,`tiempo_ini`,`tiempo`,\
+        query = """INSERT INTO %s (`id_pc`,`nombre`,`tiempo_ini`,`tiempo`,\
                         `memoria_minimo`,`memoria_promedio`,`memoria_maximo`,\
                         `cpu_minimo`,`cpu_promedio`,
                         `cpu_maximo`) """ % cts.TABLE_USER
-        query += "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-        datos_query = (ident, jdata[cts.U_NAME], jdata[cts.U_TIME_INI],
+        query += "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+        datos_query = (str(ident), jdata[cts.U_NAME], jdata[cts.U_TIME_INI],
                        jdata[cts.U_TIME], jdata[cts.U_MEM_MIN],
                        jdata[cts.U_MEM_AVG], jdata[cts.U_MEM_MAX],
                        jdata[cts.U_PROC_MIN], jdata[cts.U_PROC_AVG],
@@ -153,12 +155,12 @@ class BDHandler(DataHandler):
         self.execute(query, datos_query)
 
     def save_proc(self, jdata, ident):
-        query = """INSERT INTO %s (`pc_id`,`pid`,`user_id`,`name`,`tiempo_ini`,\
+        query = """INSERT INTO %s (`id_pc`,`pid`,`user_id`,`name`,`tiempo_ini`,\
                     `tiempo`,`comando`,`memoria_minimo`,`memoria_promedio`,\
                     `memoria_maximo`,`cpu_minimo`,`cpu_promedio`,\
                     `cpu_maximo`) """ % cts.TABLE_PROC
-        query += "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
-        datos_query = (ident, jdata[cts.P_ID], jdata[cts.P_USER], jdata[cts.P_NAME],
+        query += "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+        datos_query = (str(ident), jdata[cts.P_ID], jdata[cts.P_USER], jdata[cts.P_NAME],
                        jdata[cts.P_TIME_INI], jdata[cts.P_TIME], jdata[cts.P_CMD],
                        jdata[cts.P_MEM_MIN], jdata[cts.P_MEM_AVG], jdata[cts.P_MEM_MAX],
                        jdata[cts.P_PROC_MIN], jdata[cts.P_PROC_AVG], jdata[cts.P_PROC_MAX])
