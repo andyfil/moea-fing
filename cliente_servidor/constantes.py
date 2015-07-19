@@ -69,6 +69,7 @@ P_CPU = 'cpu'
 P_PROC_MIN = 'proc_min'
 P_PROC_AVG = 'proc_avg'
 P_PROC_MAX = 'proc_max'
+P_MEDIDAS = 'medidas'
 
 #constantes de columnas tablas BD
 

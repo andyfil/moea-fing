@@ -6,6 +6,7 @@ import os
 import requests as rq
 from json import dumps
 import sys
+import traceback
 
 from modelo import Usuario, Proceso
 from cliente_v1 import register
@@ -171,4 +172,5 @@ if __name__ == '__main__':
             contador += 1
         close()
     except:
-        print IDENT, " Excepcion " + sys.exc_info()
+        print traceback.format_exc()
+        print IDENT, " Excepcion " , sys.exc_info()
