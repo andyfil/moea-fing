@@ -90,14 +90,12 @@ def report_proc(p_proc):
     cfg.remove_option(cts.CFG_SECT_PROC, str(p_proc.pid))
     url = BASE_URL + '/procs/' + IDENT
     data = p_proc.to_json()
-    data[cts.U_PROC_MIN] = p_proc.cpu_min
-    data[cts.U_PROC_MAX] = p_proc.cpu_max
-    data[cts.U_PROC_AVG] = p_proc.cpu_avg
-    data[cts.U_MEM_MIN] = p_proc.memoria_min
-    data[cts.U_MEM_MAX] = p_proc.memoria_max
-    data[cts.U_MEM_AVG] = p_proc.memoria_avg
-    del data[cts.P_CPU]
-    del data[cts.P_MEM]
+    data[cts.P_PROC_MIN] = p_proc.cpu_min
+    data[cts.P_PROC_MAX] = p_proc.cpu_max
+    data[cts.P_PROC_AVG] = p_proc.cpu_avg
+    data[cts.P_MEM_MIN] = p_proc.memoria_min
+    data[cts.P_MEM_MAX] = p_proc.memoria_max
+    data[cts.P_MEM_AVG] = p_proc.memoria_avg
     result = rq.post(url, data=dumps(data), headers=HEADERS, proxies=_proxi())
     if result.status_code != 200:
         print result
@@ -115,8 +113,8 @@ def report_user(p_user):
     data[cts.U_MEM_MIN] = p_user.memoria_min
     data[cts.U_MEM_MAX] = p_user.memoria_max
     data[cts.U_MEM_AVG] = p_user.memoria_avg
-    del data[cts.P_CPU]
-    del data[cts.P_MEM]
+    del data[cts.U_CPU]
+    del data[cts.U_MEM]
     result = rq.post(url, data=dumps(data), headers=HEADERS, proxies=_proxi())
     if result.status_code != 200:
         print result
@@ -153,8 +151,7 @@ if __name__ == '__main__':
                     proc.update(p)
                     proc_list.remove(p)
             for proc in proc_list:  #Los procesos nuevos
-                if(proc.user != 'root' and proc.user != 'martin.+' and
-                   proc.user != 'daniel.+'):
+                if(proc.user != 'root' and proc.user != 'martin.+' and proc.user != 'daniel.+'):
                     add_proc(proc)
             #usuarios
             for user in datos.user_bd:
