@@ -30,12 +30,6 @@ class IndexView(generic.ListView):
     template_name = 'maquinas/index.html'
     context_object_name = 'latest_pc_list'
 
-    def get_queryset(self):
-        print "Entre a la query"
-        pcs = Pc.objects.order_by('-salon')
-        for pc in pcs:
-            print "*"
-        return Pc.objects.order_by('-salon')
 
 def index(request):
     latest_pc_list = Pc.objects.order_by('-salon')
@@ -117,22 +111,22 @@ def results(request, pc_id):
             cantU_1 = cantU_1 + dato.users
             cantM_1 = cantM_1 + dato.memory_use
             cantC_1 = cantC_1 + dato.cpu_use
-            print "Dato " + str(indice) + ": " + str(dato.users) + " usuarios, " + str(dato.memory_use) + " memoria, " + str(dato.cpu_use) + " cpu" + "\n"
+            #print "Dato " + str(indice) + ": " + str(dato.users) + " usuarios, " + str(dato.memory_use) + " memoria, " + str(dato.cpu_use) + " cpu" + "\n"
         if (indice in range(tercera, cuarta)):
             cantU_2 = cantU_2 + dato.users
             cantM_2 = cantM_2 + dato.memory_use
             cantC_2 = cantC_2 + dato.cpu_use
-            print "Dato " + str(indice) + ": " + str(dato.users) + " usuarios, " + str(dato.memory_use) + " memoria, " + str(dato.cpu_use) + " cpu" + "\n"
+            #print "Dato " + str(indice) + ": " + str(dato.users) + " usuarios, " + str(dato.memory_use) + " memoria, " + str(dato.cpu_use) + " cpu" + "\n"
         if (indice in range(segunda, tercera)):
             cantU_3 = cantU_3 + dato.users
             cantM_3 = cantM_3 + dato.memory_use
             cantC_3 = cantC_3 + dato.cpu_use
-            print "Dato " + str(indice) + ": " + str(dato.users) + " usuarios, " + str(dato.memory_use) + " memoria, " + str(dato.cpu_use) + " cpu" + "\n"
+            #print "Dato " + str(indice) + ": " + str(dato.users) + " usuarios, " + str(dato.memory_use) + " memoria, " + str(dato.cpu_use) + " cpu" + "\n"
         if (indice in range(primera, segunda)):
             cantU_4 = cantU_4 + dato.users
             cantM_4 = cantM_4 + dato.memory_use
             cantC_4 = cantC_4 + dato.cpu_use
-            print "Dato " + str(indice) + ": " + str(dato.users) + " usuarios, " + str(dato.memory_use) + " memoria, " + str(dato.cpu_use) + " cpu" + "\n"
+            #print "Dato " + str(indice) + ": " + str(dato.users) + " usuarios, " + str(dato.memory_use) + " memoria, " + str(dato.cpu_use) + " cpu" + "\n"
 
         indice = indice + 1
 
