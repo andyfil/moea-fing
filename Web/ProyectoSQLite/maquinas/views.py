@@ -27,8 +27,6 @@ def bigform(request):
     return render_to_response('bigform.html', {'form':form}, context_instance=RequestContext(request))
 
 class IndexView(generic.ListView):
-    print "Entre al Index"
-    print "fkqfkhkfbakbfkbakfbkda"
     template_name = 'maquinas/index.html'
     context_object_name = 'latest_pc_list'
 
@@ -38,6 +36,13 @@ class IndexView(generic.ListView):
         for pc in pcs:
             print "*"
         return Pc.objects.order_by('-salon')
+
+def index(request):
+    latest_pc_list = Pc.objects.order_by('-salon')
+    segunda = True
+    template = 'maquinas/index.html'
+    return render(request, template, {'latest_pc_list': latest_pc_list, 'segunda': segunda})
+
 
 class DetailView(generic.DetailView):
     model = Pc

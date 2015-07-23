@@ -96,22 +96,41 @@
         <div class="header-content">
             {% if user.is_authenticated %}
                 <div class="header-content-inner">
-                        <h1>{{ "Pcs:" }}</h1><br/>
-                        {% if latest_pc_list %}
-                            <ul>
-                            {% for pc in latest_pc_list %}
-                                va unaaaa
-                                <li><a class="listitem" href="{% url 'maquinas:detail' pc.id %}" data-toggle="tooltip" data-placement="right" title="Salon {{pc.salon}}">{{ pc.mac }}</a>
-                                </li>
-                            {% endfor %}
-                            </ul>
+                        {% if not latest_pc_list and not segunda %}
+                            <a style="font-size:2.0em;color:blue;" href="{% url 'maquinas:index' %}"> Ver Máquinas disponibles </a>
                         {% else %}
-                            <p>No existen Pcs.</p>
+                            {% if latest_pc_list %}
+                                <!--<h1>{{ "Pcs:" }}</h1><br/>
+                                <div class="col-md-1">
+                                    <table class="table table-striped">
+                                        <thead><tr><th>Máquinas</th></tr></thead>
+                                        <tbody>
+                                           <ul>
+                                           {% for pc in latest_pc_list %}
+                                              <tr><td><li><a class="listitem" href="{% url 'maquinas:detail' pc.id %}"          data-toggle="tooltip" data-placement="right"                          title="Salon {{pc.salon}}">{{ pc.mac }}</a>
+                                                      </li></td>
+                                              </tr>
+                                           {% endfor %}
+                                           </ul>
+                                        </body>
+                                    </table>
+                                </div>-->
+                                <h1>{{ "Pcs:" }}</h1><br/>
+                                <ul>
+                                {% for pc in latest_pc_list %}
+                                    <li><a class="listitem" href="{% url 'maquinas:detail' pc.id %}" data-toggle="tooltip" data-placement="right" title="Salon {{pc.salon}}">{{ pc.mac }}</a>
+                                    </li>
+                                {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p>No existen Pcs.</p>
+                            {% endif %}
                         {% endif %}
                     </h1>
                     <p></p>
                 </div>
             {% endif %}
+
         <div class="row-fluid ">
             <div class="span5">
                 <div class="row-fluid">
@@ -144,7 +163,7 @@
                           <input type="checkbox">Recordar</label>
                           <p></p>
                           <button type="submit" class="btn btn-info">Ingresar</button>
-                          <a href="/registrarse/" class="reg">Registrarse</a>
+                          <!--<a href="/registrarse/" class="reg">Registrarse</a>-->
                         </div>
                       </div>
                     </form>
