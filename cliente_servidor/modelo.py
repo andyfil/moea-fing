@@ -154,7 +154,10 @@ class Proceso(object):
         proc = Proceso(j_data[ct.P_ID], j_data[ct.P_NAME], j_data[ct.P_USER],
                        j_data[ct.P_TIME_INI], j_data[ct.P_CMD])
         proc.tiempo = j_data[ct.P_TIME]
-        proc.medidas = j_data[ct.P_MEDIDAS]
+        if (ct.P_MEDIDAS not in j_data): 
+            proc.medidas = 1          
+        else:
+            proc.medidas = j_data[ct.P_MEDIDAS]
         proc.mem_min = j_data[ct.P_MEM_MIN]
         proc.mem_avg = j_data[ct.P_MEM_AVG]
         proc.mem_max = j_data[ct.P_MEM_MAX]

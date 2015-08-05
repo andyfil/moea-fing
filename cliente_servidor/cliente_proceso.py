@@ -89,7 +89,6 @@ def report_proc(p_proc):
         y luego borra de la bd local"""
     cfg.remove_option(cts.CFG_SECT_PROC, str(p_proc.pid))
     url = BASE_URL + '/procs/' + datos.IDENT
-    print url
     data = p_proc.to_json()
     data[cts.P_PROC_MIN] = p_proc.cpu_min
     data[cts.P_PROC_MAX] = p_proc.cpu_max
